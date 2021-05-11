@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
+    <title>解决Input约束输入值为非负整数中遇到的一揽子问题</title>
     <url>/2021/05/11/date0511/</url>
-    <content><![CDATA[<h2 id="解决Input约束输入值为非负整数中遇到的一揽子问题"><a href="#解决Input约束输入值为非负整数中遇到的一揽子问题" class="headerlink" title="解决Input约束输入值为非负整数中遇到的一揽子问题"></a>解决Input约束输入值为非负整数中遇到的一揽子问题</h2><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
+    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
 <h3 id="解决思路："><a href="#解决思路：" class="headerlink" title="解决思路："></a>解决思路：</h3><p>​        1.无法键入0-9以外的字符</p>
 <p>​        2.键入0-9以外的字符错误提示并无法提交</p>
+<span id="more"></span>
+
 <h3 id="解决过程："><a href="#解决过程：" class="headerlink" title="解决过程："></a>解决过程：</h3><p>​        第一次尝试：</p>
 <p>​                Input type类型改为number ,min为0。</p>
 <p>​                写完心满意足提交了代码，结果同事测试说上下键是没法子按到负值了，但是输入还是可以键入负数的。。。。。好吧</p>
@@ -20,7 +22,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Welcome to my zone</title>
+    <title>welcome to my zone</title>
     <url>/2019/08/15/note1/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
 <p>欢迎来到AreUhungry的个人博客，该博客创建于2019年8月15日一个风和日丽的下午，以后博客会不定期更新一些个人的生活状态和学习笔记，如果机缘巧合翻到这个网站实属荣幸，留下你的足迹一人送博主五个油腻么么哒。</p>

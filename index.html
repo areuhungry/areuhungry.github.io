@@ -67,11 +67,22 @@
 
   <div class="article-inner">
     
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2021/05/11/date0511/">解决Input约束输入值为非负整数中遇到的一揽子问题</a>
+</h2>
+
+
+
+    </header>
+    
 
     
     <div class="article-meta">
       <a href="/2021/05/11/date0511/" class="article-date">
-  <time datetime="2021-05-11T13:56:41.967Z" itemprop="datePublished">2021-05-11</time>
+  <time datetime="2021-05-11T09:28:54.000Z" itemprop="datePublished">2021-05-11</time>
 </a>
       
     </div>
@@ -83,25 +94,18 @@
       
       
       
-      <h2 id="解决Input约束输入值为非负整数中遇到的一揽子问题"><a href="#解决Input约束输入值为非负整数中遇到的一揽子问题" class="headerlink" title="解决Input约束输入值为非负整数中遇到的一揽子问题"></a>解决Input约束输入值为非负整数中遇到的一揽子问题</h2><h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
+      <h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
 <h3 id="解决思路："><a href="#解决思路：" class="headerlink" title="解决思路："></a>解决思路：</h3><p>​        1.无法键入0-9以外的字符</p>
 <p>​        2.键入0-9以外的字符错误提示并无法提交</p>
-<h3 id="解决过程："><a href="#解决过程：" class="headerlink" title="解决过程："></a>解决过程：</h3><p>​        第一次尝试：</p>
-<p>​                Input type类型改为number ,min为0。</p>
-<p>​                写完心满意足提交了代码，结果同事测试说上下键是没法子按到负值了，但是输入还是可以键入负数的。。。。。好吧</p>
-<p>​        第二次尝试</p>
-<p>​                用正则把输入的符号给替换掉。</p>
-<p>​                结果同事提出意见说，Input里面用defaultValue做值的显示也就是当前的Input是一个非受控组件，用正则无法替换（既然这样，那为什么不用value呢，这里引申出另一个问题，defaultValue与value的使用场景，下一章里面详细谈论这个问题）</p>
-<p>​        第三次尝试</p>
-<p>​                改用AvField组件，在输入0-9以外的字符给出错误提示</p>
-<p>​                改完在测试过程中发现，输入负号弹出来的报错信息不是预定的errorMessage，是this field is invaild。。。啊这什么鬼，后来在尝试过程中发现如果把type改为text就会正常输出预定的errorMessage。。。猜测可能是number限制的范围是所有整数（包括负号）。。。而AvField的validate中验证是非负整数，两个验证冲突？？？（或许是）</p>
-<p>​        第四次尝试</p>
-<p>​                在第三次的基础上加入onKeyDown，输入非预期的字符则调用e.preventDefault()，嗯，这下子不能输入负号了。。。。。最后测试，发现这样不能避免Ctrl C/V，还有浏览器剪切板粘贴。。。后期考虑再改为onMouseDown了.</p>
-
+      
+      <a class="article-more-link" href="/2021/05/11/date0511/">
+        阅读全文...
+      </a>
+      
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/05/11/date0511/" data-id="ckok3rayv0000k8uk282lde7n" class="article-share-link">
+      <a data-url="http://example.com/2021/05/11/date0511/" data-id="ckok45amb0000ncukd2ymbv7i" class="article-share-link">
         分享
       </a>
       
@@ -124,7 +128,7 @@
       
 
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/08/15/note1/">Welcome to my zone</a>
+  <a class="article-title" href="/2019/08/15/note1/">welcome to my zone</a>
 </h2>
 
 
@@ -139,7 +143,7 @@
     
     <div class="article-meta">
       <a href="/2019/08/15/note1/" class="article-date">
-  <time datetime="2019-08-15T05:00:00.000Z" itemprop="datePublished">2019-08-15</time>
+  <time datetime="2019-08-15T09:28:54.000Z" itemprop="datePublished">2019-08-15</time>
 </a>
       
     </div>
@@ -161,7 +165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/08/15/note1/" data-id="ckok3raz90001k8ukbi8phwi9" class="article-share-link">
+      <a data-url="http://example.com/2019/08/15/note1/" data-id="ckok45amp0001ncukb6vkgspl" class="article-share-link">
         分享
       </a>
       
