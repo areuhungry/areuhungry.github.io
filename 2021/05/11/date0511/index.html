@@ -28,41 +28,8 @@
 
 <body>
   <main class="content">
-    <section class="jumbotron">
-  <div class="video">
-    
-    <div class="video-frame">
-      <img src="/images/ocean/overlay-hero.png" alt="Decorative image frame">
-    </div>
-    
-    <div class="video-media">
-      <video playsinline="" autoplay="" loop="" muted="" data-autoplay="" poster="/images/ocean/ocean.png"
-        x5-video-player-type="h5">
-        <source src="/images/ocean/ocean.mp4" type="video/mp4">
-        <source src="/images/ocean/ocean.ogv" type="video/ogg">
-        <source src="/images/ocean/ocean.webm" type="video/webm">
-        <p>Your user agent does not support the HTML5 Video element.</p>
-      </video>
-      <div class="video-overlay"></div>
-    </div>
-    <div class="video-inner text-center text-white">
-      <h1><a href="/">Hexo</a></h1>
-      <p></p>
-      <div><img src="/images/hexo-inverted.svg" class="brand" alt="Hexo"></div>
-    </div>
-    <div class="video-learn-more">
-      <a class="anchor" href="#landingpage"><i class="fe fe-mouse"></i></a>
-    </div>
-  </div>
-</section>
-<div id="landingpage">
-  <section class="outer">
-  <article class="articles">
-    
-    <h1 class="page-type-title"></h1>
-    
-    
-    <article id="post-date0511" class="article article-type-post" itemscope
+    <section class="outer">
+  <article id="post-date0511" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -76,6 +43,10 @@
       
     </div>
     
+
+    
+    
+<div class="tocbot"></div>
 
     
 
@@ -110,86 +81,34 @@
   </div>
 
   
+  
+<nav class="article-nav">
+  
+  
+  <a href="/2019/08/15/note1/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">Welcome to my zone</div>
+  </a>
+  
+</nav>
 
+  
+
+  
+  
+  
   
 
 </article>
-    
-    <article id="post-note1" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-      
-
-<h2 itemprop="name">
-  <a class="article-title" href="/2019/08/15/note1/">Welcome to my zone</a>
-</h2>
-
-
-<div class="article-topping">
-  <i class="fe fe-umbrella"></i>
-</div>
-
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2019/08/15/note1/" class="article-date">
-  <time datetime="2019-08-15T05:00:00.000Z" itemprop="datePublished">2019-08-15</time>
-</a>
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-      <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
-<p>欢迎来到AreUhungry的个人博客，该博客创建于2019年8月15日一个风和日丽的下午，以后博客会不定期更新一些个人的生活状态和学习笔记，如果机缘巧合翻到这个网站实属荣幸，留下你的足迹一人送博主五个油腻么么哒。</p>
-</blockquote>
-<h3 id="Tip"><a href="#Tip" class="headerlink" title="Tip:"></a>Tip:</h3><blockquote>
-<p><em>小女拙见如与阁下观点不胜雷同还望多多包涵，所po内容引起不适请点击右上角x</em>。</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/08/15/note1/" data-id="ckok3raz90001k8ukbi8phwi9" class="article-share-link">
-        分享
-      </a>
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-</article>
-    
-  </article>
-  
-
-  
 </section>
-</div>
-
     <footer class="footer">
   <div class="outer">
     <div class="float-right">
       <ul class="list-inline">
   
-  <li><i class="fe fe-bar-chart"></i> <span id="busuanzi_value_site_pv"></span></li>
-  
   <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
   
 </ul>
     </div>
@@ -284,6 +203,23 @@
 
 
 
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
 
 
 
