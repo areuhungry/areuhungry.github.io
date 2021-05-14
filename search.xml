@@ -110,6 +110,32 @@
 <h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
+    <title>查找数组中是否包含某元素的若干方法</title>
+    <url>/2020/09/04/date20090405/</url>
+    <content><![CDATA[<p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
+<p><strong>1.indexOf</strong></p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.indexOf(b) </span><br><span class="line">//如果b为对象或数组，则需要将a序列化后再操作  let c=JSON.stringtify(a).index   </span><br><span class="line">if(c&lt;0)&#123;</span><br><span class="line">    console.log(&quot;b在a中&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.find（方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.find(item=&gt; return item==b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">    console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;    </span><br><span class="line">    console.log(&quot;b不在a中&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.map遍历</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = false;</span><br><span class="line">const c=a.map(v=&gt;&#123;</span><br><span class="line">	if(v==b)&#123;</span><br><span class="line">	res = true;</span><br><span class="line">	&#125;</span><br><span class="line">	return res;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(c);//b在a中返回true否则返回false</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.some是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const c=a.some(v=&gt;v=b);</span><br><span class="line">console.log(c);//b在a中则输出true否则输出false</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：every和some的区别：</strong></p>
+<ul>
+<li><strong>every()是对数组中每一项运行给定函数，如果该函数对每一项返回true,则返回true。</strong></li>
+<li><strong>some()是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></li>
+</ul>
+<p><strong>5.includes函数用来判断一个数组是否包含一个指定的值，如果包含则返回true，否则返回false。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c=a.includes(b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">	console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;) </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
     <title>JS中关于截取的若干方法</title>
     <url>/2020/09/03/date20090404/</url>
     <content><![CDATA[<h4 id="1-slice"><a href="#1-slice" class="headerlink" title="1.slice"></a>1.slice</h4><p><strong>定义：</strong>用于<strong>数组</strong>的截取，返回一个新的数组对象，这一对象是一个由 begin和 end决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。</p>
@@ -202,32 +228,6 @@
 
 <h4 id="5-substr"><a href="#5-substr" class="headerlink" title="5.substr"></a>5.substr</h4><p>尽管 <code>String.prototype.substr(…)</code> 没有严格被废弃 (as in “removed from the Web standards”), 但它被认作是遗留的函数并且可以的话应该避免使用。它并非JavaScript核心语言的一部分，未来将可能会被移除掉。如果可以的话，使用 <code>substring()</code> 替代它.</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>查找数组中是否包含某元素的若干方法</title>
-    <url>/2020/09/04/date20090405/</url>
-    <content><![CDATA[<p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
-<p><strong>1.indexOf</strong></p>
-<span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.indexOf(b) </span><br><span class="line">//如果b为对象或数组，则需要将a序列化后再操作  let c=JSON.stringtify(a).index   </span><br><span class="line">if(c&lt;0)&#123;</span><br><span class="line">    console.log(&quot;b在a中&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.find（方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。）</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.find(item=&gt; return item==b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">    console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;    </span><br><span class="line">    console.log(&quot;b不在a中&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>3.map遍历</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = false;</span><br><span class="line">const c=a.map(v=&gt;&#123;</span><br><span class="line">	if(v==b)&#123;</span><br><span class="line">	res = true;</span><br><span class="line">	&#125;</span><br><span class="line">	return res;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(c);//b在a中返回true否则返回false</span><br></pre></td></tr></table></figure>
-
-<p><strong>4.some是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const c=a.some(v=&gt;v=b);</span><br><span class="line">console.log(c);//b在a中则输出true否则输出false</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：every和some的区别：</strong></p>
-<ul>
-<li><strong>every()是对数组中每一项运行给定函数，如果该函数对每一项返回true,则返回true。</strong></li>
-<li><strong>some()是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></li>
-</ul>
-<p><strong>5.includes函数用来判断一个数组是否包含一个指定的值，如果包含则返回true，否则返回false。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c=a.includes(b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">	console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;) </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>webpack归纳总结</title>
