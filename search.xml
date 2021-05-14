@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>解决Input约束输入值为非负整数中遇到的一揽子问题</title>
+    <url>/2021/05/11/date0511/</url>
+    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
+<h3 id="解决思路："><a href="#解决思路：" class="headerlink" title="解决思路："></a>解决思路：</h3><p>​        1.无法键入0-9以外的字符</p>
+<p>​        2.键入0-9以外的字符错误提示并无法提交</p>
+<span id="more"></span>
+
+<h3 id="解决过程："><a href="#解决过程：" class="headerlink" title="解决过程："></a>解决过程：</h3><p>​        第一次尝试：</p>
+<p>​                Input type类型改为number ,min为0。</p>
+<p>​                写完心满意足提交了代码，结果同事测试说上下键是没法子按到负值了，但是输入还是可以键入负数的。。。。。好吧</p>
+<p>​        第二次尝试</p>
+<p>​                用正则把输入的符号给替换掉。</p>
+<p>​                结果同事提出意见说，Input里面用defaultValue做值的显示也就是当前的Input是一个非受控组件，用正则无法替换（既然这样，那为什么不用value呢，这里引申出另一个问题，defaultValue与value的使用场景，下一章里面详细谈论这个问题）</p>
+<p>​        第三次尝试</p>
+<p>​                改用AvField组件，在输入0-9以外的字符给出错误提示</p>
+<p>​                改完在测试过程中发现，输入负号弹出来的报错信息不是预定的errorMessage，是this field is invaild。。。啊这什么鬼，后来在尝试过程中发现如果把type改为text就会正常输出预定的errorMessage。。。猜测可能是number限制的范围是所有整数（包括负号）。。。而AvField的validate中验证是非负整数，两个验证冲突？？？（或许是）</p>
+<p>​        第四次尝试</p>
+<p>​                在第三次的基础上加入onKeyDown，输入非预期的字符则调用e.preventDefault()，嗯，这下子不能输入负号了。。。。。最后测试，发现这样不能避免Ctrl C/V，还有浏览器剪切板粘贴。。。后期考虑再改为onMouseDown了.</p>
+]]></content>
+  </entry>
+  <entry>
     <title>浏览器学习笔记</title>
     <url>/2020/09/03/date200903/</url>
     <content><![CDATA[<h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p>*<strong>浏览器*<strong>，是一个用于检索，展示和遍历在万维网的信息资源的软件应用程序。信息资源被定义成</strong>统一资源定位符</strong>（URI/URL)。它可能是网页，图片，视频或者一个内容片段。超链接的出现使用户能轻松的将浏览器导航到相关的资源。虽然主要用于使用万维网，但也可用于获取专用网络中网页服务器之信息或文件系统内之文件。<br>浏览器主要由js引擎和渲染引擎组成</p>
@@ -23,27 +44,6 @@
 <h3 id="4-Gecko"><a href="#4-Gecko" class="headerlink" title="4.Gecko"></a>4.Gecko</h3><p>***Firefox浏览器内核***，代表是Mozilla Firefox，由于Gecko的特点是开源，因此，其可开发程度很高，因此受到许多人的青睐，采用Gecko内核的浏览器也很多，这也是Gecko内核虽然年轻但市场占有率能够迅速提高的重要原因，Gecko排版引擎提供了一个丰富的程序界面以供与互联网相关的应用程序使用，例如网页浏览器、HTML编辑器、客户端/服务器等。虽然最初的主要对象是Mozilla的衍生产品，如Netscape和Mozilla Firefox，但是现在已有很多其他软件利用这个排版引擎。此外Gecko也是一个跨平台内核，可以在Windows、BSD、Linux和Mac OS X中使用。<br>正在和曾经使用Gecko引擎的浏览器有Firefox、网景6～9、SeaMonkey、Camino、Mozilla、Flock、Galeon、K-Meleon、Minimo、Sleipni、Songbird、XeroBank。GoogleGadget</p>
 <p><strong>优点：</strong>开源，扩展性强，可开发程度很高，功能强大、丰富，跨平台</p>
 <p><strong>缺点：</strong>数据档案保存能力弱，要消耗很多的资源，比如内存</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>解决Input约束输入值为非负整数中遇到的一揽子问题</title>
-    <url>/2021/05/11/date0511/</url>
-    <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
-<h3 id="解决思路："><a href="#解决思路：" class="headerlink" title="解决思路："></a>解决思路：</h3><p>​        1.无法键入0-9以外的字符</p>
-<p>​        2.键入0-9以外的字符错误提示并无法提交</p>
-<span id="more"></span>
-
-<h3 id="解决过程："><a href="#解决过程：" class="headerlink" title="解决过程："></a>解决过程：</h3><p>​        第一次尝试：</p>
-<p>​                Input type类型改为number ,min为0。</p>
-<p>​                写完心满意足提交了代码，结果同事测试说上下键是没法子按到负值了，但是输入还是可以键入负数的。。。。。好吧</p>
-<p>​        第二次尝试</p>
-<p>​                用正则把输入的符号给替换掉。</p>
-<p>​                结果同事提出意见说，Input里面用defaultValue做值的显示也就是当前的Input是一个非受控组件，用正则无法替换（既然这样，那为什么不用value呢，这里引申出另一个问题，defaultValue与value的使用场景，下一章里面详细谈论这个问题）</p>
-<p>​        第三次尝试</p>
-<p>​                改用AvField组件，在输入0-9以外的字符给出错误提示</p>
-<p>​                改完在测试过程中发现，输入负号弹出来的报错信息不是预定的errorMessage，是this field is invaild。。。啊这什么鬼，后来在尝试过程中发现如果把type改为text就会正常输出预定的errorMessage。。。猜测可能是number限制的范围是所有整数（包括负号）。。。而AvField的validate中验证是非负整数，两个验证冲突？？？（或许是）</p>
-<p>​        第四次尝试</p>
-<p>​                在第三次的基础上加入onKeyDown，输入非预期的字符则调用e.preventDefault()，嗯，这下子不能输入负号了。。。。。最后测试，发现这样不能避免Ctrl C/V，还有浏览器剪切板粘贴。。。后期考虑再改为onMouseDown了.</p>
 ]]></content>
   </entry>
   <entry>
@@ -76,17 +76,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>常见色彩格式</title>
-    <url>/2020/09/04/date20090403/</url>
-    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
-<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
-<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
-<span id="more"></span>
-
-<p>附录：</p>
-<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
     <title>ES语法糖</title>
     <url>/2020/09/04/date20090402/</url>
     <content><![CDATA[<p><strong>一. ?.（可选链）</strong></p>
@@ -108,6 +97,17 @@
 
 <p>在想返回null和undefined的时候取双问号后面的值</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>常见色彩格式</title>
+    <url>/2020/09/04/date20090403/</url>
+    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
+<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
+<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
+<span id="more"></span>
+
+<p>附录：</p>
+<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>JS中关于截取的若干方法</title>
