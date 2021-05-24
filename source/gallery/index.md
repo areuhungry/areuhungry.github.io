@@ -8,5 +8,6 @@ albums: [
         ["/images/album(4).jpeg","丛林深处会不会有麋鹿"],
         ["/images/album(5).jpeg","深秋是湛蓝的天是洁白的云"],
         ["/images/album(6).jpeg","晚霞诉说着离别"],
+        ["/images/album(7).jpg","第一次看到大海"],
         ]
 ---
