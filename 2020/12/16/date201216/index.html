@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    background，border的各种妙用---不常用属性补充说明 |
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-date201216" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  background，border的各种妙用---不常用属性补充说明
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/12/16/date201216/" class="article-date">
+  <time datetime="2020-12-15T16:00:00.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h3 id="1-如何将指定图片源作为边框？"><a href="#1-如何将指定图片源作为边框？" class="headerlink" title="1.如何将指定图片源作为边框？"></a>1.如何将指定图片源作为边框？</h3><p> 答：border-image-source+border-image-slice</p>
+<p> 知识点补充：通过<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-source"><code>border-image-source</code></a>引用边框图片后，**<code>border-image-slice</code>**属性拆分图片分割为9 个区域：四个角，四个边（edge）以及中心区域。四条切片线，从它们各自的侧面设置给定距离，控 制区域的大小。</p>
+<span id="more"></span>
+
+<p> <img src="/images/post20121601.png" alt="示意图"></p>
+<ul>
+<li>区域1-4为角区域（corner region）。每个一个都用一次来形成最终边界图像的角点。（每次使用一次形成最终边界图像的角。）</li>
+<li>区域5-8边区域（边缘区域）。在最终的边框图像中重复，缩放或修改其以匹配元素的尺寸。（这些在最终边框图像中被重复，缩放或以 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-repeat">其他方式修改</a> ，以匹配边框的尺寸）。元件。）</li>
+<li>区域9为中心区域（middle region）。它在情况下下会被替换，但如果设置了关键字<code>fill</code>，将会将其用作背景图像。（默认情况下将其丢弃，但如果关键字 <code>fill</code> 已设置。）</li>
+</ul>
+<p>border-image-slice语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/* 所有的边 */</span><br><span class="line">border-image-slice: 30%;</span><br><span class="line"></span><br><span class="line">/* 垂直方向 | 水平方向 */</span><br><span class="line">border-image-slice: 10% 30%;</span><br><span class="line"></span><br><span class="line">/* 顶部 | 水平方向 | 底部 */</span><br><span class="line">border-image-slice: 30 30% 45;</span><br><span class="line"></span><br><span class="line">/* 上 右 下 左 */</span><br><span class="line">border-image-slice: 7 12 14 5;</span><br><span class="line"></span><br><span class="line">/* 使用fill（fill可以放在任意位置） */</span><br><span class="line">border-image-slice: 10% fill 7 12;</span><br><span class="line"></span><br><span class="line">/* Global values */</span><br><span class="line">border-image-slice: inherit;</span><br><span class="line">border-image-slice: initial;</span><br><span class="line">border-image-slice: unset;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-如何在遮罩上显示一个logo或动画？"><a href="#2-如何在遮罩上显示一个logo或动画？" class="headerlink" title="2.如何在遮罩上显示一个logo或动画？"></a>2.如何在遮罩上显示一个logo或动画？</h3><p> 答：定义两个容器然后用绝对定位叠加显示？nonono，background-blend-mode可以帮你解决这个问 题；利用backgound-image定义两个图片源，再用background-blend-mode选择叠加效果。</p>
+<p> 知识点补充：background-blend-mode 属性定义了背景层的混合模式（图片与颜色）。</p>
+<p><strong>注意:</strong> Internet Explorer 不支持 background-blend-mode 属性。</p>
+<p>background-blend-mode语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">background-blend-mode: normal|multiply|screen|overlay|darken|lighten|color-dodge|saturation|color|luminosity;</span><br></pre></td></tr></table></figure>
+
+<p>background-blend-mode属性值</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>normal</td>
+<td>默认值。设置正常的混合模式。</td>
+</tr>
+<tr>
+<td>multiply</td>
+<td>正片叠底模式。</td>
+</tr>
+<tr>
+<td>screen</td>
+<td>滤色模式。</td>
+</tr>
+<tr>
+<td>overlay</td>
+<td>叠加模式。</td>
+</tr>
+<tr>
+<td>darken</td>
+<td>变暗模式。</td>
+</tr>
+<tr>
+<td>lighten</td>
+<td>变亮模式。</td>
+</tr>
+<tr>
+<td>color-dodge</td>
+<td>颜色减淡模式。</td>
+</tr>
+<tr>
+<td>saturation</td>
+<td>饱和度模式。</td>
+</tr>
+<tr>
+<td>color</td>
+<td>颜色模式。</td>
+</tr>
+<tr>
+<td>luminosity</td>
+<td>亮度模式</td>
+</tr>
+</tbody></table>
+<h3 id="3-如何制定一个固定的背景图片？"><a href="#3-如何制定一个固定的背景图片？" class="headerlink" title="3.如何制定一个固定的背景图片？"></a>3.如何制定一个固定的背景图片？</h3><p> 答：background-attachment</p>
+<p>background-attachment属性值</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>scroll</td>
+<td>背景图片随着页面的滚动而滚动，这是默认的。</td>
+</tr>
+<tr>
+<td>fixed</td>
+<td>背景图片不会随着页面的滚动而滚动。</td>
+</tr>
+<tr>
+<td>local</td>
+<td>背景图片会随着元素内容的滚动而滚动。</td>
+</tr>
+<tr>
+<td>initial</td>
+<td>设置该属性的默认值。</td>
+</tr>
+<tr>
+<td>inherit</td>
+<td>指定 background-attachment 的设置应该从父元素继承。</td>
+</tr>
+</tbody></table>
+<h3 id="4-如何为容器指定区域填充背景色？"><a href="#4-如何为容器指定区域填充背景色？" class="headerlink" title="4.如何为容器指定区域填充背景色？"></a>4.如何为容器指定区域填充背景色？</h3><p>答：background-clip可以将容器内除padding以外的区域填充</p>
+<p>background-clip属性值</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>border-box</td>
+<td>默认值。背景绘制在边框方框内（剪切成边框方框）。</td>
+</tr>
+<tr>
+<td>padding-box</td>
+<td>背景绘制在衬距方框内（剪切成衬距方框）。</td>
+</tr>
+<tr>
+<td>content-box</td>
+<td>背景绘制在内容方框内（剪切成内容方框）。</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/16/date201216/" data-id="cl0z551fo0009t8uk9mk3dtbh" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2020/12/28/date201218/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      windows10 环境下安装MySQL 8.0.20
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/12/11/date201211/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">React学习笔记</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

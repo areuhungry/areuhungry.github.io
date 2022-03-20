@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    JS中关于截取的若干方法 |
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-date20090404" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  JS中关于截取的若干方法
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/03/date20090404/" class="article-date">
+  <time datetime="2020-09-02T21:00:00.000Z" itemprop="datePublished">2020-09-03</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h4 id="1-slice"><a href="#1-slice" class="headerlink" title="1.slice"></a>1.slice</h4><p><strong>定义：</strong>用于<strong>数组</strong>的截取，返回一个新的数组对象，这一对象是一个由 begin和 end决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。</p>
+<span id="more"></span>
+
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; arr.slice([begin[,end]]) </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>begin(可选)</th>
+<th>end（可选）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>提取起始处的索引（从 <code>0</code> 开始），从该索引开始提取原数组元素。</td>
+<td>提取终止处的索引（从 <code>0</code> 开始），在该索引处结束提取原数组元素。<code>slice</code> 会提取原数组中索引从 <code>begin</code> 到 <code>end</code> 的所有元素（包含 <code>begin</code>，但不包含 <code>end</code>）。</td>
+</tr>
+</tbody></table>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const arr = [1,2,3,4];</span><br><span class="line">console.log(arr.slice(2)); //3,4</span><br><span class="line">console.log(arr.slice(2,3)); //3</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-split"><a href="#2-split" class="headerlink" title="2.split"></a>2.split</h4><p><strong>定义：</strong>用于<strong>字符串</strong>的截取，使用指定的分隔符字符串将一个String对象分割成子字符串数组，以一个指定的分个字串来决定每个拆分的位置</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; str.split([separator[, limit]])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>separator</th>
+<th>limit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指定表示每个拆分应发生的点的字符串。<code>separator</code> 可以是一个字符串或<strong>正则表达式</strong>。 如果纯文本分隔符包含多个字符，则必须找到整个字符串来表示分割点。如果在str中省略或不出现分隔符，则返回的数组包含一个由整个字符串组成的元素。如果分隔符为空字符串，则将str原字符串中每个字符的数组形式返回。</td>
+<td>一个整数，限定返回的分割片段数量。当提供此参数时，split 方法会在指定分隔符的每次出现时分割该字符串，但在限制条目已放入数组时停止。如果在达到指定限制之前达到字符串的末尾，它可能仍然包含少于限制的条目。新数组中不返回剩下的文本。</td>
+</tr>
+</tbody></table>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const str=&quot;1,2,3,4,5&quot;;</span><br><span class="line">const word=str.split(&quot;,&quot;);</span><br><span class="line">console.log(word);//[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-splice"><a href="#3-splice" class="headerlink" title="3.splice"></a>3.splice</h4><p><strong>定义：</strong>用于<strong>数组</strong>修改或截取</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; array.splice(start[, deleteCount[, item1[, item2[, ...]]]])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>start</th>
+<th>deleteCount可选</th>
+<th>item1,item2,…可选</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于<code>array.length-n</code>）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。</td>
+<td>整数，表示要移除的数组元素的个数。</td>
+<td>要添加进数组的元素,从<code>start</code> 位置开始。如果不指定，则 <code>splice()</code> 将只删除数组元素。</td>
+</tr>
+</tbody></table>
+<p>示例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cons arr = [1,2,3,4];</span><br><span class="line">arr.splice（1,0,5);</span><br><span class="line">//在索引为1的位置插入5</span><br><span class="line">console.log(arr);//[1,5,2,3,4]</span><br><span class="line"></span><br><span class="line">arr.splice(0,1,0);</span><br><span class="line">//从第0个位置开始删除一个元素，插入0  将1替换为0</span><br><span class="line">console.log(arr);//[0,5,2,3,4]</span><br><span class="line"></span><br><span class="line">arr.splice(2,2);</span><br><span class="line">//从第2个位置开始删除2个元素</span><br><span class="line">console.log(arr);//[0,5,4]</span><br><span class="line"></span><br><span class="line">arr.splice(1,1,2,3,4)</span><br><span class="line">//从第1个位置开始删除1个元素，并插入2,3,4</span><br><span class="line">console.log(arr);//[0,2,3,4,4]</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-substring"><a href="#4-substring" class="headerlink" title="4.substring"></a>4.substring</h4><p><strong>定义：</strong>用于<strong>字符串</strong>的截取，</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; str.subtring(indexStart[,indexEnd])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>indexStart</th>
+<th>indexEnd</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。</td>
+<td>可选。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。</td>
+</tr>
+</tbody></table>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">var anyString = &quot;1234567&quot;;</span><br><span class="line"></span><br><span class="line">// 输出 &quot;123&quot;</span><br><span class="line">console.log(anyString.substring(0,3));</span><br><span class="line">console.log(anyString.substring(3,0));</span><br><span class="line">console.log(anyString.substring(3,-3));</span><br><span class="line">console.log(anyString.substring(3,NaN));</span><br><span class="line">console.log(anyString.substring(-2,3));</span><br><span class="line">console.log(anyString.substring(NaN,3));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;567&quot;</span><br><span class="line">console.log(anyString.substring(4,7));</span><br><span class="line">console.log(anyString.substring(7,4));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;&quot;</span><br><span class="line">console.log(anyString.substring(4,4));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;123456&quot;</span><br><span class="line">console.log(anyString.substring(0,6));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;1234567&quot;</span><br><span class="line">console.log(anyString.substring(0,7));</span><br><span class="line">console.log(anyString.substring(0,10));</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-substr"><a href="#5-substr" class="headerlink" title="5.substr"></a>5.substr</h4><p>尽管 <code>String.prototype.substr(…)</code> 没有严格被废弃 (as in “removed from the Web standards”), 但它被认作是遗留的函数并且可以的话应该避免使用。它并非JavaScript核心语言的一部分，未来将可能会被移除掉。如果可以的话，使用 <code>substring()</code> 替代它.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/03/date20090404/" data-id="cl0z551fl0005t8uk6y0zgsgs" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2020/09/04/date20090401/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      常见分辨率归纳总结
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/09/03/date200903/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">浏览器学习笔记</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    ES语法糖 |
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-date20090402" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  ES语法糖
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/04/date20090402/" class="article-date">
+  <time datetime="2020-09-03T18:00:00.000Z" itemprop="datePublished">2020-09-04</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <p><strong>一. ?.（可选链）</strong></p>
+<p><strong>1、长判断时用：在开发中，对接口返回的嵌套对象数据进行属性判断。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  code: 200,</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: [1,2,3], //table list</span><br><span class="line">    page: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  message: &#x27;success&#x27;,</span><br><span class="line">  func: function()&#123;console.log(&#x27;I am func&#x27;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">const tableList = res.data &amp;&amp; res.data.content; //[1,2,3]</span><br><span class="line">// 相当于</span><br><span class="line">const tableList = res.data ? res.data.content : undefined;</span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res.data?.content  //[1,2,3]</span><br><span class="line"></span><br><span class="line">// 甚至更谨慎点，加长判断，多个三目运算</span><br><span class="line">const tableList = res &amp;&amp; res.data &amp;&amp; res.data.content; </span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res?.data?.content  //[1,2,3]</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p><strong>2、调用函数或方法时用：调用前先判断是否是存在</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const tableList = res &amp;&amp; res.func &amp;&amp; res.func();  </span><br><span class="line">// 有了可选链，简写为 </span><br><span class="line">const func = res?.func?.() // I am func 或者 res.func?.() </span><br><span class="line">const func = res?.test?.() // undefined</span><br></pre></td></tr></table></figure>
+
+<p><strong>3、动态属性：属性为变量时用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const name = &#x27;data&#x27;; </span><br><span class="line">res?.[name]?.content  // [1,2,3]</span><br></pre></td></tr></table></figure>
+
+<p><strong>二. ??（双问号）</strong></p>
+<p>使用场景: 取默认值</p>
+<p>实际上接口返回的数据中，content很可能为null 或者 undefined，或压根没返回content，因此我们判断时需要加上默认值，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: null, // or false, or 0,</span><br><span class="line">    content1: false,</span><br><span class="line">    content2: 0</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 加上默认值</span><br><span class="line">const tableList = res?.data?.content || [4,5,6]  //[4,5,6]</span><br><span class="line">// 但我们发现，对于||，返回false或者0，也会取后者</span><br><span class="line">const tableList = res?.data?.content1 || [4,5,6]  //[4,5,6]</span><br><span class="line">const tableList = res?.data?.content2 || [4,5,6]  //[4,5,6]</span><br></pre></td></tr></table></figure>
+
+<p>在想返回null和undefined的时候取双问号后面的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/04/date20090402/" data-id="cl0z551fn0007t8uk8vv40ktl" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2020/09/04/date20090403/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      常见色彩格式
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/09/04/date20090401/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">常见分辨率归纳总结</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

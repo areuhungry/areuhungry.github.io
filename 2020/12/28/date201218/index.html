@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    windows10 环境下安装MySQL 8.0.20 |
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-date201218" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  windows10 环境下安装MySQL 8.0.20
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/12/28/date201218/" class="article-date">
+  <time datetime="2020-12-27T19:00:00.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h3 id="一-从官网（mysql-com）下载安装包"><a href="#一-从官网（mysql-com）下载安装包" class="headerlink" title="一 . 从官网（mysql.com）下载安装包"></a>一 . 从官网（mysql.com）下载安装包</h3><ol>
+<li> 打开官网点击顶部导航栏中的DOWNLOADS按钮，点击下发下方MySQL Community（GPL) Downloads&gt;&gt;</li>
+</ol>
+   <span id="more"></span>
+
+<p>   <img src="/images/post20122801.png" alt="示意图一"></p>
+<ol start="2">
+<li><p>点击MySQL Community Server</p>
+<p><img src="/images/post20122802.png" alt="示意图二"></p>
+</li>
+<li><p>在下拉菜单中，选择windows（一般默认就是windows），然后点击下方的Download</p>
+<p><img src="/images/post20122803.png" alt="示意图三"></p>
+</li>
+<li><p>在打开的页面中，选择 <strong>No thanks, just start my download.</strong> ，然后开始下载MySql zip安装包</p>
+<p><img src="/images/post20122804.png" alt="示意图四"></p>
+</li>
+</ol>
+<h3 id="二-配置环境变量"><a href="#二-配置环境变量" class="headerlink" title="二.配置环境变量"></a>二.配置环境变量</h3><ol>
+<li><p>将下载好的zip包解压到指定目录，例如E:\mysql-8.0.22-winx64</p>
+</li>
+<li><p>添加环境变量，“此电脑”图标游击属性，点击环境变量，在系统变量一栏点击Path，选中点击编辑，进入新建，将解压的目录的bin（E:\mysql-8.0.22-winx64\bin) 添加到Path下</p>
+<p><img src="/images/post20122805.png" alt="示意图五"></p>
+</li>
+<li><p>点击确定，完成创建，关闭窗口</p>
+</li>
+<li><p>windows键+R 键入cmd打开命令窗口（以管理员身份打开）</p>
+</li>
+<li><p>在命令行窗口中输入以下命令，进行初始化。初始化后，MySql 安装目录会出现一个 data目录（请勿手动创建）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --initialize --console</span><br></pre></td></tr></table></figure>
+
+<p>随后，控制台返回如下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2020-07-04T08:37:16.188232Z 0 [System] [MY-013169] [Server] E:\mysql-8.0.20-winx64\bin\mysqld.exe (mysqld 8.0.20) initializing of server in progress as process 14880</span><br><span class="line">2020-07-04T08:37:16.196858Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.</span><br><span class="line">2020-07-04T08:37:46.330192Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.</span><br><span class="line">[Note] [MY-010454] [Server] A temporary password is generated for root@localhost:************</span><br></pre></td></tr></table></figure>
+
+<p>**<em>*</em>****即为 MySql 数据库 root 用户初始密码，后面初次登陆时需要使用，初始密码一定要记住，不然重置密码很麻烦</p>
+</li>
+<li><p>使用 <strong>mysqld –install</strong> 命令进行数据库安装</p>
+<p>正常情况下返回信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Service successfully installed.</span><br></pre></td></tr></table></figure>
+
+<p>失败的情况</p>
+<ul>
+<li><p>返回 <strong>Install/Remove of the Service Denied</strong> ，意味权限不足</p>
+<p> 解决方案：使用管理员身份运行 cmd</p>
+</li>
+<li><p> 返回 <strong>The service already exists</strong> ，意味已存在MySql 服务</p>
+</li>
+</ul>
+<p>  解决方案：在命令行窗口中，输入 <strong>mysqld -remove</strong>，若提示 **Service successfully removed.**，则成功卸载，重新执行 install 命令</p>
+</li>
+<li><p>在命令行中输入 <strong>net start mysql</strong> 命令，启动 mysql 服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+
+<p>启动成功返回信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MySQL 服务正在启动 .....</span><br><span class="line">MySQL 服务已经启动成功。</span><br></pre></td></tr></table></figure>
+
+<p>若启动失败，则：</p>
+<ol>
+<li><p>检查 MySql 使用的 3306 端口是否被其他进程占用。</p>
+</li>
+<li><p>检查安装目录中是否存在 <strong>my.ini</strong> 文件，若存在则删除该文件</p>
+<p>（网上的其他安装教程让创建这个配置文件，但是在8.0.20版本，<strong>存在这个文件，MySql 服务便无法启动</strong>，删除重新启动MySql服务即可）</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="三-登录并配置MySQL"><a href="#三-登录并配置MySQL" class="headerlink" title="三.登录并配置MySQL"></a>三.登录并配置MySQL</h3><p> 1.在命令行中输入 <strong>mysql -u root -p</strong> ，并使用前文 安装 MySql 前进行初始化，返回的 root 用户初始密码 进行登录（可 能不能直接粘贴输入，如果提示登陆失败，请尝试手动输入）</p>
+<p> 登陆成功后，控制台会输出如下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 9</span><br><span class="line">Server version: 8.0.20</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &#x27;help;&#x27; or &#x27;\h&#x27; for help. Type &#x27;\c&#x27; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意：输出信息中有提示sql命令结尾要加；或\g</p>
+<p> 2.进行其他操作前，必须先将 初始密码 进行重置，否则系统会报错提示我们：“**ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.**”</p>
+<p> 我们使用如下 sql 语句进行初始密码重置，<strong><em>* *</em>*</strong>**** * 处，请填写您希望设定的 root 用户密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;*********&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p> 设定成功后，控制台会显示：<strong>Query OK, 0 rows affected (0.55 sec)</strong></p>
+<h3 id="四-其他事项"><a href="#四-其他事项" class="headerlink" title="四.其他事项"></a>四.其他事项</h3><ol>
+<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
+</li>
+<li><p>退出MySql命令：<strong>quit;</strong></p>
+</li>
+<li><p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
+</li>
+<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
+<p>退出MySql命令：<strong>quit;</strong></p>
+<p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
+</li>
+</ol>
+<p>[^摘录自]: 作者：冬酒暖阳 链接：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6850418115450175495">https://juejin.cn/post/6850418115450175495</a> 来源：掘金</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/28/date201218/" data-id="cl0z551fq000at8uka5ly0amu" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2021/05/11/date0511/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      解决Input约束输入值为非负整数中遇到的一揽子问题
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2020/12/16/date201216/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">background，border的各种妙用---不常用属性补充说明</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>
