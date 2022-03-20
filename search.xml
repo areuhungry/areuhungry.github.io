@@ -76,6 +76,29 @@
 ]]></content>
   </entry>
   <entry>
+    <title>ES语法糖</title>
+    <url>/2020/09/04/date20090402/</url>
+    <content><![CDATA[<p><strong>一. ?.（可选链）</strong></p>
+<p><strong>1、长判断时用：在开发中，对接口返回的嵌套对象数据进行属性判断。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  code: 200,</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: [1,2,3], //table list</span><br><span class="line">    page: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  message: &#x27;success&#x27;,</span><br><span class="line">  func: function()&#123;console.log(&#x27;I am func&#x27;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">const tableList = res.data &amp;&amp; res.data.content; //[1,2,3]</span><br><span class="line">// 相当于</span><br><span class="line">const tableList = res.data ? res.data.content : undefined;</span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res.data?.content  //[1,2,3]</span><br><span class="line"></span><br><span class="line">// 甚至更谨慎点，加长判断，多个三目运算</span><br><span class="line">const tableList = res &amp;&amp; res.data &amp;&amp; res.data.content; </span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res?.data?.content  //[1,2,3]</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p><strong>2、调用函数或方法时用：调用前先判断是否是存在</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const tableList = res &amp;&amp; res.func &amp;&amp; res.func();  </span><br><span class="line">// 有了可选链，简写为 </span><br><span class="line">const func = res?.func?.() // I am func 或者 res.func?.() </span><br><span class="line">const func = res?.test?.() // undefined</span><br></pre></td></tr></table></figure>
+
+<p><strong>3、动态属性：属性为变量时用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const name = &#x27;data&#x27;; </span><br><span class="line">res?.[name]?.content  // [1,2,3]</span><br></pre></td></tr></table></figure>
+
+<p><strong>二. ??（双问号）</strong></p>
+<p>使用场景: 取默认值</p>
+<p>实际上接口返回的数据中，content很可能为null 或者 undefined，或压根没返回content，因此我们判断时需要加上默认值，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: null, // or false, or 0,</span><br><span class="line">    content1: false,</span><br><span class="line">    content2: 0</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 加上默认值</span><br><span class="line">const tableList = res?.data?.content || [4,5,6]  //[4,5,6]</span><br><span class="line">// 但我们发现，对于||，返回false或者0，也会取后者</span><br><span class="line">const tableList = res?.data?.content1 || [4,5,6]  //[4,5,6]</span><br><span class="line">const tableList = res?.data?.content2 || [4,5,6]  //[4,5,6]</span><br></pre></td></tr></table></figure>
+
+<p>在想返回null和undefined的时候取双问号后面的值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
     <title>JS中关于截取的若干方法</title>
     <url>/2020/09/03/date20090404/</url>
     <content><![CDATA[<h4 id="1-slice"><a href="#1-slice" class="headerlink" title="1.slice"></a>1.slice</h4><p><strong>定义：</strong>用于<strong>数组</strong>的截取，返回一个新的数组对象，这一对象是一个由 begin和 end决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。</p>
@@ -170,40 +193,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>常见色彩格式</title>
-    <url>/2020/09/04/date20090403/</url>
-    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
-<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
-<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
-<span id="more"></span>
-
-<p>附录：</p>
-<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>ES语法糖</title>
-    <url>/2020/09/04/date20090402/</url>
-    <content><![CDATA[<p><strong>一. ?.（可选链）</strong></p>
-<p><strong>1、长判断时用：在开发中，对接口返回的嵌套对象数据进行属性判断。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  code: 200,</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: [1,2,3], //table list</span><br><span class="line">    page: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  message: &#x27;success&#x27;,</span><br><span class="line">  func: function()&#123;console.log(&#x27;I am func&#x27;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">const tableList = res.data &amp;&amp; res.data.content; //[1,2,3]</span><br><span class="line">// 相当于</span><br><span class="line">const tableList = res.data ? res.data.content : undefined;</span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res.data?.content  //[1,2,3]</span><br><span class="line"></span><br><span class="line">// 甚至更谨慎点，加长判断，多个三目运算</span><br><span class="line">const tableList = res &amp;&amp; res.data &amp;&amp; res.data.content; </span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res?.data?.content  //[1,2,3]</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p><strong>2、调用函数或方法时用：调用前先判断是否是存在</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const tableList = res &amp;&amp; res.func &amp;&amp; res.func();  </span><br><span class="line">// 有了可选链，简写为 </span><br><span class="line">const func = res?.func?.() // I am func 或者 res.func?.() </span><br><span class="line">const func = res?.test?.() // undefined</span><br></pre></td></tr></table></figure>
-
-<p><strong>3、动态属性：属性为变量时用</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const name = &#x27;data&#x27;; </span><br><span class="line">res?.[name]?.content  // [1,2,3]</span><br></pre></td></tr></table></figure>
-
-<p><strong>二. ??（双问号）</strong></p>
-<p>使用场景: 取默认值</p>
-<p>实际上接口返回的数据中，content很可能为null 或者 undefined，或压根没返回content，因此我们判断时需要加上默认值，如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: null, // or false, or 0,</span><br><span class="line">    content1: false,</span><br><span class="line">    content2: 0</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 加上默认值</span><br><span class="line">const tableList = res?.data?.content || [4,5,6]  //[4,5,6]</span><br><span class="line">// 但我们发现，对于||，返回false或者0，也会取后者</span><br><span class="line">const tableList = res?.data?.content1 || [4,5,6]  //[4,5,6]</span><br><span class="line">const tableList = res?.data?.content2 || [4,5,6]  //[4,5,6]</span><br></pre></td></tr></table></figure>
-
-<p>在想返回null和undefined的时候取双问号后面的值</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
     <title>webpack归纳总结</title>
     <url>/2020/09/04/date20090406/</url>
     <content><![CDATA[<h3 id="关于webpack"><a href="#关于webpack" class="headerlink" title="关于webpack"></a>关于webpack</h3><p><strong>webpack是现代JavaScript应用程序的静态模块打包工具</strong></p>
@@ -236,6 +225,32 @@
 <p>1.test属性，用于标识出应该被对应的loader进行转换的某个或某些文件</p>
 <p>2.use属性，标识进行转换时，应该使用哪个loader</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;); </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">	output: &#123;</span><br><span class="line">    filename: &#x27;my-first-webpack.bundle.js&#x27;</span><br><span class="line">    &#125;,  </span><br><span class="line">    module: &#123;</span><br><span class="line">    	rules: [    </span><br><span class="line">    	//告诉编译器在遇到后缀为txt文件时，需要使用raw-loader转换    </span><br><span class="line">    	//此处注意test不要添加引号     </span><br><span class="line">        	&#123; test: /\.txt$/, use: &#x27;raw-loader&#x27; &#125;    </span><br><span class="line">        	]  </span><br><span class="line">        &#125; </span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>查找数组中是否包含某元素的若干方法</title>
+    <url>/2020/09/04/date20090405/</url>
+    <content><![CDATA[<p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
+<p><strong>1.indexOf</strong></p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.indexOf(b) </span><br><span class="line">//如果b为对象或数组，则需要将a序列化后再操作  let c=JSON.stringtify(a).index   </span><br><span class="line">if(c&lt;0)&#123;</span><br><span class="line">    console.log(&quot;b在a中&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.find（方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.find(item=&gt; return item==b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">    console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;    </span><br><span class="line">    console.log(&quot;b不在a中&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.map遍历</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = false;</span><br><span class="line">const c=a.map(v=&gt;&#123;</span><br><span class="line">	if(v==b)&#123;</span><br><span class="line">	res = true;</span><br><span class="line">	&#125;</span><br><span class="line">	return res;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(c);//b在a中返回true否则返回false</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.some是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const c=a.some(v=&gt;v=b);</span><br><span class="line">console.log(c);//b在a中则输出true否则输出false</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：every和some的区别：</strong></p>
+<ul>
+<li><strong>every()是对数组中每一项运行给定函数，如果该函数对每一项返回true,则返回true。</strong></li>
+<li><strong>some()是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></li>
+</ul>
+<p><strong>5.includes函数用来判断一个数组是否包含一个指定的值，如果包含则返回true，否则返回false。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c=a.includes(b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">	console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;) </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>background，border的各种妙用---不常用属性补充说明</title>
@@ -456,32 +471,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>查找数组中是否包含某元素的若干方法</title>
-    <url>/2020/09/04/date20090405/</url>
-    <content><![CDATA[<p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
-<p><strong>1.indexOf</strong></p>
-<span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.indexOf(b) </span><br><span class="line">//如果b为对象或数组，则需要将a序列化后再操作  let c=JSON.stringtify(a).index   </span><br><span class="line">if(c&lt;0)&#123;</span><br><span class="line">    console.log(&quot;b在a中&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.find（方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。）</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.find(item=&gt; return item==b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">    console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;    </span><br><span class="line">    console.log(&quot;b不在a中&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>3.map遍历</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = false;</span><br><span class="line">const c=a.map(v=&gt;&#123;</span><br><span class="line">	if(v==b)&#123;</span><br><span class="line">	res = true;</span><br><span class="line">	&#125;</span><br><span class="line">	return res;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(c);//b在a中返回true否则返回false</span><br></pre></td></tr></table></figure>
-
-<p><strong>4.some是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const c=a.some(v=&gt;v=b);</span><br><span class="line">console.log(c);//b在a中则输出true否则输出false</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：every和some的区别：</strong></p>
-<ul>
-<li><strong>every()是对数组中每一项运行给定函数，如果该函数对每一项返回true,则返回true。</strong></li>
-<li><strong>some()是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></li>
-</ul>
-<p><strong>5.includes函数用来判断一个数组是否包含一个指定的值，如果包含则返回true，否则返回false。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c=a.includes(b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">	console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;) </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
     <title>defaultValue 与 Value 的使用</title>
     <url>/2022/03/20/note02/</url>
     <content><![CDATA[<p>问题起因：某天boss在例行检查代码的时候，把所有的value换成了defaultValue，原因是他说value的值是从props过来的，props的值改变会影响value，而defaultValue可以避免这个问题….（黑人问号脸.jpg)，啊这不是吧，源数据改变就算换成defaultValue也会改变的吧，难道是我一直理解错了？于是本着辨证的目的我打算互联网冲浪去寻找原因…</p>
@@ -496,6 +485,17 @@
 </blockquote>
 <p>果然是基础知识不扎实，看到这儿，我大概理解了boss为什么将原来的value onChange搭配改为了defaultValue onBlur；原来的搭配会在键入的时候频繁的执行setState去更改数值，改为非受控组件后，并在失去焦点的时候赋值，避免了大数据列表因为不断更改值应发的性能问题，真真儿nice</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>常见色彩格式</title>
+    <url>/2020/09/04/date20090403/</url>
+    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
+<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
+<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
+<span id="more"></span>
+
+<p>附录：</p>
+<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>welcome to my zone</title>
