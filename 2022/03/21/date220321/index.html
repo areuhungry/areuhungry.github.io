@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    defaultValue 与 Value 的使用 |
+    plume2学习笔记 |
     
     AreUhungry</title>
   
@@ -30,7 +30,7 @@
 <body>
   <main class="content">
     <section class="outer">
-  <article id="post-note02" class="article article-type-post" itemscope
+  <article id="post-date220321" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -39,7 +39,7 @@
       
 
 <h1 class="article-title" itemprop="name">
-  defaultValue 与 Value 的使用
+  plume2学习笔记
 </h1>
 
 
@@ -49,8 +49,8 @@
 
     
     <div class="article-meta">
-      <a href="/2022/03/20/note02/" class="article-date">
-  <time datetime="2022-03-20T10:28:22.919Z" itemprop="datePublished">2022-03-20</time>
+      <a href="/2022/03/21/date220321/" class="article-date">
+  <time datetime="2022-03-20T22:00:00.000Z" itemprop="datePublished">2022-03-21</time>
 </a>
       
     </div>
@@ -58,28 +58,29 @@
 
     
     
+<div class="tocbot"></div>
+
     
 
     <div class="article-entry" itemprop="articleBody">
       
       
       
-      <p>问题起因：某天boss在例行检查代码的时候，把所有的value换成了defaultValue，原因是他说value的值是从props过来的，props的值改变会影响value，而defaultValue可以避免这个问题….（黑人问号脸.jpg)，啊这不是吧，源数据改变就算换成defaultValue也会改变的吧，难道是我一直理解错了？于是本着辨证的目的我打算互联网冲浪去寻找原因…</p>
+      <h3 id="Actor"><a href="#Actor" class="headerlink" title="Actor"></a>Actor</h3><h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>转换状态数据</p>
+<h3 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h3><h5 id="what"><a href="#what" class="headerlink" title="what:"></a>what:</h5><p>数据状态容器中心，管理整个app的数据的生命周期</p>
+<h5 id="主要任务："><a href="#主要任务：" class="headerlink" title="主要任务："></a>主要任务：</h5><p>1.聚合actor<br>2.分派actor（单分派，事务分派）<br>3.通过bigQuery计算查询语言<br>4.响应页面的事件（ViewAction）<br>5.注册响应RL</p>
 <span id="more"></span>
 
-<p>在查阅了一些资料文献后我发现了这样一段话可以解答我的疑惑</p>
-<blockquote>
-<p><strong>React 中为何需要defaultValue？</strong></p>
-<p>defaultValue 一般用于表单，给表单元素一个初始化值。注意，只是初始化，如果defaultValue值发生变化，表单里的值不会被改变。</p>
-<p><strong>value也可以做到，为何还要defaultValue呢？</strong></p>
-<p>表单分两种，一种是受控表单，一种是非受控表单。仅用value，使用者会误以为value值改变，表单显示的值也会跟着变，这实际上是受控表单的行为，完全符合期望。但是，非受控表单，props.value变化，其表单显示的值不会跟着变（因为表单内部有自己的state），为了区别这两种场景，所以引入了defaultValue，表示只给默认值。</p>
-</blockquote>
-<p>果然是基础知识不扎实，看到这儿，我大概理解了boss为什么将原来的value onChange搭配改为了defaultValue onBlur；原来的搭配会在键入的时候频繁的执行setState去更改数值，改为非受控组件后，并在失去焦点的时候赋值，避免了大数据列表因为不断更改值应发的性能问题，真真儿nice</p>
+<h3 id="StoreProvider"><a href="#StoreProvider" class="headerlink" title="StoreProvider"></a>StoreProvider</h3><h5 id="what："><a href="#what：" class="headerlink" title="what："></a>what：</h5><p>衔接React组件和AppStore，向React组件提供数据源</p>
+<h5 id="主要任务：-1"><a href="#主要任务：-1" class="headerlink" title="主要任务："></a>主要任务：</h5><p>1.初始化AppStore<br>2.将AppStore的对象绑定到React组件的上下文<br>3.Relay就是通过上下文取的store对象<br>4.监听Store的state变化</p>
+<h3 id="Relax"><a href="#Relax" class="headerlink" title="Relax"></a>Relax</h3><h5 id="what-1"><a href="#what-1" class="headerlink" title="what:"></a>what:</h5><p>类似Spring容器中的依赖注入。会根据子组件的relaxProps中声明的数据。通过只能计算属性的值，作为this.props.relaxProps透传给子组件，以解决React的Props层层透传的冗余的问题</p>
+<h5 id="计算的规则："><a href="#计算的规则：" class="headerlink" title="计算的规则："></a>计算的规则：</h5><p>1.store的state的值，直接给出值得immutable的路径<br>2.store的method，直接和method同名就可以<br>3.如果属性值是viewAction，直接注入store中绑定的ViewAction<br>4.如果属性值是QL，注入QL计算之后的结果，如果PQL会自动绑定store的上下文</p>
+<h3 id="QL-PQL"><a href="#QL-PQL" class="headerlink" title="QL/PQL"></a>QL/PQL</h3><h5 id="why"><a href="#why" class="headerlink" title="why:"></a>why:</h5><p>1.根据实际需要源数据可能需要进行组合<br>2.展示在ui上的数据需要具有reactive的能力，当源数据变化的时候，@Relax会重新计算QL<br>3.响应式会自动处理数据依赖，但是同一个QL可能会被执行多次。造成计算上的浪费，所以QL支持cache，确保path对应的数据没有变化的时候，QL不会重复计算<br>4.QL支持嵌套</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/20/note02/" data-id="cl17m6vlp000e3kuk4nw3devj" class="article-share-link">
+      <a data-url="http://example.com/2022/03/21/date220321/" data-id="cl17m6vln000b3kuk6jn4g7ym" class="article-share-link">
         分享
       </a>
       
@@ -91,19 +92,19 @@
   
 <nav class="article-nav">
   
-  <a href="/2022/03/21/date220321/" class="article-nav-link">
+  <a href="/2022/03/23/date220323/" class="article-nav-link">
     <strong class="article-nav-caption">前一篇</strong>
     <div class="article-nav-title">
       
-      plume2学习笔记
+      TypeScript学习笔记
       
     </div>
   </a>
   
   
-  <a href="/2021/05/11/date0511/" class="article-nav-link">
+  <a href="/2022/03/20/note02/" class="article-nav-link">
     <strong class="article-nav-caption">后一篇</strong>
-    <div class="article-nav-title">解决Input约束输入值为非负整数中遇到的一揽子问题</div>
+    <div class="article-nav-title">defaultValue 与 Value 的使用</div>
   </a>
   
 </nav>

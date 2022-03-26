@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    TypeScript学习笔记 |
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-date220323" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  TypeScript学习笔记
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/03/23/date220323/" class="article-date">
+  <time datetime="2022-03-22T22:00:00.000Z" itemprop="datePublished">2022-03-23</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h4 id="存在的意义"><a href="#存在的意义" class="headerlink" title="存在的意义"></a><strong>存在的意义</strong></h4><p>js无类型约束由于隐式转换的存在，使得很多方法的错误使用运行后才发现，造成了很多线上bug</p>
+<p><strong>特点</strong></p>
+<p>类型系统为静态类型，且为弱类型语言，包含跟js相同的隐式类型转换，ts在运行前需要编译为js，编译阶段会进行类型错误的检查，避免js引起的部分线上错误。ts完全兼容js，并支持es语法</p>
+<p><strong>语法</strong></p>
+<p>用冒号指定类型，前后有无空格都可以，与java类型声明不同的是，ts中变量在前，类型在后</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params">person: string</span>) </span>&#123;   </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, &#x27;</span> + person; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> user = <span class="string">&#x27;Tom&#x27;</span>; <span class="built_in">console</span>.log(sayHello(user));</span><br></pre></td></tr></table></figure>
+
+<p>PS：ts在编译成js的过程中，无论报错与否都会生成一个js文件</p>
+<span id="more"></span>
+
+<h4 id="原始数据类型"><a href="#原始数据类型" class="headerlink" title="原始数据类型"></a>原始数据类型</h4><p><strong>包括</strong>：</p>
+<p>布尔值、数值、字符串、null、undefined 以及 ES6 中的新类型 <a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/symbol">Symbol</a> 和 ES10 中的新类型 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a></p>
+<p><strong>空值：</strong></p>
+<p>ts中有void的概念，可以表示没有返回值的函数，同时如果将一个变量声明为void，那么这个变量只能赋值为undefine或者null</p>
+<p><strong>any：</strong></p>
+<p>未声明类型的变量默认其类型为any，any，顾名思义，表示当前声明的函数或变量可以为任意类型</p>
+<p><strong>类型推论：</strong></p>
+<p>ts中即使不声明类型，也会推断当前被赋值变量的类型，比如将一个字符串赋值给一个变量，那么ts就会推断这个变量是字符串类型，所以后面如果将这个变量又赋值为其他类型或者调用除字符串以外其他类型的方法是不被允许的</p>
+<p><strong>联合类型：</strong></p>
+<p>ts中如果不确定当前函数或方法的类型，允许用或（|）符号来分割每个累哦行，可访问联合类型的属性和方法是所有类型共有属性的集合</p>
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a><strong>接口</strong></h4><p><strong>概念：</strong></p>
+<p>ts中，用接口（interface）来定义对象的类型，他是对行为的抽象，如何实现由class去implement</p>
+<p>注意点：定义接口的首字母大写，通常会在接口名前面加一个大写字母I用于区分，定义的变量（implement）比接口少一些或者多一些都是不被允许的</p>
+<h5 id="可选属性："><a href="#可选属性：" class="headerlink" title="可选属性："></a>可选属性：</h5><p>ts中可以通过？来定义一个可选属性</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">    age?: <span class="built_in">number</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> tom: Person = &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="任意属性："><a href="#任意属性：" class="headerlink" title="任意属性："></a>任意属性：</h5><p>使用[propName:类型]来声明任意属性</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;    </span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;   </span><br><span class="line">    age?: <span class="built_in">number</span>;    </span><br><span class="line">    [propName: <span class="built_in">string</span>]: <span class="built_in">any</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> tom: Person = &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span>,   </span><br><span class="line">    <span class="attr">gender</span>: <span class="string">&#x27;male&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数组</strong></p>
+<p>ts中数组的多种定义方式：</p>
+<ul>
+<li><p>类型+方括号</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]; </span><br><span class="line"><span class="comment">//不允许出现其他类型，下面是一种错误表达 </span></span><br><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="string">&#x27;1&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure></li>
+<li><p>数组泛型 Array</p>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用接口表示数组</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不建议用这种声明数组的方式，比以上两种复杂 </span></span><br><span class="line"><span class="keyword">interface</span> NumberArray &#123;   </span><br><span class="line">    [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> fibonacci: NumberArray = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="类数组"><a href="#类数组" class="headerlink" title="类数组"></a><strong>类数组</strong></h4><h5 id="如何声明"><a href="#如何声明" class="headerlink" title="如何声明"></a><strong>如何声明</strong></h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">    <span class="keyword">let</span> args: &#123;      </span><br><span class="line">        [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;        </span><br><span class="line">        length: <span class="built_in">number</span>;     </span><br><span class="line">        callee: <span class="built_in">Function</span>;   </span><br><span class="line">    &#125; = <span class="built_in">arguments</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PS：常用的类数组都有自己的接口，例如IArguments，NodeList，HTMLCollection</p>
+<p>以上声明的arguments实际上就是ts已经定义好的类型，等同于</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IArguments &#123;   </span><br><span class="line">    [index: <span class="built_in">number</span>]: <span class="built_in">any</span>;  </span><br><span class="line">    length: <span class="built_in">number</span>;  </span><br><span class="line">    callee: <span class="built_in">Function</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="any在数组中的应用"><a href="#any在数组中的应用" class="headerlink" title="any在数组中的应用"></a>any在数组中的应用</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> list: <span class="built_in">any</span>[] = [<span class="string">&#x27;xcatliu&#x27;</span>, <span class="number">25</span>, &#123; <span class="attr">website</span>: <span class="string">&#x27;http://xcatliu.com&#x27;</span> &#125;];</span><br></pre></td></tr></table></figure>
+
+<p><strong>函数的类型</strong></p>
+<h5 id="包括：函数声明和函数表达式"><a href="#包括：函数声明和函数表达式" class="headerlink" title="包括：函数声明和函数表达式"></a>包括：函数声明和函数表达式</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数声明（Function Declaration） </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x, y</span>) </span>&#123;    <span class="keyword">return</span> x + y; &#125;</span><br><span class="line"><span class="comment">// 函数表达式（Function Expression） </span></span><br><span class="line"><span class="keyword">let</span> mySum = <span class="function"><span class="keyword">function</span> (<span class="params">x, y</span>) </span>&#123;    <span class="keyword">return</span> x + y; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>  方法名（参数一：参数一类型，参数二：参数二类型，...）：方法返回类型 </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> 方法返回值; </span><br><span class="line">&#125;</span><br><span class="line">方法名（参数一值，参数二值，...) </span><br><span class="line"><span class="comment">//调用参数一一对应不可缺少或增加</span></span><br></pre></td></tr></table></figure>
+
+<p>未完待续….</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/03/23/date220323/" data-id="cl17m6vln000c3kukbgtjf0xn" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  
+  <a href="/2022/03/21/date220321/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">plume2学习笔记</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>

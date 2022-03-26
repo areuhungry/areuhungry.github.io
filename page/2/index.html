@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="jumbotron">
+  <div class="video">
+    
+    <div class="video-frame">
+      <img src="/images/ocean/overlay-hero.png" alt="Decorative image frame">
+    </div>
+    
+    <div class="video-media">
+      <video playsinline="" autoplay="" loop="" muted="" data-autoplay="" poster="/images/ocean/ocean.png"
+        x5-video-player-type="h5">
+        <source src="/images/ocean/ocean.mp4" type="video/mp4">
+        <source src="/images/ocean/ocean.ogv" type="video/ogg">
+        <source src="/images/ocean/ocean.webm" type="video/webm">
+        <p>Your user agent does not support the HTML5 Video element.</p>
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    <div class="video-inner text-center text-white">
+      <h1><a href="/">AreUhungry</a></h1>
+      <p></p>
+      <div><img src="/images/hexo-inverted.svg" class="brand" alt="AreUhungry"></div>
+    </div>
+    <div class="video-learn-more">
+      <a class="anchor" href="#landingpage"><i class="fe fe-mouse"></i></a>
+    </div>
+  </div>
+</section>
+<div id="landingpage">
+  <section class="outer">
+  <article class="articles">
+    
+    <h1 class="page-type-title"></h1>
+    
+    
+    <article id="post-date20090403" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/09/04/date20090403/">常见色彩格式</a>
+</h2>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/04/date20090403/" class="article-date">
+  <time datetime="2020-09-03T19:00:00.000Z" itemprop="datePublished">2020-09-04</time>
+</a>
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
+<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
+<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
+      
+      <a class="article-more-link" href="/2020/09/04/date20090403/">
+        阅读全文...
+      </a>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/04/date20090403/" data-id="cl17m6vlk00083kuk6ey3bvw1" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+    
+    <article id="post-date20090402" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/09/04/date20090402/">ES语法糖</a>
+</h2>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/04/date20090402/" class="article-date">
+  <time datetime="2020-09-03T18:00:00.000Z" itemprop="datePublished">2020-09-04</time>
+</a>
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <p><strong>一. ?.（可选链）</strong></p>
+<p><strong>1、长判断时用：在开发中，对接口返回的嵌套对象数据进行属性判断。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  code: 200,</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: [1,2,3], //table list</span><br><span class="line">    page: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  message: &#x27;success&#x27;,</span><br><span class="line">  func: function()&#123;console.log(&#x27;I am func&#x27;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">const tableList = res.data &amp;&amp; res.data.content; //[1,2,3]</span><br><span class="line">// 相当于</span><br><span class="line">const tableList = res.data ? res.data.content : undefined;</span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res.data?.content  //[1,2,3]</span><br><span class="line"></span><br><span class="line">// 甚至更谨慎点，加长判断，多个三目运算</span><br><span class="line">const tableList = res &amp;&amp; res.data &amp;&amp; res.data.content; </span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res?.data?.content  //[1,2,3]</span><br></pre></td></tr></table></figure>
+      
+      <a class="article-more-link" href="/2020/09/04/date20090402/">
+        阅读全文...
+      </a>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/04/date20090402/" data-id="cl17m6vlk00073kuk3wm034v9" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+    
+    <article id="post-date20090401" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/09/04/date20090401/">常见分辨率归纳总结</a>
+</h2>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/04/date20090401/" class="article-date">
+  <time datetime="2020-09-03T16:00:00.000Z" itemprop="datePublished">2020-09-04</time>
+</a>
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <p><strong>常见PC使用分辨率</strong></p>
+<p>1024*600 （常见8.9寸电脑使用）</p>
+<p>1024*768（常用10.4、12.1、14.1、15寸电脑使用）4:3</p>
+<p>1280*1024（常用14.1、15寸电脑使用）5:4</p>
+<p>1600 * 900 16:9 (非主流)</p>
+<p>1440*1050（常用15、16.1寸电脑使用）4:3</p>
+<p>1600*1200（常用15、16.1寸电脑使用）4:3</p>
+      
+      <a class="article-more-link" href="/2020/09/04/date20090401/">
+        阅读全文...
+      </a>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/04/date20090401/" data-id="cl17m6vld00013kuk05js7n78" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+    
+    <article id="post-date20090404" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/09/03/date20090404/">JS中关于截取的若干方法</a>
+</h2>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/03/date20090404/" class="article-date">
+  <time datetime="2020-09-02T21:00:00.000Z" itemprop="datePublished">2020-09-03</time>
+</a>
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h4 id="1-slice"><a href="#1-slice" class="headerlink" title="1.slice"></a>1.slice</h4><p><strong>定义：</strong>用于<strong>数组</strong>的截取，返回一个新的数组对象，这一对象是一个由 begin和 end决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。</p>
+      
+      <a class="article-more-link" href="/2020/09/03/date20090404/">
+        阅读全文...
+      </a>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/03/date20090404/" data-id="cl17m6vlg00033kuk8ss79koi" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+    
+    <article id="post-date200903" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/09/03/date200903/">浏览器学习笔记</a>
+</h2>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/09/03/date200903/" class="article-date">
+  <time datetime="2020-09-02T16:00:00.000Z" itemprop="datePublished">2020-09-03</time>
+</a>
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p>*<strong>浏览器*<strong>，是一个用于检索，展示和遍历在万维网的信息资源的软件应用程序。信息资源被定义成</strong>统一资源定位符</strong>（URI/URL)。它可能是网页，图片，视频或者一个内容片段。超链接的出现使用户能轻松的将浏览器导航到相关的资源。虽然主要用于使用万维网，但也可用于获取专用网络中网页服务器之信息或文件系统内之文件。<br>浏览器主要由js引擎和渲染引擎组成</p>
+      
+      <a class="article-more-link" href="/2020/09/03/date200903/">
+        阅读全文...
+      </a>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/03/date200903/" data-id="cl17m6vlh00043kuk32ci3qh9" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+  
+</section>
+</div>
+
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-bar-chart"></i> <span id="busuanzi_value_site_pv"></span></li>
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>
