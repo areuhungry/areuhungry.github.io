@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    事件冒泡，事件捕获 |
+    
+    AreUhungry</title>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-date220331" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h1 class="article-title" itemprop="name">
+  事件冒泡，事件捕获
+</h1>
+
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2022/03/31/date220331/" class="article-date">
+  <time datetime="2022-03-30T22:00:00.000Z" itemprop="datePublished">2022-03-31</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h5 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h5><p>分别由微软和NetScape提出，事件冒泡由下之上，从最小节点往上触发事件。捕获反之。</p>
+<h5 id="关于addEventListener"><a href="#关于addEventListener" class="headerlink" title="关于addEventListener"></a>关于addEventListener</h5><p>W3C中和了事件冒泡和事件捕获，addEventListener方法中提供了三个参数，第一个是需要绑定的事件名称，第二个是触发事件后要执行的函数，第三个则是该事件是冒泡还是捕获，默认false为冒泡</p>
+<h5 id="当冒泡与捕获同时存在"><a href="#当冒泡与捕获同时存在" class="headerlink" title="当冒泡与捕获同时存在"></a>当冒泡与捕获同时存在</h5><ul>
+<li>非目标节点先执行捕获再冒泡</li>
+<li>对于目标节点执行先注册的事件</li>
+</ul>
+<h5 id="冒泡与捕获的实例"><a href="#冒泡与捕获的实例" class="headerlink" title="冒泡与捕获的实例"></a>冒泡与捕获的实例</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">     #box1&#123;</span><br><span class="line">        width: 300px;</span><br><span class="line">        height: 300px;</span><br><span class="line">        background: pink;</span><br><span class="line">    &#125;</span><br><span class="line">    #box2&#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: gainsboro;</span><br><span class="line">    &#125;</span><br><span class="line">    #box3&#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        background: blanchedalmond;</span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">       &lt;div id=&quot;box1&quot; class=&quot;box1&quot;&gt; </span><br><span class="line">            box1 </span><br><span class="line">            &lt;div id=&quot;box2&quot; class=&quot;box2&quot;&gt;  </span><br><span class="line">            box2</span><br><span class="line">                &lt;div id=&quot;box3&quot;&gt;box3&lt;/div&gt;  </span><br><span class="line">       &lt;/div&gt;  </span><br><span class="line">   &lt;/div&gt; </span><br><span class="line">        &lt;script&gt;</span><br><span class="line">          window.onload = function () &#123;</span><br><span class="line">            document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,);</span><br><span class="line">            document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">            document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>如上，我们为每个box绑定点击事件，当事件类型为冒泡，那么当我们点击最小的元素box3，事件执行的顺序为box3——box2——box1，当事件类型为捕获时，执行顺序反之</p>
+<p>在实际应用中，表格中遇到这种情况比较多，比如tr-&gt;td-&gt;span,假设我们在每个元素上都绑定了点击事件，那么在点击某元素的时候，该元素的父元素点击事件都会执行，此时我们需要在该元素的事件执行函数里加入event.stopPropagation()方法来阻止事件向上冒泡。</p>
+<h5 id="冒泡与捕获同时存在的实例分析"><a href="#冒泡与捕获同时存在的实例分析" class="headerlink" title="冒泡与捕获同时存在的实例分析"></a>冒泡与捕获同时存在的实例分析</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">window.onload = function () &#123;</span><br><span class="line">    document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,true);</span><br><span class="line">    document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">    document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还是上面的实例，我们将box1，与box2的事件类型设为捕获，box3设置为冒泡，然后点击box3时，发现三个点击事件的执行顺序为box1——box3——box2<br>点击box3，dom往目标节点捕获前进，遇到注册的捕获事件立即触发执行，于是输出box1，前进到box2，但box2的捕获事件并没有被注册所以box2的事件函数不执行，于是前进到目标节点box3，执行冒泡，输出box3，冒泡到box3父节点的注册事件，输出box2</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/03/31/date220331/" data-id="cl1gcuwhs000e0cuk68a2373g" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  
+  <a href="/2022/03/29/date220329/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">React Hooks学习笔记</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>AreUhungry &copy; 2022</li>
+      
+        <li>京ICP备17054916号-2</li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/starfish.svg" alt="AreUhungry"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/copybtn.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+</html>
