@@ -62,6 +62,66 @@
     <h1 class="page-type-title"></h1>
     
     
+    <article id="post-note1" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+
+<h2 itemprop="name">
+  <a class="article-title" href="/2019/08/15/note1/">welcome to my zone</a>
+</h2>
+
+
+<div class="article-topping">
+  <i class="fe fe-umbrella"></i>
+</div>
+
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2019/08/15/note1/" class="article-date">
+  <time datetime="2019-08-15T09:28:54.000Z" itemprop="datePublished">2019-08-15</time>
+</a>
+      
+    </div>
+    
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+      <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>欢迎来到AreUhungry的个人博客，该博客创建于2019年8月15日一个风和日丽的下午，以后博客会不定期更新一些个人的生活状态和学习笔记，如果机缘巧合翻到这个网站实属荣幸，留下你的足迹一人送博主五个油腻么么哒。</p>
+</blockquote>
+<h3 id="Tip"><a href="#Tip" class="headerlink" title="Tip:"></a>Tip:</h3><blockquote>
+<p><em>小女拙见如与阁下观点不胜雷同还望多多包涵，所po内容引起不适请点击右上角x</em>。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/08/15/note1/" data-id="cl1gd1oqo000hb4uke98a6kcj" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+
+  
+
+</article>
+    
     <article id="post-date220331" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
@@ -96,20 +156,15 @@
       
       <h5 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h5><p>分别由微软和NetScape提出，事件冒泡由下之上，从最小节点往上触发事件。捕获反之。</p>
 <h5 id="关于addEventListener"><a href="#关于addEventListener" class="headerlink" title="关于addEventListener"></a>关于addEventListener</h5><p>W3C中和了事件冒泡和事件捕获，addEventListener方法中提供了三个参数，第一个是需要绑定的事件名称，第二个是触发事件后要执行的函数，第三个则是该事件是冒泡还是捕获，默认false为冒泡</p>
-<h5 id="当冒泡与捕获同时存在"><a href="#当冒泡与捕获同时存在" class="headerlink" title="当冒泡与捕获同时存在"></a>当冒泡与捕获同时存在</h5><ul>
-<li>非目标节点先执行捕获再冒泡</li>
-<li>对于目标节点执行先注册的事件</li>
-</ul>
-<h5 id="冒泡与捕获的实例"><a href="#冒泡与捕获的实例" class="headerlink" title="冒泡与捕获的实例"></a>冒泡与捕获的实例</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">     #box1&#123;</span><br><span class="line">        width: 300px;</span><br><span class="line">        height: 300px;</span><br><span class="line">        background: pink;</span><br><span class="line">    &#125;</span><br><span class="line">    #box2&#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: gainsboro;</span><br><span class="line">    &#125;</span><br><span class="line">    #box3&#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        background: blanchedalmond;</span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">       &lt;div id=&quot;box1&quot; class=&quot;box1&quot;&gt; </span><br><span class="line">            box1 </span><br><span class="line">            &lt;div id=&quot;box2&quot; class=&quot;box2&quot;&gt;  </span><br><span class="line">            box2</span><br><span class="line">                &lt;div id=&quot;box3&quot;&gt;box3&lt;/div&gt;  </span><br><span class="line">       &lt;/div&gt;  </span><br><span class="line">   &lt;/div&gt; </span><br><span class="line">        &lt;script&gt;</span><br><span class="line">          window.onload = function () &#123;</span><br><span class="line">            document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,);</span><br><span class="line">            document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">            document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>如上，我们为每个box绑定点击事件，当事件类型为冒泡，那么当我们点击最小的元素box3，事件执行的顺序为box3——box2——box1，当事件类型为捕获时，执行顺序反之</p>
-<p>在实际应用中，表格中遇到这种情况比较多，比如tr-&gt;td-&gt;span,假设我们在每个元素上都绑定了点击事件，那么在点击某元素的时候，该元素的父元素点击事件都会执行，此时我们需要在该元素的事件执行函数里加入event.stopPropagation()方法来阻止事件向上冒泡。</p>
-<h5 id="冒泡与捕获同时存在的实例分析"><a href="#冒泡与捕获同时存在的实例分析" class="headerlink" title="冒泡与捕获同时存在的实例分析"></a>冒泡与捕获同时存在的实例分析</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">window.onload = function () &#123;</span><br><span class="line">    document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,true);</span><br><span class="line">    document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">    document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还是上面的实例，我们将box1，与box2的事件类型设为捕获，box3设置为冒泡，然后点击box3时，发现三个点击事件的执行顺序为box1——box3——box2<br>点击box3，dom往目标节点捕获前进，遇到注册的捕获事件立即触发执行，于是输出box1，前进到box2，但box2的捕获事件并没有被注册所以box2的事件函数不执行，于是前进到目标节点box3，执行冒泡，输出box3，冒泡到box3父节点的注册事件，输出box2</p>
-
+      
+      <a class="article-more-link" href="/2022/03/31/date220331/">
+        阅读全文...
+      </a>
+      
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/31/date220331/" data-id="cl1gcuwhs000e0cuk68a2373g" class="article-share-link">
+      <a data-url="http://example.com/2022/03/31/date220331/" data-id="cl1gd1oqn000fb4uk0ubr4y62" class="article-share-link">
         分享
       </a>
       
@@ -158,24 +213,17 @@
       <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h5 id="类组件的缺点："><a href="#类组件的缺点：" class="headerlink" title="类组件的缺点："></a>类组件的缺点：</h5><ul>
 <li>大型组件很难差分和重构</li>
 <li>业务逻辑分散在组件的各个方法中，导致重复逻辑或关联逻辑</li>
-<li>组件类引入了复杂的编程模式，比如render props和高阶组件<h3 id="useState-状态钩子"><a href="#useState-状态钩子" class="headerlink" title="useState() 状态钩子"></a>useState() 状态钩子</h3><h5 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h5><code>const [状态名，更改状态方法名]=useState(状态初始值)</code><h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export default function  Button()  &#123;</span><br><span class="line">  const  [buttonText, setButtonText] =  useState(&quot;Click me,   please&quot;);</span><br><span class="line"></span><br><span class="line">  function handleClick()  &#123;</span><br><span class="line">    return setButtonText(&quot;Thanks, been clicked!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return  &lt;button  onClick=&#123;handleClick&#125;&gt;&#123;buttonText&#125;&lt;/button&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="useContext-共享状态钩子"><a href="#useContext-共享状态钩子" class="headerlink" title="useContext() 共享状态钩子"></a>useContext() 共享状态钩子</h3><h5 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h5></li>
+<li>组件类引入了复杂的编程模式，比如render props和高阶组件<h3 id="useState-状态钩子"><a href="#useState-状态钩子" class="headerlink" title="useState() 状态钩子"></a>useState() 状态钩子</h3></li>
 </ul>
-<p>1.组件外部建立一个Context<br><code>const AppContext = React.createContext(&#123;&#125;)</code><br>2.在要共享状态的组件内部声明状态<br><code>const &#123; 状态名称 &#125; = useContext(AppContext)</code><br>3.状态提升-父组件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">  状态名: 初始值</span><br><span class="line">&#125;&#125;&gt;</span><br><span class="line">  &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">    &lt;共享状态子组件一/&gt;</span><br><span class="line">    &lt;共享状态子组件二/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/AppContext.Provider&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="实例"><a href="#实例" class="headerlink" title="实例:"></a>实例:</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useContext &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const AppContext = React.createContext(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">//Navbar与Message组件共享状态</span><br><span class="line"></span><br><span class="line">const Navbar = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;navbar&quot;&gt;</span><br><span class="line">      &lt;p&gt;AwesomeSite&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;&#123;username&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const Messages = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;messages&quot;&gt;</span><br><span class="line">      &lt;h1&gt;Messages&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;1 message for &#123;username&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p className=&quot;message&quot;&gt;useContext is awesome!&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">      username: &#x27;superawesome&#x27;</span><br><span class="line">    &#125;&#125;&gt;</span><br><span class="line">      &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">        &lt;Navbar /&gt;</span><br><span class="line">        &lt;Messages /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/AppContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
-<h3 id="useReducer-action钩子"><a href="#useReducer-action钩子" class="headerlink" title="useReducer() action钩子"></a>useReducer() action钩子</h3><h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>引入Reducer功能<br><code>const [state, dispatch] = useReducer(reducer, initialState);</code></p>
-<h5 id="实例：-1"><a href="#实例：-1" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useReducer &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const myReducer = (state, action) =&gt; &#123;</span><br><span class="line">  switch(action.type) &#123;</span><br><span class="line">    case(&#x27;countUp&#x27;):</span><br><span class="line">      return &#123;</span><br><span class="line">        ...state,</span><br><span class="line">        count: state.count + 1</span><br><span class="line">      &#125;</span><br><span class="line">    default:</span><br><span class="line">      return state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [state, dispatch] = useReducer(myReducer, &#123; count: 0 &#125;)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &#x27;countUp&#x27; &#125;)&#125;&gt;</span><br><span class="line">        +1</span><br><span class="line">      &lt;/button&gt;</span><br><span class="line">      &lt;p&gt;Count: &#123;state.count&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
-<h3 id="useEffect-副作用钩子"><a href="#useEffect-副作用钩子" class="headerlink" title="useEffect() 副作用钩子"></a>useEffect() 副作用钩子</h3><h5 id="语法：-2"><a href="#语法：-2" class="headerlink" title="语法："></a>语法：</h5><p>接受两个参数，第一个参数是一个函数，异步操作的代码放在里面。第二个参数是一个数组。是Effect的依赖项，只要这个数组发生变化，useEffect（）就会执行。若第二个参数省略，则组件每次渲染，就会执行useEffect</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">useEffect(()  =&gt;  &#123;</span><br><span class="line">  // Async Action</span><br><span class="line">&#125;, [dependencies])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h5 id="实例：-2"><a href="#实例：-2" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true); </span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId])</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">    &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="创建自己的hooks"><a href="#创建自己的hooks" class="headerlink" title="创建自己的hooks"></a>创建自己的hooks</h3><h5 id="上述所有hooks可以灵活搭配，变成一个自定义的hook"><a href="#上述所有hooks可以灵活搭配，变成一个自定义的hook" class="headerlink" title="上述所有hooks可以灵活搭配，变成一个自定义的hook"></a>上述所有hooks可以灵活搭配，变成一个自定义的hook</h5><h5 id="实例：-3"><a href="#实例：-3" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useState, useEffect &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const usePerson = personId =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true);</span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId]);</span><br><span class="line">  return [loading, person];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, person] = usePerson(personId);</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [show, setShow] = useState(&quot;1&quot;);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;Person personId=&#123;show&#125; /&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        Show:</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;1&quot;)&#125;&gt;Luke&lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;2&quot;)&#125;&gt;C-3PO&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
-
-
+      
+      <a class="article-more-link" href="/2022/03/29/date220329/">
+        阅读全文...
+      </a>
+      
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/29/date220329/" data-id="cl1gcuwhu000f0cukgrq9e5mx" class="article-share-link">
+      <a data-url="http://example.com/2022/03/29/date220329/" data-id="cl1gd1oqm000eb4uke0kw172l" class="article-share-link">
         分享
       </a>
       
@@ -237,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/23/date220323/" data-id="cl1gcuwhr000d0cukfsgv3qzp" class="article-share-link">
+      <a data-url="http://example.com/2022/03/23/date220323/" data-id="cl1gd1oqm000db4uk39asg38f" class="article-share-link">
         分享
       </a>
       
@@ -294,7 +342,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/21/date220321/" data-id="cl1gcuwhq000c0cukdatscogw" class="article-share-link">
+      <a data-url="http://example.com/2022/03/21/date220321/" data-id="cl1gd1oqk000cb4ukc89ph16i" class="article-share-link">
         分享
       </a>
       
@@ -349,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/20/note02/" data-id="cl1gcuwhu000g0cuk8abzffib" class="article-share-link">
+      <a data-url="http://example.com/2022/03/20/note02/" data-id="cl1gd1oqo000gb4uk0a61aada" class="article-share-link">
         分享
       </a>
       
@@ -406,7 +454,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/05/11/date0511/" data-id="cl1gcuwhe00010cukao6zgptl" class="article-share-link">
+      <a data-url="http://example.com/2021/05/11/date0511/" data-id="cl1gd1oqd0003b4uk0a393mnp" class="article-share-link">
         分享
       </a>
       
@@ -463,7 +511,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/28/date201218/" data-id="cl1gcuwhq000b0cukclri7fpg" class="article-share-link">
+      <a data-url="http://example.com/2020/12/28/date201218/" data-id="cl1gd1oqi000ab4ukf9ze60kh" class="article-share-link">
         分享
       </a>
       
@@ -519,7 +567,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/16/date201216/" data-id="cl1gcuwhp000a0cuk1erffm5v" class="article-share-link">
+      <a data-url="http://example.com/2020/12/16/date201216/" data-id="cl1gd1oqj000bb4ukhpl60pur" class="article-share-link">
         分享
       </a>
       
@@ -577,63 +625,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/11/date201211/" data-id="cl1gcuwhw000i0cukdkl03dfz" class="article-share-link">
-        分享
-      </a>
-      
-    </footer>
-
-  </div>
-
-  
-
-  
-
-</article>
-    
-    <article id="post-date20090405" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
-  <div class="article-inner">
-    
-    <header class="article-header">
-      
-
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/09/04/date20090405/">查找数组中是否包含某元素的若干方法</a>
-</h2>
-
-
-
-    </header>
-    
-
-    
-    <div class="article-meta">
-      <a href="/2020/09/04/date20090405/" class="article-date">
-  <time datetime="2020-09-03T22:00:00.000Z" itemprop="datePublished">2020-09-04</time>
-</a>
-      
-    </div>
-    
-
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-      
-      
-      <p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
-<p><strong>1.indexOf</strong></p>
-      
-      <a class="article-more-link" href="/2020/09/04/date20090405/">
-        阅读全文...
-      </a>
-      
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/04/date20090405/" data-id="cl1gcuwhn00080cuk593ud4ay" class="article-share-link">
+      <a data-url="http://example.com/2020/12/11/date201211/" data-id="cl1gd1oqp000ib4ukb5u0cjlb" class="article-share-link">
         分享
       </a>
       

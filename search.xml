@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>浏览器学习笔记</title>
+    <url>/2020/09/03/date200903/</url>
+    <content><![CDATA[<h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p>*<strong>浏览器*<strong>，是一个用于检索，展示和遍历在万维网的信息资源的软件应用程序。信息资源被定义成</strong>统一资源定位符</strong>（URI/URL)。它可能是网页，图片，视频或者一个内容片段。超链接的出现使用户能轻松的将浏览器导航到相关的资源。虽然主要用于使用万维网，但也可用于获取专用网络中网页服务器之信息或文件系统内之文件。<br>浏览器主要由js引擎和渲染引擎组成</p>
+<span id="more"></span>
+
+<p><img src="/images/post200903.png" alt="常见浏览器内核"></p>
+<h2 id="主要组件："><a href="#主要组件：" class="headerlink" title="主要组件："></a>主要组件：</h2><ul>
+<li><strong>用户界面</strong> - 包括地址栏、前进/后退按钮、书签菜单等。除了浏览器主窗口显示的您请求的页面外，其他显示的各个部分都属于用户界面。<br>浏览器引擎 - 在用户界面和呈现引擎之间传送指令。<br>呈现引擎 - 负责显示请求的内容。如果请求的内容是 HTML，它就负责解析 HTML 和 CSS 内容，并将解析后的内容显示在屏幕上。<br>网络 - 用于网络调用，比如 HTTP 请求。其接口与平台无关，并为所有平台提供底层实现。</li>
+<li><strong>用户界面后端</strong> - 用于绘制基本的窗口小部件，比如组合框和窗口。其公开了与平台无关的通用接口，而在底层使用操作系统的用户界面方法。<br>JavaScript 解释器。用于解析和执行 JavaScript 代码。<br>数据存储。这是持久层。浏览器需要在硬盘上保存各种数据，例如 Cookie。新的 HTML 规范 (HTML5) 定义了“网络数据库”，这是一个完整（但是轻便）的浏览器内数据库。</li>
+</ul>
+<h2 id="四大内核："><a href="#四大内核：" class="headerlink" title="四大内核："></a>四大内核：</h2><h3 id="1-Trident"><a href="#1-Trident" class="headerlink" title="1. Trident"></a>1. Trident</h3><p>***IE浏览器内核***，俗称IE内核，代表产品是Internet Explorer，它是微软开发的一种排版引擎。在1997年10月与IE4一起诞生，不断地更新和完善，Trident是一款开放的内核，其引擎被设计成一个软件模块，接口内核设计相当成熟，因此涌现出许多采用IE内核而非IE的浏览器，如：百度浏览器、腾讯TT、遨游、世界之窗等，但是Trident只能用于Windows平台且不开源（这也是为什么mac上不用ie浏览器的原因），而且由于曾经市场份额比较大，脱离W3C标准，同时IE版本比较多，本身存在一些BUG和很多的兼容性问题</p>
+<p><strong>优点：</strong>市场份额较大，接口内核设计成熟</p>
+<p><strong>缺点：</strong>不开源，只能用于Windows平台，曾经与W3C标准脱节，对真正的网页标准支持不是很友好，低版本存在很多的兼容性问题</p>
+<h3 id="2-webkit"><a href="#2-webkit" class="headerlink" title="2. webkit"></a>2. webkit</h3><p><strong>Safari浏览器内核</strong>，主要代表产品有Safari和Chrome 28以下版本（Chrome 28+改用Blink内核），它的特点在于源码结构清晰、渲染速度极快。它在手机上的应用也十分广泛，例如Google的Android平台浏览器、Apple的iPhone浏览器、Nokia S60浏览器等。 WebKit内核也广泛应用于Widget引擎产品，包括中国移动的BAE、Apple的Dashboard以及Nokia WRT等。</p>
+<p><strong>优点：</strong>开源，安全，网页浏览速度较快，不及 Presto 但是也胜于 Gecko 和 Trident，手机上应用广泛</p>
+<p><strong>缺点：</strong>系统资源占用较高，对网页代码的兼容性较低，会使一些编写不标准的网页无法正确显示</p>
+<h3 id="3-Presto"><a href="#3-Presto" class="headerlink" title="3. Presto"></a>3. Presto</h3><p>它是目前公认的网页浏览速度最快的浏览器内核，然而代价是牺牲了网页的兼容性。代表作品是*<strong>Opera*</strong> （Opera12.17及更早版本曾经采用的内核，现已停止开发并废弃），它的特点是渲染速度达到了极致，Presto实际上是一个动态内核，供Opera 7.0+使用。它取代了旧版Opera 4~6版本使用的Elektra排版引擎，网页或其部分可随着DOM及Script语法的事件而重新排版。它与Trident、Gecko等内核的最大区别就在于脚本处理上，Presto有着天生的优势，页面的全部或者部分都能够在回应脚本事件时等情况下被重新解析。此外该内核在执行JavaScript时有着最快的速度，同等条件下，Presto内核执行同等JavaScript所需的时间仅有Trident和Gecko内核的约1/3。Presto是商业引擎，在一定程度上限制了Presto的发展，由于市场选择问题，主要应用在手机平台–Opera mini<br>Opera 15+已改用Google Chrome的Blink内核。在2013年之后，Opera宣布加入谷歌阵营，弃用了Presto</p>
+<p><strong>优点：</strong>速度快，动态内核，脚本处理上有着天生的优势</p>
+<p><strong>缺点：</strong>商业引擎，为了达到很快的速度而丢掉了一部分网页兼容性</p>
+<h3 id="4-Gecko"><a href="#4-Gecko" class="headerlink" title="4.Gecko"></a>4.Gecko</h3><p>***Firefox浏览器内核***，代表是Mozilla Firefox，由于Gecko的特点是开源，因此，其可开发程度很高，因此受到许多人的青睐，采用Gecko内核的浏览器也很多，这也是Gecko内核虽然年轻但市场占有率能够迅速提高的重要原因，Gecko排版引擎提供了一个丰富的程序界面以供与互联网相关的应用程序使用，例如网页浏览器、HTML编辑器、客户端/服务器等。虽然最初的主要对象是Mozilla的衍生产品，如Netscape和Mozilla Firefox，但是现在已有很多其他软件利用这个排版引擎。此外Gecko也是一个跨平台内核，可以在Windows、BSD、Linux和Mac OS X中使用。<br>正在和曾经使用Gecko引擎的浏览器有Firefox、网景6～9、SeaMonkey、Camino、Mozilla、Flock、Galeon、K-Meleon、Minimo、Sleipni、Songbird、XeroBank。GoogleGadget</p>
+<p><strong>优点：</strong>开源，扩展性强，可开发程度很高，功能强大、丰富，跨平台</p>
+<p><strong>缺点：</strong>数据档案保存能力弱，要消耗很多的资源，比如内存</p>
+]]></content>
+  </entry>
+  <entry>
     <title>解决Input约束输入值为非负整数中遇到的一揽子问题</title>
     <url>/2021/05/11/date0511/</url>
     <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
@@ -20,6 +45,17 @@
 <p>​        第四次尝试</p>
 <p>​                在第三次的基础上加入onKeyDown，输入非预期的字符则调用e.preventDefault()，嗯，这下子不能输入负号了。。。。。最后测试，发现这样不能避免Ctrl C/V，还有浏览器剪切板粘贴。。。后期考虑再改为onMouseDown了.</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>常见色彩格式</title>
+    <url>/2020/09/04/date20090403/</url>
+    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
+<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
+<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
+<span id="more"></span>
+
+<p>附录：</p>
+<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>常见分辨率归纳总结</title>
@@ -51,31 +87,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>浏览器学习笔记</title>
-    <url>/2020/09/03/date200903/</url>
-    <content><![CDATA[<h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p>*<strong>浏览器*<strong>，是一个用于检索，展示和遍历在万维网的信息资源的软件应用程序。信息资源被定义成</strong>统一资源定位符</strong>（URI/URL)。它可能是网页，图片，视频或者一个内容片段。超链接的出现使用户能轻松的将浏览器导航到相关的资源。虽然主要用于使用万维网，但也可用于获取专用网络中网页服务器之信息或文件系统内之文件。<br>浏览器主要由js引擎和渲染引擎组成</p>
-<span id="more"></span>
-
-<p><img src="/images/post200903.png" alt="常见浏览器内核"></p>
-<h2 id="主要组件："><a href="#主要组件：" class="headerlink" title="主要组件："></a>主要组件：</h2><ul>
-<li><strong>用户界面</strong> - 包括地址栏、前进/后退按钮、书签菜单等。除了浏览器主窗口显示的您请求的页面外，其他显示的各个部分都属于用户界面。<br>浏览器引擎 - 在用户界面和呈现引擎之间传送指令。<br>呈现引擎 - 负责显示请求的内容。如果请求的内容是 HTML，它就负责解析 HTML 和 CSS 内容，并将解析后的内容显示在屏幕上。<br>网络 - 用于网络调用，比如 HTTP 请求。其接口与平台无关，并为所有平台提供底层实现。</li>
-<li><strong>用户界面后端</strong> - 用于绘制基本的窗口小部件，比如组合框和窗口。其公开了与平台无关的通用接口，而在底层使用操作系统的用户界面方法。<br>JavaScript 解释器。用于解析和执行 JavaScript 代码。<br>数据存储。这是持久层。浏览器需要在硬盘上保存各种数据，例如 Cookie。新的 HTML 规范 (HTML5) 定义了“网络数据库”，这是一个完整（但是轻便）的浏览器内数据库。</li>
-</ul>
-<h2 id="四大内核："><a href="#四大内核：" class="headerlink" title="四大内核："></a>四大内核：</h2><h3 id="1-Trident"><a href="#1-Trident" class="headerlink" title="1. Trident"></a>1. Trident</h3><p>***IE浏览器内核***，俗称IE内核，代表产品是Internet Explorer，它是微软开发的一种排版引擎。在1997年10月与IE4一起诞生，不断地更新和完善，Trident是一款开放的内核，其引擎被设计成一个软件模块，接口内核设计相当成熟，因此涌现出许多采用IE内核而非IE的浏览器，如：百度浏览器、腾讯TT、遨游、世界之窗等，但是Trident只能用于Windows平台且不开源（这也是为什么mac上不用ie浏览器的原因），而且由于曾经市场份额比较大，脱离W3C标准，同时IE版本比较多，本身存在一些BUG和很多的兼容性问题</p>
-<p><strong>优点：</strong>市场份额较大，接口内核设计成熟</p>
-<p><strong>缺点：</strong>不开源，只能用于Windows平台，曾经与W3C标准脱节，对真正的网页标准支持不是很友好，低版本存在很多的兼容性问题</p>
-<h3 id="2-webkit"><a href="#2-webkit" class="headerlink" title="2. webkit"></a>2. webkit</h3><p><strong>Safari浏览器内核</strong>，主要代表产品有Safari和Chrome 28以下版本（Chrome 28+改用Blink内核），它的特点在于源码结构清晰、渲染速度极快。它在手机上的应用也十分广泛，例如Google的Android平台浏览器、Apple的iPhone浏览器、Nokia S60浏览器等。 WebKit内核也广泛应用于Widget引擎产品，包括中国移动的BAE、Apple的Dashboard以及Nokia WRT等。</p>
-<p><strong>优点：</strong>开源，安全，网页浏览速度较快，不及 Presto 但是也胜于 Gecko 和 Trident，手机上应用广泛</p>
-<p><strong>缺点：</strong>系统资源占用较高，对网页代码的兼容性较低，会使一些编写不标准的网页无法正确显示</p>
-<h3 id="3-Presto"><a href="#3-Presto" class="headerlink" title="3. Presto"></a>3. Presto</h3><p>它是目前公认的网页浏览速度最快的浏览器内核，然而代价是牺牲了网页的兼容性。代表作品是*<strong>Opera*</strong> （Opera12.17及更早版本曾经采用的内核，现已停止开发并废弃），它的特点是渲染速度达到了极致，Presto实际上是一个动态内核，供Opera 7.0+使用。它取代了旧版Opera 4~6版本使用的Elektra排版引擎，网页或其部分可随着DOM及Script语法的事件而重新排版。它与Trident、Gecko等内核的最大区别就在于脚本处理上，Presto有着天生的优势，页面的全部或者部分都能够在回应脚本事件时等情况下被重新解析。此外该内核在执行JavaScript时有着最快的速度，同等条件下，Presto内核执行同等JavaScript所需的时间仅有Trident和Gecko内核的约1/3。Presto是商业引擎，在一定程度上限制了Presto的发展，由于市场选择问题，主要应用在手机平台–Opera mini<br>Opera 15+已改用Google Chrome的Blink内核。在2013年之后，Opera宣布加入谷歌阵营，弃用了Presto</p>
-<p><strong>优点：</strong>速度快，动态内核，脚本处理上有着天生的优势</p>
-<p><strong>缺点：</strong>商业引擎，为了达到很快的速度而丢掉了一部分网页兼容性</p>
-<h3 id="4-Gecko"><a href="#4-Gecko" class="headerlink" title="4.Gecko"></a>4.Gecko</h3><p>***Firefox浏览器内核***，代表是Mozilla Firefox，由于Gecko的特点是开源，因此，其可开发程度很高，因此受到许多人的青睐，采用Gecko内核的浏览器也很多，这也是Gecko内核虽然年轻但市场占有率能够迅速提高的重要原因，Gecko排版引擎提供了一个丰富的程序界面以供与互联网相关的应用程序使用，例如网页浏览器、HTML编辑器、客户端/服务器等。虽然最初的主要对象是Mozilla的衍生产品，如Netscape和Mozilla Firefox，但是现在已有很多其他软件利用这个排版引擎。此外Gecko也是一个跨平台内核，可以在Windows、BSD、Linux和Mac OS X中使用。<br>正在和曾经使用Gecko引擎的浏览器有Firefox、网景6～9、SeaMonkey、Camino、Mozilla、Flock、Galeon、K-Meleon、Minimo、Sleipni、Songbird、XeroBank。GoogleGadget</p>
-<p><strong>优点：</strong>开源，扩展性强，可开发程度很高，功能强大、丰富，跨平台</p>
-<p><strong>缺点：</strong>数据档案保存能力弱，要消耗很多的资源，比如内存</p>
-]]></content>
-  </entry>
-  <entry>
     <title>ES语法糖</title>
     <url>/2020/09/04/date20090402/</url>
     <content><![CDATA[<p><strong>一. ?.（可选链）</strong></p>
@@ -97,17 +108,6 @@
 
 <p>在想返回null和undefined的时候取双问号后面的值</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>常见色彩格式</title>
-    <url>/2020/09/04/date20090403/</url>
-    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
-<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
-<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
-<span id="more"></span>
-
-<p>附录：</p>
-<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>JS中关于截取的若干方法</title>
@@ -264,6 +264,99 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;); </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">	output: &#123;</span><br><span class="line">    filename: &#x27;my-first-webpack.bundle.js&#x27;</span><br><span class="line">    &#125;,  </span><br><span class="line">    module: &#123;</span><br><span class="line">    	rules: [    </span><br><span class="line">    	//告诉编译器在遇到后缀为txt文件时，需要使用raw-loader转换    </span><br><span class="line">    	//此处注意test不要添加引号     </span><br><span class="line">        	&#123; test: /\.txt$/, use: &#x27;raw-loader&#x27; &#125;    </span><br><span class="line">        	]  </span><br><span class="line">        &#125; </span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
+    <title>windows10 环境下安装MySQL 8.0.20</title>
+    <url>/2020/12/28/date201218/</url>
+    <content><![CDATA[<h3 id="一-从官网（mysql-com）下载安装包"><a href="#一-从官网（mysql-com）下载安装包" class="headerlink" title="一 . 从官网（mysql.com）下载安装包"></a>一 . 从官网（mysql.com）下载安装包</h3><ol>
+<li> 打开官网点击顶部导航栏中的DOWNLOADS按钮，点击下发下方MySQL Community（GPL) Downloads&gt;&gt;</li>
+</ol>
+   <span id="more"></span>
+
+<p>   <img src="/images/post20122801.png" alt="示意图一"></p>
+<ol start="2">
+<li><p>点击MySQL Community Server</p>
+<p><img src="/images/post20122802.png" alt="示意图二"></p>
+</li>
+<li><p>在下拉菜单中，选择windows（一般默认就是windows），然后点击下方的Download</p>
+<p><img src="/images/post20122803.png" alt="示意图三"></p>
+</li>
+<li><p>在打开的页面中，选择 <strong>No thanks, just start my download.</strong> ，然后开始下载MySql zip安装包</p>
+<p><img src="/images/post20122804.png" alt="示意图四"></p>
+</li>
+</ol>
+<h3 id="二-配置环境变量"><a href="#二-配置环境变量" class="headerlink" title="二.配置环境变量"></a>二.配置环境变量</h3><ol>
+<li><p>将下载好的zip包解压到指定目录，例如E:\mysql-8.0.22-winx64</p>
+</li>
+<li><p>添加环境变量，“此电脑”图标游击属性，点击环境变量，在系统变量一栏点击Path，选中点击编辑，进入新建，将解压的目录的bin（E:\mysql-8.0.22-winx64\bin) 添加到Path下</p>
+<p><img src="/images/post20122805.png" alt="示意图五"></p>
+</li>
+<li><p>点击确定，完成创建，关闭窗口</p>
+</li>
+<li><p>windows键+R 键入cmd打开命令窗口（以管理员身份打开）</p>
+</li>
+<li><p>在命令行窗口中输入以下命令，进行初始化。初始化后，MySql 安装目录会出现一个 data目录（请勿手动创建）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysqld --initialize --console</span><br></pre></td></tr></table></figure>
+
+<p>随后，控制台返回如下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-07-04T08:37:16.188232Z 0 [System] [MY-013169] [Server] E:\mysql-8.0.20-winx64\bin\mysqld.exe (mysqld 8.0.20) initializing of server in progress as process 14880</span><br><span class="line">2020-07-04T08:37:16.196858Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.</span><br><span class="line">2020-07-04T08:37:46.330192Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.</span><br><span class="line">[Note] [MY-010454] [Server] A temporary password is generated for root@localhost:************</span><br></pre></td></tr></table></figure>
+
+<p>**<em>*</em>****即为 MySql 数据库 root 用户初始密码，后面初次登陆时需要使用，初始密码一定要记住，不然重置密码很麻烦</p>
+</li>
+<li><p>使用 <strong>mysqld –install</strong> 命令进行数据库安装</p>
+<p>正常情况下返回信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Service successfully installed.</span><br></pre></td></tr></table></figure>
+
+<p>失败的情况</p>
+<ul>
+<li><p>返回 <strong>Install/Remove of the Service Denied</strong> ，意味权限不足</p>
+<p> 解决方案：使用管理员身份运行 cmd</p>
+</li>
+<li><p> 返回 <strong>The service already exists</strong> ，意味已存在MySql 服务</p>
+</li>
+</ul>
+<p>  解决方案：在命令行窗口中，输入 <strong>mysqld -remove</strong>，若提示 **Service successfully removed.**，则成功卸载，重新执行 install 命令</p>
+</li>
+<li><p>在命令行中输入 <strong>net start mysql</strong> 命令，启动 mysql 服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+
+<p>启动成功返回信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MySQL 服务正在启动 .....</span><br><span class="line">MySQL 服务已经启动成功。</span><br></pre></td></tr></table></figure>
+
+<p>若启动失败，则：</p>
+<ol>
+<li><p>检查 MySql 使用的 3306 端口是否被其他进程占用。</p>
+</li>
+<li><p>检查安装目录中是否存在 <strong>my.ini</strong> 文件，若存在则删除该文件</p>
+<p>（网上的其他安装教程让创建这个配置文件，但是在8.0.20版本，<strong>存在这个文件，MySql 服务便无法启动</strong>，删除重新启动MySql服务即可）</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="三-登录并配置MySQL"><a href="#三-登录并配置MySQL" class="headerlink" title="三.登录并配置MySQL"></a>三.登录并配置MySQL</h3><p> 1.在命令行中输入 <strong>mysql -u root -p</strong> ，并使用前文 安装 MySql 前进行初始化，返回的 root 用户初始密码 进行登录（可 能不能直接粘贴输入，如果提示登陆失败，请尝试手动输入）</p>
+<p> 登陆成功后，控制台会输出如下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 9</span><br><span class="line">Server version: 8.0.20</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &#x27;help;&#x27; or &#x27;\h&#x27; for help. Type &#x27;\c&#x27; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意：输出信息中有提示sql命令结尾要加；或\g</p>
+<p> 2.进行其他操作前，必须先将 初始密码 进行重置，否则系统会报错提示我们：“**ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.**”</p>
+<p> 我们使用如下 sql 语句进行初始密码重置，<strong><em>* *</em>*</strong>**** * 处，请填写您希望设定的 root 用户密码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;*********&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p> 设定成功后，控制台会显示：<strong>Query OK, 0 rows affected (0.55 sec)</strong></p>
+<h3 id="四-其他事项"><a href="#四-其他事项" class="headerlink" title="四.其他事项"></a>四.其他事项</h3><ol>
+<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
+</li>
+<li><p>退出MySql命令：<strong>quit;</strong></p>
+</li>
+<li><p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
+</li>
+<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
+<p>退出MySql命令：<strong>quit;</strong></p>
+<p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
+</li>
+</ol>
+<p>[^摘录自]: 作者：冬酒暖阳 链接：<a href="https://juejin.cn/post/6850418115450175495">https://juejin.cn/post/6850418115450175495</a> 来源：掘金</p>
+]]></content>
+  </entry>
+  <entry>
     <title>background，border的各种妙用---不常用属性补充说明</title>
     <url>/2020/12/16/date201216/</url>
     <content><![CDATA[<h3 id="1-如何将指定图片源作为边框？"><a href="#1-如何将指定图片源作为边框？" class="headerlink" title="1.如何将指定图片源作为边框？"></a>1.如何将指定图片源作为边框？</h3><p> 答：border-image-source+border-image-slice</p>
@@ -389,99 +482,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>windows10 环境下安装MySQL 8.0.20</title>
-    <url>/2020/12/28/date201218/</url>
-    <content><![CDATA[<h3 id="一-从官网（mysql-com）下载安装包"><a href="#一-从官网（mysql-com）下载安装包" class="headerlink" title="一 . 从官网（mysql.com）下载安装包"></a>一 . 从官网（mysql.com）下载安装包</h3><ol>
-<li> 打开官网点击顶部导航栏中的DOWNLOADS按钮，点击下发下方MySQL Community（GPL) Downloads&gt;&gt;</li>
-</ol>
-   <span id="more"></span>
-
-<p>   <img src="/images/post20122801.png" alt="示意图一"></p>
-<ol start="2">
-<li><p>点击MySQL Community Server</p>
-<p><img src="/images/post20122802.png" alt="示意图二"></p>
-</li>
-<li><p>在下拉菜单中，选择windows（一般默认就是windows），然后点击下方的Download</p>
-<p><img src="/images/post20122803.png" alt="示意图三"></p>
-</li>
-<li><p>在打开的页面中，选择 <strong>No thanks, just start my download.</strong> ，然后开始下载MySql zip安装包</p>
-<p><img src="/images/post20122804.png" alt="示意图四"></p>
-</li>
-</ol>
-<h3 id="二-配置环境变量"><a href="#二-配置环境变量" class="headerlink" title="二.配置环境变量"></a>二.配置环境变量</h3><ol>
-<li><p>将下载好的zip包解压到指定目录，例如E:\mysql-8.0.22-winx64</p>
-</li>
-<li><p>添加环境变量，“此电脑”图标游击属性，点击环境变量，在系统变量一栏点击Path，选中点击编辑，进入新建，将解压的目录的bin（E:\mysql-8.0.22-winx64\bin) 添加到Path下</p>
-<p><img src="/images/post20122805.png" alt="示意图五"></p>
-</li>
-<li><p>点击确定，完成创建，关闭窗口</p>
-</li>
-<li><p>windows键+R 键入cmd打开命令窗口（以管理员身份打开）</p>
-</li>
-<li><p>在命令行窗口中输入以下命令，进行初始化。初始化后，MySql 安装目录会出现一个 data目录（请勿手动创建）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysqld --initialize --console</span><br></pre></td></tr></table></figure>
-
-<p>随后，控制台返回如下信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-07-04T08:37:16.188232Z 0 [System] [MY-013169] [Server] E:\mysql-8.0.20-winx64\bin\mysqld.exe (mysqld 8.0.20) initializing of server in progress as process 14880</span><br><span class="line">2020-07-04T08:37:16.196858Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.</span><br><span class="line">2020-07-04T08:37:46.330192Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.</span><br><span class="line">[Note] [MY-010454] [Server] A temporary password is generated for root@localhost:************</span><br></pre></td></tr></table></figure>
-
-<p>**<em>*</em>****即为 MySql 数据库 root 用户初始密码，后面初次登陆时需要使用，初始密码一定要记住，不然重置密码很麻烦</p>
-</li>
-<li><p>使用 <strong>mysqld –install</strong> 命令进行数据库安装</p>
-<p>正常情况下返回信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Service successfully installed.</span><br></pre></td></tr></table></figure>
-
-<p>失败的情况</p>
-<ul>
-<li><p>返回 <strong>Install/Remove of the Service Denied</strong> ，意味权限不足</p>
-<p> 解决方案：使用管理员身份运行 cmd</p>
-</li>
-<li><p> 返回 <strong>The service already exists</strong> ，意味已存在MySql 服务</p>
-</li>
-</ul>
-<p>  解决方案：在命令行窗口中，输入 <strong>mysqld -remove</strong>，若提示 **Service successfully removed.**，则成功卸载，重新执行 install 命令</p>
-</li>
-<li><p>在命令行中输入 <strong>net start mysql</strong> 命令，启动 mysql 服务</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
-
-<p>启动成功返回信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MySQL 服务正在启动 .....</span><br><span class="line">MySQL 服务已经启动成功。</span><br></pre></td></tr></table></figure>
-
-<p>若启动失败，则：</p>
-<ol>
-<li><p>检查 MySql 使用的 3306 端口是否被其他进程占用。</p>
-</li>
-<li><p>检查安装目录中是否存在 <strong>my.ini</strong> 文件，若存在则删除该文件</p>
-<p>（网上的其他安装教程让创建这个配置文件，但是在8.0.20版本，<strong>存在这个文件，MySql 服务便无法启动</strong>，删除重新启动MySql服务即可）</p>
-</li>
-</ol>
-</li>
-</ol>
-<h3 id="三-登录并配置MySQL"><a href="#三-登录并配置MySQL" class="headerlink" title="三.登录并配置MySQL"></a>三.登录并配置MySQL</h3><p> 1.在命令行中输入 <strong>mysql -u root -p</strong> ，并使用前文 安装 MySql 前进行初始化，返回的 root 用户初始密码 进行登录（可 能不能直接粘贴输入，如果提示登陆失败，请尝试手动输入）</p>
-<p> 登陆成功后，控制台会输出如下信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 9</span><br><span class="line">Server version: 8.0.20</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &#x27;help;&#x27; or &#x27;\h&#x27; for help. Type &#x27;\c&#x27; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
-
-<p>注意：输出信息中有提示sql命令结尾要加；或\g</p>
-<p> 2.进行其他操作前，必须先将 初始密码 进行重置，否则系统会报错提示我们：“**ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.**”</p>
-<p> 我们使用如下 sql 语句进行初始密码重置，<strong><em>* *</em>*</strong>**** * 处，请填写您希望设定的 root 用户密码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;*********&#x27;;</span><br></pre></td></tr></table></figure>
-
-<p> 设定成功后，控制台会显示：<strong>Query OK, 0 rows affected (0.55 sec)</strong></p>
-<h3 id="四-其他事项"><a href="#四-其他事项" class="headerlink" title="四.其他事项"></a>四.其他事项</h3><ol>
-<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
-</li>
-<li><p>退出MySql命令：<strong>quit;</strong></p>
-</li>
-<li><p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
-</li>
-<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
-<p>退出MySql命令：<strong>quit;</strong></p>
-<p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
-</li>
-</ol>
-<p>[^摘录自]: 作者：冬酒暖阳 链接：<a href="https://juejin.cn/post/6850418115450175495">https://juejin.cn/post/6850418115450175495</a> 来源：掘金</p>
-]]></content>
-  </entry>
-  <entry>
     <title>plume2学习笔记</title>
     <url>/2022/03/21/date220321/</url>
     <content><![CDATA[<h3 id="Actor"><a href="#Actor" class="headerlink" title="Actor"></a>Actor</h3><h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>转换状态数据</p>
@@ -562,31 +562,18 @@
 ]]></content>
   </entry>
   <entry>
-    <title>事件冒泡，事件捕获</title>
-    <url>/2022/03/31/date220331/</url>
-    <content><![CDATA[<h5 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h5><p>分别由微软和NetScape提出，事件冒泡由下之上，从最小节点往上触发事件。捕获反之。</p>
-<h5 id="关于addEventListener"><a href="#关于addEventListener" class="headerlink" title="关于addEventListener"></a>关于addEventListener</h5><p>W3C中和了事件冒泡和事件捕获，addEventListener方法中提供了三个参数，第一个是需要绑定的事件名称，第二个是触发事件后要执行的函数，第三个则是该事件是冒泡还是捕获，默认false为冒泡</p>
-<h5 id="当冒泡与捕获同时存在"><a href="#当冒泡与捕获同时存在" class="headerlink" title="当冒泡与捕获同时存在"></a>当冒泡与捕获同时存在</h5><ul>
-<li>非目标节点先执行捕获再冒泡</li>
-<li>对于目标节点执行先注册的事件</li>
-</ul>
-<h5 id="冒泡与捕获的实例"><a href="#冒泡与捕获的实例" class="headerlink" title="冒泡与捕获的实例"></a>冒泡与捕获的实例</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">     #box1&#123;</span><br><span class="line">        width: 300px;</span><br><span class="line">        height: 300px;</span><br><span class="line">        background: pink;</span><br><span class="line">    &#125;</span><br><span class="line">    #box2&#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: gainsboro;</span><br><span class="line">    &#125;</span><br><span class="line">    #box3&#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        background: blanchedalmond;</span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">       &lt;div id=&quot;box1&quot; class=&quot;box1&quot;&gt; </span><br><span class="line">            box1 </span><br><span class="line">            &lt;div id=&quot;box2&quot; class=&quot;box2&quot;&gt;  </span><br><span class="line">            box2</span><br><span class="line">                &lt;div id=&quot;box3&quot;&gt;box3&lt;/div&gt;  </span><br><span class="line">       &lt;/div&gt;  </span><br><span class="line">   &lt;/div&gt; </span><br><span class="line">        &lt;script&gt;</span><br><span class="line">          window.onload = function () &#123;</span><br><span class="line">            document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,);</span><br><span class="line">            document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">            document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>如上，我们为每个box绑定点击事件，当事件类型为冒泡，那么当我们点击最小的元素box3，事件执行的顺序为box3——box2——box1，当事件类型为捕获时，执行顺序反之</p>
-<p>在实际应用中，表格中遇到这种情况比较多，比如tr-&gt;td-&gt;span,假设我们在每个元素上都绑定了点击事件，那么在点击某元素的时候，该元素的父元素点击事件都会执行，此时我们需要在该元素的事件执行函数里加入event.stopPropagation()方法来阻止事件向上冒泡。</p>
-<h5 id="冒泡与捕获同时存在的实例分析"><a href="#冒泡与捕获同时存在的实例分析" class="headerlink" title="冒泡与捕获同时存在的实例分析"></a>冒泡与捕获同时存在的实例分析</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">window.onload = function () &#123;</span><br><span class="line">    document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,true);</span><br><span class="line">    document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">    document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还是上面的实例，我们将box1，与box2的事件类型设为捕获，box3设置为冒泡，然后点击box3时，发现三个点击事件的执行顺序为box1——box3——box2<br>点击box3，dom往目标节点捕获前进，遇到注册的捕获事件立即触发执行，于是输出box1，前进到box2，但box2的捕获事件并没有被注册所以box2的事件函数不执行，于是前进到目标节点box3，执行冒泡，输出box3，冒泡到box3父节点的注册事件，输出box2</p>
-]]></content>
-  </entry>
-  <entry>
     <title>React Hooks学习笔记</title>
     <url>/2022/03/29/date220329/</url>
     <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h5 id="类组件的缺点："><a href="#类组件的缺点：" class="headerlink" title="类组件的缺点："></a>类组件的缺点：</h5><ul>
 <li>大型组件很难差分和重构</li>
 <li>业务逻辑分散在组件的各个方法中，导致重复逻辑或关联逻辑</li>
-<li>组件类引入了复杂的编程模式，比如render props和高阶组件<h3 id="useState-状态钩子"><a href="#useState-状态钩子" class="headerlink" title="useState() 状态钩子"></a>useState() 状态钩子</h3><h5 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h5><code>const [状态名，更改状态方法名]=useState(状态初始值)</code><h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export default function  Button()  &#123;</span><br><span class="line">  const  [buttonText, setButtonText] =  useState(&quot;Click me,   please&quot;);</span><br><span class="line"></span><br><span class="line">  function handleClick()  &#123;</span><br><span class="line">    return setButtonText(&quot;Thanks, been clicked!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return  &lt;button  onClick=&#123;handleClick&#125;&gt;&#123;buttonText&#125;&lt;/button&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="useContext-共享状态钩子"><a href="#useContext-共享状态钩子" class="headerlink" title="useContext() 共享状态钩子"></a>useContext() 共享状态钩子</h3><h5 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h5></li>
+<li>组件类引入了复杂的编程模式，比如render props和高阶组件<h3 id="useState-状态钩子"><a href="#useState-状态钩子" class="headerlink" title="useState() 状态钩子"></a>useState() 状态钩子</h3></li>
 </ul>
-<p>1.组件外部建立一个Context<br><code>const AppContext = React.createContext(&#123;&#125;)</code><br>2.在要共享状态的组件内部声明状态<br><code>const &#123; 状态名称 &#125; = useContext(AppContext)</code><br>3.状态提升-父组件</p>
+<span id="more"></span>
+
+<h5 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h5><p><code>const [状态名，更改状态方法名]=useState(状态初始值)</code></p>
+<h5 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export default function  Button()  &#123;</span><br><span class="line">  const  [buttonText, setButtonText] =  useState(&quot;Click me,   please&quot;);</span><br><span class="line"></span><br><span class="line">  function handleClick()  &#123;</span><br><span class="line">    return setButtonText(&quot;Thanks, been clicked!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return  &lt;button  onClick=&#123;handleClick&#125;&gt;&#123;buttonText&#125;&lt;/button&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="useContext-共享状态钩子"><a href="#useContext-共享状态钩子" class="headerlink" title="useContext() 共享状态钩子"></a>useContext() 共享状态钩子</h3><h5 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h5><p>1.组件外部建立一个Context<br><code>const AppContext = React.createContext(&#123;&#125;)</code><br>2.在要共享状态的组件内部声明状态<br><code>const &#123; 状态名称 &#125; = useContext(AppContext)</code><br>3.状态提升-父组件</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">  状态名: 初始值</span><br><span class="line">&#125;&#125;&gt;</span><br><span class="line">  &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">    &lt;共享状态子组件一/&gt;</span><br><span class="line">    &lt;共享状态子组件二/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/AppContext.Provider&gt;</span><br></pre></td></tr></table></figure>
 <h5 id="实例"><a href="#实例" class="headerlink" title="实例:"></a>实例:</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useContext &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const AppContext = React.createContext(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">//Navbar与Message组件共享状态</span><br><span class="line"></span><br><span class="line">const Navbar = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;navbar&quot;&gt;</span><br><span class="line">      &lt;p&gt;AwesomeSite&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;&#123;username&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const Messages = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;messages&quot;&gt;</span><br><span class="line">      &lt;h1&gt;Messages&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;1 message for &#123;username&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p className=&quot;message&quot;&gt;useContext is awesome!&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">      username: &#x27;superawesome&#x27;</span><br><span class="line">    &#125;&#125;&gt;</span><br><span class="line">      &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">        &lt;Navbar /&gt;</span><br><span class="line">        &lt;Messages /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/AppContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
 <h3 id="useReducer-action钩子"><a href="#useReducer-action钩子" class="headerlink" title="useReducer() action钩子"></a>useReducer() action钩子</h3><h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>引入Reducer功能<br><code>const [state, dispatch] = useReducer(reducer, initialState);</code></p>
@@ -596,6 +583,24 @@
 <h5 id="实例：-2"><a href="#实例：-2" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true); </span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId])</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">    &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="创建自己的hooks"><a href="#创建自己的hooks" class="headerlink" title="创建自己的hooks"></a>创建自己的hooks</h3><h5 id="上述所有hooks可以灵活搭配，变成一个自定义的hook"><a href="#上述所有hooks可以灵活搭配，变成一个自定义的hook" class="headerlink" title="上述所有hooks可以灵活搭配，变成一个自定义的hook"></a>上述所有hooks可以灵活搭配，变成一个自定义的hook</h5><h5 id="实例：-3"><a href="#实例：-3" class="headerlink" title="实例："></a>实例：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState, useEffect &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const usePerson = personId =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true);</span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId]);</span><br><span class="line">  return [loading, person];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, person] = usePerson(personId);</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [show, setShow] = useState(&quot;1&quot;);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;Person personId=&#123;show&#125; /&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        Show:</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;1&quot;)&#125;&gt;Luke&lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;2&quot;)&#125;&gt;C-3PO&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
 
+]]></content>
+  </entry>
+  <entry>
+    <title>事件冒泡，事件捕获</title>
+    <url>/2022/03/31/date220331/</url>
+    <content><![CDATA[<h5 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h5><p>分别由微软和NetScape提出，事件冒泡由下之上，从最小节点往上触发事件。捕获反之。</p>
+<h5 id="关于addEventListener"><a href="#关于addEventListener" class="headerlink" title="关于addEventListener"></a>关于addEventListener</h5><p>W3C中和了事件冒泡和事件捕获，addEventListener方法中提供了三个参数，第一个是需要绑定的事件名称，第二个是触发事件后要执行的函数，第三个则是该事件是冒泡还是捕获，默认false为冒泡</p>
+<span id="more"></span>
+
+<h5 id="当冒泡与捕获同时存在"><a href="#当冒泡与捕获同时存在" class="headerlink" title="当冒泡与捕获同时存在"></a>当冒泡与捕获同时存在</h5><ul>
+<li>非目标节点先执行捕获再冒泡</li>
+<li>对于目标节点执行先注册的事件</li>
+</ul>
+<h5 id="冒泡与捕获的实例"><a href="#冒泡与捕获的实例" class="headerlink" title="冒泡与捕获的实例"></a>冒泡与捕获的实例</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">     #box1&#123;</span><br><span class="line">        width: 300px;</span><br><span class="line">        height: 300px;</span><br><span class="line">        background: pink;</span><br><span class="line">    &#125;</span><br><span class="line">    #box2&#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: gainsboro;</span><br><span class="line">    &#125;</span><br><span class="line">    #box3&#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        background: blanchedalmond;</span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">       &lt;div id=&quot;box1&quot; class=&quot;box1&quot;&gt; </span><br><span class="line">            box1 </span><br><span class="line">            &lt;div id=&quot;box2&quot; class=&quot;box2&quot;&gt;  </span><br><span class="line">            box2</span><br><span class="line">                &lt;div id=&quot;box3&quot;&gt;box3&lt;/div&gt;  </span><br><span class="line">       &lt;/div&gt;  </span><br><span class="line">   &lt;/div&gt; </span><br><span class="line">        &lt;script&gt;</span><br><span class="line">          window.onload = function () &#123;</span><br><span class="line">            document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,);</span><br><span class="line">            document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">            document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>如上，我们为每个box绑定点击事件，当事件类型为冒泡，那么当我们点击最小的元素box3，事件执行的顺序为box3——box2——box1，当事件类型为捕获时，执行顺序反之</p>
+<p>在实际应用中，表格中遇到这种情况比较多，比如tr-&gt;td-&gt;span,假设我们在每个元素上都绑定了点击事件，那么在点击某元素的时候，该元素的父元素点击事件都会执行，此时我们需要在该元素的事件执行函数里加入event.stopPropagation()方法来阻止事件向上冒泡。</p>
+<h5 id="冒泡与捕获同时存在的实例分析"><a href="#冒泡与捕获同时存在的实例分析" class="headerlink" title="冒泡与捕获同时存在的实例分析"></a>冒泡与捕获同时存在的实例分析</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">window.onload = function () &#123;</span><br><span class="line">    document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,true);</span><br><span class="line">    document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">    document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还是上面的实例，我们将box1，与box2的事件类型设为捕获，box3设置为冒泡，然后点击box3时，发现三个点击事件的执行顺序为box1——box3——box2<br>点击box3，dom往目标节点捕获前进，遇到注册的捕获事件立即触发执行，于是输出box1，前进到box2，但box2的捕获事件并没有被注册所以box2的事件函数不执行，于是前进到目标节点box3，执行冒泡，输出box3，冒泡到box3父节点的注册事件，输出box2</p>
 ]]></content>
   </entry>
   <entry>
