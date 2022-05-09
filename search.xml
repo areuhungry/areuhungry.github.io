@@ -1,254 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>welcome to my zone</title>
-    <url>/2019/08/15/note1/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
-<p>欢迎来到AreUhungry的个人博客，该博客创建于2019年8月15日一个风和日丽的下午，以后博客会不定期更新一些个人的生活状态和学习笔记，如果机缘巧合翻到这个网站实属荣幸，留下你的足迹一人送博主五个油腻么么哒。</p>
-</blockquote>
-<h3 id="Tip"><a href="#Tip" class="headerlink" title="Tip:"></a>Tip:</h3><blockquote>
-<p><em>小女拙见如与阁下观点不胜雷同还望多多包涵，所po内容引起不适请点击右上角x</em>。</p>
-</blockquote>
-]]></content>
-  </entry>
-  <entry>
-    <title>阶段性学习笔记（二）</title>
-    <url>/2022/05/09/date220506/</url>
-    <content><![CDATA[<h4 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h4><p>以后一些知识点不是很多的内容将逐渐以综合笔记的形式出现，主要还想在cv记录知识点的同时写一些自己的理解，还有就是很多碰到的知识点都是一些细碎的东西，实在没必要为了凑文章水内容orz…<br>本章概览：</p>
-<blockquote>
-<p>1.flat数据结构转为tree结构<br>2.reduce方法小记<br>3.逗号运算符和优雅数组去重<br>4.react的优化操作</p>
-</blockquote>
-<span id="more"></span>
-<h4 id="扁平数组转为树状数组"><a href="#扁平数组转为树状数组" class="headerlink" title="扁平数组转为树状数组"></a>扁平数组转为树状数组</h4><p>来源于刷博客看到的一道题</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let data = [</span><br><span class="line">  &#123; id: 1, name: &quot;部门1&quot;, pid: 0 &#125;,</span><br><span class="line">  &#123; id: 2, name: &quot;部门2&quot;, pid: 1 &#125;,</span><br><span class="line">  &#123; id: 3, name: &quot;部门3&quot;, pid: 1 &#125;,</span><br><span class="line">  &#123; id: 4, name: &quot;部门4&quot;, pid: 3 &#125;,</span><br><span class="line">  &#123; id: 5, name: &quot;部门5&quot;, pid: 4 &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-<p>要求是将上面的数组转为有父子包含关系的树状结构，类似[{id:1,name:””,pid:0,children:[ { id: 2, name: “部门2”, pid: 1 }]。其中pid代表父节点。<br>之前项目做面包屑的时候其实处理过类似的数据，当时用的就是递归，时隔良久再写已经想不起当时的写法了，胡乱一通操作循环套循环，勉强算是得到了想要的结果….是真的菜（其实没有深度思考就去看了答案，不提倡）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">const getChildren = (data, result, pid) =&gt; &#123;</span><br><span class="line">  for (const item of data) &#123;</span><br><span class="line">    if (item.pid === pid) &#123;</span><br><span class="line">      const newItem = &#123;...item, children: []&#125;;</span><br><span class="line">      result.push(newItem);</span><br><span class="line">      getChildren(data, newItem.children, item.id);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const arrayToTree = (data, pid) =&gt; &#123;</span><br><span class="line">  const result = [];</span><br><span class="line">  getChildren(data, result, pid)</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面写法的主要思路就是将children数组里面的通过递归层层push进去<br>当然，递归的时间复杂度自然很高….但确实没想到别的比较好的方法</p>
-<p>然后去看了一下别人的解答思路，object转Map</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function arrayToTree(data,rootId) &#123;</span><br><span class="line">  const result = [];   // 存放结果集</span><br><span class="line">  const itemMap = &#123;&#125;;  // </span><br><span class="line">    </span><br><span class="line">  // 先转成map存储</span><br><span class="line">  for (const item of items) &#123;</span><br><span class="line">    itemMap[item.id] = &#123;...item, children: []&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  //循环结果</span><br><span class="line">  //itemMap=&#123;</span><br><span class="line">  //    1:&#123;id: 1, name: &#x27;部门1&#x27;, pid: 0,children: []&#125;,</span><br><span class="line">  //    2:&#123;id: 2, name: &#x27;部门2&#x27;, pid: 1,children: []&#125;,</span><br><span class="line">  //    3:&#123;id: 3, name: &#x27;部门3&#x27;, pid: 1,children: []&#125;,</span><br><span class="line">  //    4:&#123;id: 4, name: &#x27;部门4&#x27;, pid: 3,children: []&#125;,</span><br><span class="line">  //    5:&#123;id: 5, name: &#x27;部门5&#x27;, pid: 4,children: []&#125;</span><br><span class="line">  //   &#125;</span><br><span class="line"> </span><br><span class="line">  for (const item of data) &#123;</span><br><span class="line">        const id = item.id;</span><br><span class="line">        const pid = item.pid; </span><br><span class="line">        const treeItem =  itemMap[id];</span><br><span class="line">        if (pid === rootId) &#123; </span><br><span class="line">          result.push(treeItem); </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          if (!itemMap[pid]) &#123;</span><br><span class="line">            itemMap[pid] = &#123;</span><br><span class="line">              children: [],</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          itemMap[pid].children.push(treeItem)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>另外还看到了两种代码比较简洁的解法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  const items: Array&lt;Base&gt; = [</span><br><span class="line">    &#123; id: 1, name: &quot;部门1&quot;, pid: 0 &#125;,</span><br><span class="line">    &#123; id: 2, name: &quot;部门2&quot;, pid: 1 &#125;,</span><br><span class="line">    &#123; id: 3, name: &quot;部门3&quot;, pid: 1 &#125;,</span><br><span class="line">    &#123; id: 4, name: &quot;部门4&quot;, pid: 3 &#125;,</span><br><span class="line">    &#123; id: 5, name: &quot;部门5&quot;, pid: 4 &#125;</span><br><span class="line">  ];</span><br><span class="line"> </span><br><span class="line">   interface Base &#123;</span><br><span class="line">     id:number;</span><br><span class="line">     name:string;</span><br><span class="line">     pid:number;</span><br><span class="line">     children?:object;</span><br><span class="line">   &#125;</span><br><span class="line">   //第一种</span><br><span class="line">   const toTree = (_arr:Array&lt;Base&gt;): Array&lt;Base&gt;=&gt;&#123;</span><br><span class="line">     return _arr.map(item=&gt;&#123;</span><br><span class="line">       item.children = _arr.filter(v=&gt;v.pid === item.id);</span><br><span class="line">        return item;</span><br><span class="line">     &#125;).filter(item=&gt;!item.pid);</span><br><span class="line">   &#125;</span><br><span class="line">   //第二种</span><br><span class="line">    const arrayToTree=(data, pid)=&gt; &#123;</span><br><span class="line">    return data.reduce((pre, next) =&gt; &#123;</span><br><span class="line">      if (next.pid === pid) &#123;</span><br><span class="line">        next.children = arrayToTree(data, next.id);</span><br><span class="line">        pre.push(next);</span><br><span class="line">      &#125;</span><br><span class="line">      return pre;</span><br><span class="line">    &#125;, []);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>看了n种比较优秀的解法，在自己尝试的过程中有一个困惑，上述写法我认为的输出结果应该是一层树状结果，结果在第一次尝试打印结果集的时候就是最终输出的树状结构了隐隐约约觉得可能会是二次循环放入子节点的时候会改变第一次循环已经改变过的数据源（只能这样解释..）。</p>
-<p>后续…翻到了这样一条评论与我的解释我的困惑</p>
-<blockquote>
-<p>@rossroma9466：原来是利用了对象是引用类型这一属性，代码是简洁的，但不能算“阅读性强”。因为它利用的是隐式特性，并没有显示的声明，容易让阅读者遗漏掉这一点。eslint的语法规范中，也有强调不建议在函数中去修改参数。eslint.bootcss.com</p>
-</blockquote>
-<p>去补习了一下js的知识，解释上面的疑惑<br>首先 <strong>js分为基本类型和引用类型</strong></p>
-<blockquote>
-<p>基本类型：Underfined ,Null, Boolean,Number,String<br>引用类型： Object，Array，Date，Function</p>
-</blockquote>
-<p>其次，<strong>直接将引用类型赋值获取到的是原变量的引用</strong>，也就是说即使你把一个引用对象重新赋值给一个新变量，只是相当于声明这个新变量的数据源地址为引用对象，并没有把数据重新复制一份。这也解释了为什么我们在每次从后端返回一个操作节点对象的时候要用Object.assign()方法copy一份后再做修改，因为这样不会对原数据造成污染，引起不必要的错误。<br>如此我们就可以解释上述输出结果为什么能得到题目想要的输出结果，因为在对item赋值的过程中，实际就已经改变了我们入参中的data，这也导致为什么我在第一次循环中打印data就是最终结果，因为对子项的重复值已经污染数据源。</p>
-<h4 id="关于Array-proptotype-reduce"><a href="#关于Array-proptotype-reduce" class="headerlink" title="关于Array.proptotype.reduce()"></a>关于Array.proptotype.reduce()</h4><h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>reduce其实早有耳闻，之前只是初步了解了一下。知道reduce是一个累加器，可以做数组中所有数字的sum,但业务逻辑中没有碰到需要使用累加器的，直到遇到上面扁平转树状的一个解法，将children层层放入parent下利用reduce累计最终结果。是时候深入了解一波reduce了…</p>
-<h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Arrow function</span><br><span class="line">reduce((previousValue, currentValue) =&gt; &#123; /* ... */ &#125; )</span><br><span class="line">reduce((previousValue, currentValue, currentIndex) =&gt; &#123; /* ... */ &#125; )</span><br><span class="line">reduce((previousValue, currentValue, currentIndex, array) =&gt; &#123; /* ... */ &#125; )</span><br><span class="line">reduce((previousValue, currentValue, currentIndex, array) =&gt; &#123; /* ... */ &#125;, initialValue)</span><br><span class="line"></span><br><span class="line">// Callback function</span><br><span class="line">reduce(callbackFn)</span><br><span class="line">reduce(callbackFn, initialValue)</span><br><span class="line"></span><br><span class="line">// Inline callback function</span><br><span class="line">reduce(function(previousValue, currentValue) &#123; /* ... */ &#125;)</span><br><span class="line">reduce(function(previousValue, currentValue, currentIndex) &#123; /* ... */ &#125;)</span><br><span class="line">reduce(function(previousValue, currentValue, currentIndex, array) &#123; /* ... */ &#125;)</span><br><span class="line">reduce(function(previousValue, currentValue, currentIndex, array) &#123; /* ... */ &#125;, initialValue)</span><br></pre></td></tr></table></figure>
-<p>计算累加值</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//引用语法</span><br><span class="line">//reduce((previousValue, currentValue, currentIndex, array) =&gt; &#123; /* ... */ &#125;, //initialValue)</span><br><span class="line">const initialValue=0</span><br><span class="line">const arr = [1,2,3,4,5]</span><br><span class="line">const sum = arr.reduce((t,v)=&gt;t+v);</span><br><span class="line">//等于</span><br><span class="line">const sum = arr.reduce((t,v)=&gt;t+v,0);</span><br></pre></td></tr></table></figure>
-<p>很多例子还写了用reduce实现flat，filter，some，every等es方法，个人觉得可以作为思维拓展，但是真正使用的时候还是不要为了用reduce而去写reduce。。。</p>
-<h4 id="逗号运算符-amp-amp-优雅数组去重"><a href="#逗号运算符-amp-amp-优雅数组去重" class="headerlink" title="逗号运算符&amp;&amp;优雅数组去重"></a>逗号运算符&amp;&amp;优雅数组去重</h4><p>逗号操作符：对它的每个操作数求值（从左到右），并返回最后一个操作数的值。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let x = 1;</span><br><span class="line"></span><br><span class="line">x = (x++, x);</span><br><span class="line"></span><br><span class="line">console.log(x);</span><br><span class="line">// expected output: 2</span><br><span class="line"></span><br><span class="line">x = (2, 3);</span><br><span class="line"></span><br><span class="line">console.log(x);</span><br><span class="line">// expected output: 3</span><br></pre></td></tr></table></figure>
-<p>利用Set的特性去重，Set 是唯一值的集合。每个值在 Set 中只能出现一次。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const unique = arr =&gt; [...new Set(arr)] </span><br></pre></td></tr></table></figure>
-<h4 id="react的优化操作"><a href="#react的优化操作" class="headerlink" title="react的优化操作"></a>react的优化操作</h4><h5 id="props-传多个值写法优化"><a href="#props-传多个值写法优化" class="headerlink" title="props 传多个值写法优化"></a>props 传多个值写法优化</h5><p>传统写法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const &#123;dataOne,dataTwo,dataThree&#125; = this.state</span><br><span class="line">&lt;Com dataOne=&#123;dataOne&#125; dataTwo=&#123;dataTwo&#125; dataThree=&#123;dataThree&#125;&gt;</span><br></pre></td></tr></table></figure>
-<p>复制代码升级写法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Com &#123;...&#123;dataOne,dataTwo,dataThree&#125;&#125;&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="异常边界"><a href="#异常边界" class="headerlink" title="异常边界"></a>异常边界</h5><p>报错组件不会影响到其他组件的显示</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class ErrorBoundary extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      hasError: false,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  static getDerivedStateFromError(error) &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      hasError: true,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidCatch(error, errorInfo) &#123;</span><br><span class="line">    // 可以在这里上报错误日志</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    if (this.state.hasError) &#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;Result</span><br><span class="line">          status=&quot;error&quot;</span><br><span class="line">          title=&quot;哇哦，出现了错误&quot;</span><br><span class="line">          subTitle=&quot;请联系管理员&quot;</span><br><span class="line">        &gt;&lt;/Result&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    return this.props.children;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default ErrorBoundary;</span><br><span class="line">// 定义一个组件</span><br><span class="line">const Child = () =&gt; &#123;</span><br><span class="line">  return &lt;div&gt;子组件&lt;/div&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在父页面使用异常边界组件</span><br><span class="line">const Parent = () =&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return &lt;&gt;</span><br><span class="line">    &lt;ErrorBoundary&gt;&lt;Child/&gt;&lt;/ErrorBoundary&gt;</span><br><span class="line">    &lt;ErrorBoundary&gt;&lt;Child2/&gt;&lt;/ErrorBoundary&gt;</span><br><span class="line">    &lt;ErrorBoundary&gt;&lt;Child3/&gt;&lt;/ErrorBoundary&gt;</span><br><span class="line">  &lt;/&gt;</span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>PS：异常组件不能捕获被包裹组件中调用的异步操作中的错误</p>
-<h5 id="异步操作中状态批量更新"><a href="#异步操作中状态批量更新" class="headerlink" title="异步操作中状态批量更新"></a>异步操作中状态批量更新</h5><p>react中的状态更新往往是批量的，但是在异步操作中不会批量操作，所以需要用到unstable_batchedUpdates将异步操作中的状态更新包裹起来</p>
-<p><strong>示例代码：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">handerClick=()=&gt;&#123;</span><br><span class="line">    setTimeout(() =&gt; &#123;</span><br><span class="line">        unstable_batchedUpdates(()=&gt;&#123;</span><br><span class="line">            this.setState(&#123; a:a+1 &#125;)</span><br><span class="line">            this.setState(&#123; b:b+1 &#125;)</span><br><span class="line">            this.setState(&#123; c:c+1 &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;, 0)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
-    <title>阶段性学习笔记（一）</title>
-    <url>/2022/04/27/date220427/</url>
-    <content><![CDATA[<h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>本章重点：</p>
-<blockquote>
-<p>1.React18的优化<br>2.React.memo与React.PureComponent用法及异同<br>3.自己写了一个hook<br>4.一些tips，关于es6空值判断，数组合并，html空格表达<br>5.antd Input使用过程遇到的bug<br>6.一些没什么卵用的废话</p>
-</blockquote>
-<p>这段时间没有接触到什么新的技术栈，一直在优化重构项目，plume2+immutable写了一遍，发现ts+这俩会让状态的管理繁琐到爆炸。于是参阅了大量项目标品的写法，结合之前的项目，百思不得其解为什么标品中所有的数据都用store来储存，模块之间并没有繁重的层层嵌套或高阶组件，完全可以用props实现数据传递。费解….。</p>
-<span id="more"></span>
-<p>在被immutable的繁琐语法折磨到苦不堪言的时候，我又去看了之前项目用的immer.js，是的，我只有这个时候才想起immer的好…于是不禁吐槽，同样是防止数据被篡改，immer果然短小精悍。<br>介于我如此唾弃标品的“代码规范”遂果断抛弃plume2+immutable，改用类组件重构，然后我惊喜的发现…因为用immer.js太久，我已经忘了原生的setState要怎么修改对象中属性值，真行（咬牙切齿.jpg），我又去复习了一遍</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//类组件更新状态-对象属性值</span><br><span class="line">function onChange(name,value)&#123;</span><br><span class="line">    const obj=Object.assign(&#123;&#125;,this.state.obj);</span><br><span class="line">    const obj[name]=value;</span><br><span class="line">    this.setState(&#123;this.state.obj:obj)</span><br><span class="line">&#125;</span><br><span class="line">//函数组件更新状态-对象属性值</span><br><span class="line">const onChange=(name,value)&#123;</span><br><span class="line">    setValue(&#123;...obj,[name]:value&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>重写一遍后又想起了函数式组件，hooks不是学了吗，那你倒是用起来啊！！！<br>写的过程中开始逐渐理解为什么react社区推崇函数式组件，对于简单数据的更新，hooks提供的钩子函数要比类组件实现同样的功能代码简洁很多。在一次次的重构过程中学到了很多新的知识点⬇</p>
-<h3 id="React18的优化"><a href="#React18的优化" class="headerlink" title="React18的优化"></a>React18的优化</h3><h4 id="1-transition"><a href="#1-transition" class="headerlink" title="1.transition"></a>1.transition</h4><p><strong>参考文章：</strong><br><a href="https://juejin.cn/post/7027995169211285512">「React18新特性」深入浅出用户体验大师—transition</a><br><a href="https://juejin.cn/post/7038402899860258847">漫谈 React 系列(四): React18 自己的防抖节流 - useTransition</a><br><strong>前言：</strong><br>transition的出现是为了解决多个状态更新的优先级问题，业务场景中有一个很常见的例子，例如在搜索框中键入字值列表需要同步展示包含关键字的item，如果此时把这两个更新任务放在一起，当输入框连续输入值，把列表更新的任务放在输入框后面，就会造成页面异常卡顿。<br>上述问题通常我们的解决思路，一，防抖，在用户输入完成时更新状态再进行列表搜索，二，节流，在一定时间后更新状态，但是两者都会造成一定程度的性能降低<br><strong>startTransition：</strong><br>来划分任务的优先级优化用户体验。不是那么紧急的任务包裹在该函数里，上述实例中，列表的搜索更新就可以放在该函数中。<br><strong>useTransition：</strong><br>useTransition定义了一个函数钩子，包括startTransition和一个等待状态值isPending，如果我们需要获取到startTransition函数中提供的数据源才允许用户操作，就可以用isPending来判断组件是否要处于禁用状态，当然这只是一个很小的应用场景，具体更多的应用场景还需要在项目中不断实践总结</p>
-<h4 id="2-Suspense"><a href="#2-Suspense" class="headerlink" title="2.Suspense"></a>2.Suspense</h4><p>描述：类似骨架屏的概念，将未准备好的组件用Suspense嵌套优先加载已经准备好的组件，是loading状态的“平价替换”<br>实例：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Suspense fallback=&#123;&lt;Loading/&gt;&#125;&gt;</span><br><span class="line">    &lt;MyComponent myData=&#123;myData&#125;/&gt;</span><br><span class="line">&lt;/Suspense&gt;</span><br></pre></td></tr></table></figure>
-
-<h3 id="React-memo与React-PureComponent"><a href="#React-memo与React-PureComponent" class="headerlink" title="React.memo与React.PureComponent"></a>React.memo与React.PureComponent</h3><p><strong>前言：</strong><br>React.memo是在看React18特性时候了解的，PureComponent是项目中遇到的，去查阅资料了解了一下，都是react16推出的，因为实际项目中都是秉承着能用就行，极少去优化性能，所以对此方面的知识并不熟悉。汗颜。。。<br><strong>memo:</strong><br>memo定义了两个传入参数，第一个是需要优化的组件，第二个是与之相比较的组件。其原理是用Object.is进行浅比较。官方的解释是</p>
-<blockquote>
-<p>如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 React.memo 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。<br>React.memo仅检查props更改。如果你封装的函数组件在其实现中React.memo有一个useState,useReducer或useContextHook ，它仍然会在状态或上下文发生变化时重新渲染。</p>
-</blockquote>
-<p><strong>React.PureComponent：</strong><br>相当于自带shouldComponentUpdate的Component类<br><strong>共同点：</strong><br>都是为减少不必要的组件更新渲染，提高性能<br><strong>不同点：</strong><br>类型，memo是函数，PureComponent是类<br>应用场景，memo用在函数组件中，PureComponent用在类组件中<br><strong>实例：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//React.memoy</span><br><span class="line">function Child(&#123;seconds&#125;)&#123;</span><br><span class="line">    console.log(&#x27;I am rendering&#x27;);</span><br><span class="line">    return (</span><br><span class="line">        &lt;div&gt;I am update every &#123;seconds&#125; seconds&lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;;</span><br><span class="line">export default React.memo(Child);</span><br><span class="line"></span><br><span class="line">//React.PureComponent</span><br><span class="line">class Child extends React.PureComponent &#123;</span><br><span class="line">    render()&#123;</span><br><span class="line">        console.log(&#x27;I am rendering&#x27;);</span><br><span class="line">        return (</span><br><span class="line">            &lt;div&gt;I am update every &#123;this.props.seconds&#125; seconds&lt;/div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="自定义一个hook"><a href="#自定义一个hook" class="headerlink" title="自定义一个hook"></a>自定义一个hook</h3><p>写hook也有一段时间，一直在用封装好的hook没有自己写过，写项目过程中发现有很多重复的逻辑所以打算自己尝试写一个hook<br><strong>前言：</strong> 据react hooks约定，自定义hook需要遵守</p>
-<blockquote>
-<p>const […返回]=useXxx(参数一，参数二)</p>
-</blockquote>
-<p>其次我们要知道hooks的出现是为了提高代码的复用率，减少不必要的重复代码，所以抽取公共逻辑/组件就变成了我们在写一个自定义hooks中重要的一环。<br><strong>业务逻辑描述：</strong> 这是我在项目中遇到的一个需求，大致是要写n个内容不同的form，然后实现表单内容修改提交。<br><strong>需求分析：</strong> 根据上述需求，我们先明确什么是公共部分（作为useXxxx函数内部必要的嵌套部分），什么是需要差异化的值（作为参数传入函数内部）,什么是需要外部需要的值（作为返回）</p>
-<p>根据这个思路我们可以将useXxxx写为</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line">import &#123; Form, Input, InputNumber, Button &#125; from &quot;antd&quot;;</span><br><span class="line"></span><br><span class="line">const useForm = (dataSource) =&gt; &#123;</span><br><span class="line">  const [node, setNode] = useState(dataSource);</span><br><span class="line">  const elements = node ? Object.entries(node) : [];</span><br><span class="line">  const children = (type) =&gt; &#123;</span><br><span class="line">    let view = null;</span><br><span class="line">    switch (typeof type) &#123;</span><br><span class="line">      case &quot;number&quot;:</span><br><span class="line">        view = &lt;InputNumber /&gt;;</span><br><span class="line">        break;</span><br><span class="line">      default:</span><br><span class="line">        view = &lt;Input /&gt;;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return view;</span><br><span class="line">  &#125;;</span><br><span class="line">  const onFinish = (values) =&gt; &#123;</span><br><span class="line">    setNode(values);</span><br><span class="line">  &#125;;</span><br><span class="line">  const view = (</span><br><span class="line">    &lt;Form onFinish=&#123;onFinish&#125; initialValues=&#123;dataSource&#125;&gt;</span><br><span class="line">      &#123;elements.map((item, key) =&gt; &#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;Form.Item name=&#123;item[0]&#125; label=&#123;item[0]&#125;&gt;</span><br><span class="line">            &#123;children(item[1])&#125;</span><br><span class="line">          &lt;/Form.Item&gt;</span><br><span class="line">        );</span><br><span class="line">      &#125;)&#125;</span><br><span class="line">      &lt;Button type=&quot;primary&quot; htmlType=&quot;submit&quot;&gt;</span><br><span class="line">        保存</span><br><span class="line">      &lt;/Button&gt;</span><br><span class="line">    &lt;/Form&gt;</span><br><span class="line">  );</span><br><span class="line">  return [view, node];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>引用这个hook</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import &#123; useForm &#125; from &quot;./useForm&quot;;</span><br><span class="line"></span><br><span class="line">export default function App()&#123;</span><br><span class="line">  const data = &#123; name: &quot;123&quot;, age: 0 &#125;;</span><br><span class="line">  const [view, res] = useForm(data);</span><br><span class="line">  console.log(&quot;res&quot;,res);</span><br><span class="line">  return &lt;div className=&quot;App&quot;&gt;&#123;view&#125;&lt;/div&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>通过代码部分我们可以看到该hook实现了以下功能</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    输入-数据源object --&gt; useForm --&gt; 输出-表单组件&amp;保存后的值</span><br></pre></td></tr></table></figure>
-<p>ps：上面的例子只是在理想情况下的一种数据假设，在项目中，表单的子项可能会根据业务需求搭配各种组件，在这种情况下我们通过判断属性类型来定义FormItem中的组件就不太适用了，所以建议将输入的data类型搭配ts重组，以便于通用hook的实现</p>
-<h3 id="其他tips"><a href="#其他tips" class="headerlink" title="其他tips"></a>其他tips</h3><h4 id="ES6空值合并运算符"><a href="#ES6空值合并运算符" class="headerlink" title="ES6空值合并运算符"></a>ES6空值合并运算符</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(value !== null &amp;&amp; value !== undefined &amp;&amp; value !== &#x27;&#x27;)&#123;</span><br><span class="line">    //...</span><br><span class="line">&#125;</span><br><span class="line">//可以写成</span><br><span class="line">if((value??&#x27;&#x27;) !== &#x27;&#x27;)&#123;</span><br><span class="line">  //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="合并数组"><a href="#合并数组" class="headerlink" title="合并数组"></a>合并数组</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const a = [1,2,3];</span><br><span class="line">const b = [1,5,6];</span><br><span class="line">const c = a.concat(b);//[1,2,3,1,5,6]</span><br><span class="line"></span><br><span class="line">const obj1 = &#123;</span><br><span class="line">  a:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj2 = &#123;</span><br><span class="line">  b:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj = Object.assign(&#123;&#125;, obj1, obj2);//&#123;a:1,b:1&#125;</span><br><span class="line">//扩展运算符加去重</span><br><span class="line">const a = [1,2,3];</span><br><span class="line">const b = [1,5,6];</span><br><span class="line">const c = [...new Set([...a,...b])];//[1,2,3,5,6]</span><br><span class="line"></span><br><span class="line">const obj1 = &#123;</span><br><span class="line">  a:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj2 = &#123;</span><br><span class="line">  b:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj = &#123;...obj1,...obj2&#125;;//&#123;a:1,b:1&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="HTML中的空格表达"><a href="#HTML中的空格表达" class="headerlink" title="HTML中的空格表达"></a>HTML中的空格表达</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&amp;nbsp;字符：不断行的空白格，该空格占据的宽度受字体影响(一个字符宽度)。</span><br><span class="line">&amp;ensp;字符：相当全角状态键入半个“空格”键（半个汉字的宽度，一个字符宽度）。</span><br><span class="line">&amp;emsp;字符：相当全角状态键入“空格”键（1个汉字的宽度，两个字符宽度）。</span><br></pre></td></tr></table></figure>
-<h3 id="一个bug"><a href="#一个bug" class="headerlink" title="一个bug"></a>一个bug</h3><h5 id="bug描述：antd-FormItem-Input控件中校验最大值最小值出错"><a href="#bug描述：antd-FormItem-Input控件中校验最大值最小值出错" class="headerlink" title="bug描述：antd FormItem Input控件中校验最大值最小值出错"></a>bug描述：antd FormItem Input控件中校验最大值最小值出错</h5><h5 id="原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息"><a href="#原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息" class="headerlink" title="原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息"></a>原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息</h5><h5 id="代码如下："><a href="#代码如下：" class="headerlink" title="代码如下："></a>代码如下：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;FormItem</span><br><span class="line">          rules=&#123;[</span><br><span class="line">            &#123;</span><br><span class="line">              required: true,</span><br><span class="line">              message: &#x27;字段必填&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              type: &#x27;number&#x27;,</span><br><span class="line">              min: 0,</span><br><span class="line">              max: 100,</span><br><span class="line">              message: &#x27;只允许输入0~100之间的数字&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">          ]&#125;</span><br><span class="line">        &gt;</span><br><span class="line">          &lt;Input/&gt;</span><br><span class="line">        &lt;/FormItem&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="解决方案一-类型转换"><a href="#解决方案一-类型转换" class="headerlink" title="解决方案一:类型转换"></a>解决方案一:类型转换</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;FormItem</span><br><span class="line">    rules=&#123;[</span><br><span class="line">        &#123;</span><br><span class="line">            required: true,</span><br><span class="line">            message: &#x27;字段必填&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            type: &#x27;number&#x27;,</span><br><span class="line">            min: 0,</span><br><span class="line">            max: 100,</span><br><span class="line">            message: &#x27;只允许输入0~100之间的数字&#x27;,</span><br><span class="line">            transform: (value: string) =&gt; Number(value),</span><br><span class="line">        &#125;,</span><br><span class="line">    ]&#125;</span><br><span class="line">&gt;</span><br><span class="line">    &lt;Input/&gt;</span><br><span class="line">&lt;/FormItem&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="解决方案二-改用InputNumber"><a href="#解决方案二-改用InputNumber" class="headerlink" title="解决方案二:改用InputNumber"></a>解决方案二:改用InputNumber</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;FormItem</span><br><span class="line">    rules=&#123;[</span><br><span class="line">        &#123;</span><br><span class="line">            required: true,</span><br><span class="line">            message: &#x27;字段必填&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            type: &#x27;number&#x27;,</span><br><span class="line">            min: 0,</span><br><span class="line">            max: 100,</span><br><span class="line">            message: &#x27;只允许输入0~100之间的数字&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">    ]&#125;</span><br><span class="line">&gt;</span><br><span class="line">    &lt;InputNumber/&gt;</span><br><span class="line">&lt;/FormItem&gt;</span><br></pre></td></tr></table></figure>
-<p>造成困惑的根本原因还是对antd库的使用不熟。。。。</p>
-<h3 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h3><p>刚开始接触typescript的时候并没有觉得ts相比js有什么优势，因为平时工作中即使多人协作开发，也是自己写的方法自己用，所以开发者完全知道输入输出的数据类型，没有非约定类型不可的必要。而且总觉得弱类型里面声明类型是由简到繁的转变，于是typescript在项目中渐渐变成了anyscript…<br>直到最近看了一些react跟antd组件的源码，才发现原来像“天书”一样的源码都是基于ts编写的，以及在看源码的过程中被ts各种语法和工具类秀到头皮发麻，一个功能较为复杂的实现仅仅有2行ts代码，不禁感慨一句ts666。虽然源码还是有很多看不懂，不过在此过程中确实发现了ts的好处，类型的约定避免了框架或库在使用过程中一些不必要的错误</p>
-<h3 id="愿景"><a href="#愿景" class="headerlink" title="愿景"></a>愿景</h3><p> 目前对于很多技术栈框架还是停留在会用但不懂原理的阶段，有时候为了提高开发的效率，只是一味的追求摄取短平快的知识点，但也造成了过目就忘，出了bug无法快速定位原因所在的一些毛病。在以后的开发过程中，会开始尝试侧重提高代码的健壮性，不再是简单的代码输出器或者需求翻译官，会更多的去挖掘数据业务逻辑与视图的耦合度。逐渐做到知其然知其所以然…从学习typescript开始…
- </p>
-]]></content>
-  </entry>
-  <entry>
-    <title>事件冒泡，事件捕获</title>
-    <url>/2022/03/31/date220331/</url>
-    <content><![CDATA[<h4 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h4><p>分别由微软和NetScape提出，事件冒泡由下之上，从最小节点往上触发事件。捕获反之。</p>
-<h4 id="关于addEventListener"><a href="#关于addEventListener" class="headerlink" title="关于addEventListener"></a>关于addEventListener</h4><p>W3C中和了事件冒泡和事件捕获，addEventListener方法中提供了三个参数，第一个是需要绑定的事件名称，第二个是触发事件后要执行的函数，第三个则是该事件是冒泡还是捕获，默认false为冒泡</p>
-<h4 id="当冒泡与捕获同时存在"><a href="#当冒泡与捕获同时存在" class="headerlink" title="当冒泡与捕获同时存在"></a>当冒泡与捕获同时存在</h4><ul>
-<li>非目标节点先执行捕获再冒泡</li>
-<li>对于目标节点执行先注册的事件</li>
-</ul>
-<h4 id="冒泡与捕获的实例"><a href="#冒泡与捕获的实例" class="headerlink" title="冒泡与捕获的实例"></a>冒泡与捕获的实例</h4>   <span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">     #box1&#123;</span><br><span class="line">        width: 300px;</span><br><span class="line">        height: 300px;</span><br><span class="line">        background: pink;</span><br><span class="line">    &#125;</span><br><span class="line">    #box2&#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: gainsboro;</span><br><span class="line">    &#125;</span><br><span class="line">    #box3&#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        background: blanchedalmond;</span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">       &lt;div id=&quot;box1&quot; class=&quot;box1&quot;&gt; </span><br><span class="line">            box1 </span><br><span class="line">            &lt;div id=&quot;box2&quot; class=&quot;box2&quot;&gt;  </span><br><span class="line">            box2</span><br><span class="line">                &lt;div id=&quot;box3&quot;&gt;box3&lt;/div&gt;  </span><br><span class="line">       &lt;/div&gt;  </span><br><span class="line">   &lt;/div&gt; </span><br><span class="line">        &lt;script&gt;</span><br><span class="line">          window.onload = function () &#123;</span><br><span class="line">            document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,);</span><br><span class="line">            document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">            document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>如上，我们为每个box绑定点击事件，当事件类型为冒泡，那么当我们点击最小的元素box3，事件执行的顺序为box3——box2——box1，当事件类型为捕获时，执行顺序反之</p>
-<p>在实际应用中，表格中遇到这种情况比较多，比如tr-&gt;td-&gt;span,假设我们在每个元素上都绑定了点击事件，那么在点击某元素的时候，该元素的父元素点击事件都会执行，此时我们需要在该元素的事件执行函数里加入event.stopPropagation()方法来阻止事件向上冒泡。</p>
-<h5 id="冒泡与捕获同时存在的实例分析"><a href="#冒泡与捕获同时存在的实例分析" class="headerlink" title="冒泡与捕获同时存在的实例分析"></a>冒泡与捕获同时存在的实例分析</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">window.onload = function () &#123;</span><br><span class="line">    document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,true);</span><br><span class="line">    document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">    document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还是上面的实例，我们将box1，与box2的事件类型设为捕获，box3设置为冒泡，然后点击box3时，发现三个点击事件的执行顺序为box1——box3——box2<br>点击box3，dom往目标节点捕获前进，遇到注册的捕获事件立即触发执行，于是输出box1，前进到box2，但box2的捕获事件并没有被注册所以box2的事件函数不执行，于是前进到目标节点box3，执行冒泡，输出box3，冒泡到box3父节点的注册事件，输出box2</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>React Hooks学习笔记</title>
-    <url>/2022/03/29/date220329/</url>
-    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="类组件的缺点："><a href="#类组件的缺点：" class="headerlink" title="类组件的缺点："></a>类组件的缺点：</h4><ul>
-<li>大型组件很难差分和重构</li>
-<li>业务逻辑分散在组件的各个方法中，导致重复逻辑或关联逻辑</li>
-<li>组件类引入了复杂的编程模式，比如render props和高阶组件</li>
-</ul>
-<h3 id="useState-状态钩子"><a href="#useState-状态钩子" class="headerlink" title="useState() 状态钩子"></a>useState() 状态钩子</h3><h4 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h4><p><code>const [状态名，更改状态方法名]=useState(状态初始值)</code></p>
-  <span id="more"></span>
-<h4 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export default function  Button()  &#123;</span><br><span class="line">  const  [buttonText, setButtonText] =  useState(&quot;Click me,   please&quot;);</span><br><span class="line"></span><br><span class="line">  function handleClick()  &#123;</span><br><span class="line">    return setButtonText(&quot;Thanks, been clicked!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return  &lt;button  onClick=&#123;handleClick&#125;&gt;&#123;buttonText&#125;&lt;/button&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="useContext-共享状态钩子"><a href="#useContext-共享状态钩子" class="headerlink" title="useContext() 共享状态钩子"></a>useContext() 共享状态钩子</h3><h4 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h4><p>1.组件外部建立一个Context<br><code>const AppContext = React.createContext(&#123;&#125;)</code><br>2.在要共享状态的组件内部声明状态<br><code>const &#123; 状态名称 &#125; = useContext(AppContext)</code><br>3.状态提升-父组件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">  状态名: 初始值</span><br><span class="line">&#125;&#125;&gt;</span><br><span class="line">  &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">    &lt;共享状态子组件一/&gt;</span><br><span class="line">    &lt;共享状态子组件二/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/AppContext.Provider&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例:"></a>实例:</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useContext &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const AppContext = React.createContext(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">//Navbar与Message组件共享状态</span><br><span class="line"></span><br><span class="line">const Navbar = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;navbar&quot;&gt;</span><br><span class="line">      &lt;p&gt;AwesomeSite&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;&#123;username&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const Messages = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;messages&quot;&gt;</span><br><span class="line">      &lt;h1&gt;Messages&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;1 message for &#123;username&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p className=&quot;message&quot;&gt;useContext is awesome!&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">      username: &#x27;superawesome&#x27;</span><br><span class="line">    &#125;&#125;&gt;</span><br><span class="line">      &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">        &lt;Navbar /&gt;</span><br><span class="line">        &lt;Messages /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/AppContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
-<h3 id="useReducer-action钩子"><a href="#useReducer-action钩子" class="headerlink" title="useReducer() action钩子"></a>useReducer() action钩子</h3><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4><p>引入Reducer功能<br><code>const [state, dispatch] = useReducer(reducer, initialState);</code></p>
-<h4 id="实例：-1"><a href="#实例：-1" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useReducer &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const myReducer = (state, action) =&gt; &#123;</span><br><span class="line">  switch(action.type) &#123;</span><br><span class="line">    case(&#x27;countUp&#x27;):</span><br><span class="line">      return &#123;</span><br><span class="line">        ...state,</span><br><span class="line">        count: state.count + 1</span><br><span class="line">      &#125;</span><br><span class="line">    default:</span><br><span class="line">      return state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [state, dispatch] = useReducer(myReducer, &#123; count: 0 &#125;)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &#x27;countUp&#x27; &#125;)&#125;&gt;</span><br><span class="line">        +1</span><br><span class="line">      &lt;/button&gt;</span><br><span class="line">      &lt;p&gt;Count: &#123;state.count&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
-<h3 id="useEffect-副作用钩子"><a href="#useEffect-副作用钩子" class="headerlink" title="useEffect() 副作用钩子"></a>useEffect() 副作用钩子</h3><h4 id="语法：-2"><a href="#语法：-2" class="headerlink" title="语法："></a>语法：</h4><p>接受两个参数，第一个参数是一个函数，异步操作的代码放在里面。第二个参数是一个数组。是Effect的依赖项，只要这个数组发生变化，useEffect（）就会执行。若第二个参数省略，则组件每次渲染，就会执行useEffect</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">useEffect(()  =&gt;  &#123;</span><br><span class="line">  // Async Action</span><br><span class="line">&#125;, [dependencies])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h4 id="实例：-2"><a href="#实例：-2" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true); </span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId])</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">    &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="创建自己的hooks"><a href="#创建自己的hooks" class="headerlink" title="创建自己的hooks"></a>创建自己的hooks</h3><h4 id="上述所有hooks可以灵活搭配，变成一个自定义的hook"><a href="#上述所有hooks可以灵活搭配，变成一个自定义的hook" class="headerlink" title="上述所有hooks可以灵活搭配，变成一个自定义的hook"></a>上述所有hooks可以灵活搭配，变成一个自定义的hook</h4><h4 id="实例：-3"><a href="#实例：-3" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState, useEffect &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const usePerson = personId =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true);</span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId]);</span><br><span class="line">  return [loading, person];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, person] = usePerson(personId);</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [show, setShow] = useState(&quot;1&quot;);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;Person personId=&#123;show&#125; /&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        Show:</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;1&quot;)&#125;&gt;Luke&lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;2&quot;)&#125;&gt;C-3PO&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
-    <title>TypeScript学习笔记</title>
-    <url>/2022/03/23/date220323/</url>
-    <content><![CDATA[<h4 id="存在的意义"><a href="#存在的意义" class="headerlink" title="存在的意义"></a><strong>存在的意义</strong></h4><p>js无类型约束由于隐式转换的存在，使得很多方法的错误使用运行后才发现，造成了很多线上bug</p>
-<p><strong>特点</strong></p>
-<p>类型系统为静态类型，且为弱类型语言，包含跟js相同的隐式类型转换，ts在运行前需要编译为js，编译阶段会进行类型错误的检查，避免js引起的部分线上错误。ts完全兼容js，并支持es语法</p>
-<p><strong>语法</strong></p>
-<p>用冒号指定类型，前后有无空格都可以，与java类型声明不同的是，ts中变量在前，类型在后</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params">person: string</span>) </span>&#123;   </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, &#x27;</span> + person; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> user = <span class="string">&#x27;Tom&#x27;</span>; <span class="built_in">console</span>.log(sayHello(user));</span><br></pre></td></tr></table></figure>
-
-<p>PS：ts在编译成js的过程中，无论报错与否都会生成一个js文件</p>
-<span id="more"></span>
-
-<h4 id="原始数据类型"><a href="#原始数据类型" class="headerlink" title="原始数据类型"></a>原始数据类型</h4><p><strong>包括</strong>：</p>
-<p>布尔值、数值、字符串、null、undefined 以及 ES6 中的新类型 <a href="http://es6.ruanyifeng.com/#docs/symbol">Symbol</a> 和 ES10 中的新类型 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a></p>
-<p><strong>空值：</strong></p>
-<p>ts中有void的概念，可以表示没有返回值的函数，同时如果将一个变量声明为void，那么这个变量只能赋值为undefine或者null</p>
-<p><strong>any：</strong></p>
-<p>未声明类型的变量默认其类型为any，any，顾名思义，表示当前声明的函数或变量可以为任意类型</p>
-<p><strong>类型推论：</strong></p>
-<p>ts中即使不声明类型，也会推断当前被赋值变量的类型，比如将一个字符串赋值给一个变量，那么ts就会推断这个变量是字符串类型，所以后面如果将这个变量又赋值为其他类型或者调用除字符串以外其他类型的方法是不被允许的</p>
-<p><strong>联合类型：</strong></p>
-<p>ts中如果不确定当前函数或方法的类型，允许用或（|）符号来分割每个累哦行，可访问联合类型的属性和方法是所有类型共有属性的集合</p>
-<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a><strong>接口</strong></h4><p><strong>概念：</strong></p>
-<p>ts中，用接口（interface）来定义对象的类型，他是对行为的抽象，如何实现由class去implement</p>
-<p>注意点：定义接口的首字母大写，通常会在接口名前面加一个大写字母I用于区分，定义的变量（implement）比接口少一些或者多一些都是不被允许的</p>
-<h5 id="可选属性："><a href="#可选属性：" class="headerlink" title="可选属性："></a>可选属性：</h5><p>ts中可以通过？来定义一个可选属性</p>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">    age?: <span class="built_in">number</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> tom: Person = &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h5 id="任意属性："><a href="#任意属性：" class="headerlink" title="任意属性："></a>任意属性：</h5><p>使用[propName:类型]来声明任意属性</p>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;    </span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;   </span><br><span class="line">    age?: <span class="built_in">number</span>;    </span><br><span class="line">    [propName: <span class="built_in">string</span>]: <span class="built_in">any</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> tom: Person = &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span>,   </span><br><span class="line">    <span class="attr">gender</span>: <span class="string">&#x27;male&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><strong>数组</strong></p>
-<p>ts中数组的多种定义方式：</p>
-<ul>
-<li><p>类型+方括号</p>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]; </span><br><span class="line"><span class="comment">//不允许出现其他类型，下面是一种错误表达 </span></span><br><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="string">&#x27;1&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure></li>
-<li><p>数组泛型 Array</p>
-</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>用接口表示数组</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//不建议用这种声明数组的方式，比以上两种复杂 </span></span><br><span class="line"><span class="keyword">interface</span> NumberArray &#123;   </span><br><span class="line">    [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> fibonacci: NumberArray = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="类数组"><a href="#类数组" class="headerlink" title="类数组"></a><strong>类数组</strong></h4><h5 id="如何声明"><a href="#如何声明" class="headerlink" title="如何声明"></a><strong>如何声明</strong></h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">    <span class="keyword">let</span> args: &#123;      </span><br><span class="line">        [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;        </span><br><span class="line">        length: <span class="built_in">number</span>;     </span><br><span class="line">        callee: <span class="built_in">Function</span>;   </span><br><span class="line">    &#125; = <span class="built_in">arguments</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>PS：常用的类数组都有自己的接口，例如IArguments，NodeList，HTMLCollection</p>
-<p>以上声明的arguments实际上就是ts已经定义好的类型，等同于</p>
-<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> IArguments &#123;   </span><br><span class="line">    [index: <span class="built_in">number</span>]: <span class="built_in">any</span>;  </span><br><span class="line">    length: <span class="built_in">number</span>;  </span><br><span class="line">    callee: <span class="built_in">Function</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="any在数组中的应用"><a href="#any在数组中的应用" class="headerlink" title="any在数组中的应用"></a>any在数组中的应用</h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> list: <span class="built_in">any</span>[] = [<span class="string">&#x27;xcatliu&#x27;</span>, <span class="number">25</span>, &#123; <span class="attr">website</span>: <span class="string">&#x27;http://xcatliu.com&#x27;</span> &#125;];</span><br></pre></td></tr></table></figure>
-
-<p><strong>函数的类型</strong></p>
-<h5 id="包括：函数声明和函数表达式"><a href="#包括：函数声明和函数表达式" class="headerlink" title="包括：函数声明和函数表达式"></a>包括：函数声明和函数表达式</h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数声明（Function Declaration） </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x, y</span>) </span>&#123;    <span class="keyword">return</span> x + y; &#125;</span><br><span class="line"><span class="comment">// 函数表达式（Function Expression） </span></span><br><span class="line"><span class="keyword">let</span> mySum = <span class="function"><span class="keyword">function</span> (<span class="params">x, y</span>) </span>&#123;    <span class="keyword">return</span> x + y; &#125;;</span><br></pre></td></tr></table></figure>
-
-<h5 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>  方法名（参数一：参数一类型，参数二：参数二类型，...）：方法返回类型 </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> 方法返回值; </span><br><span class="line">&#125;</span><br><span class="line">方法名（参数一值，参数二值，...) </span><br><span class="line"><span class="comment">//调用参数一一对应不可缺少或增加</span></span><br></pre></td></tr></table></figure>
-
-<p>未完待续….</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>plume2学习笔记</title>
-    <url>/2022/03/21/date220321/</url>
-    <content><![CDATA[<h3 id="Actor"><a href="#Actor" class="headerlink" title="Actor"></a>Actor</h3><h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>转换状态数据</p>
-<h3 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h3><h5 id="what"><a href="#what" class="headerlink" title="what:"></a>what:</h5><p>数据状态容器中心，管理整个app的数据的生命周期</p>
-<h5 id="主要任务："><a href="#主要任务：" class="headerlink" title="主要任务："></a>主要任务：</h5><p>1.聚合actor<br>2.分派actor（单分派，事务分派）<br>3.通过bigQuery计算查询语言<br>4.响应页面的事件（ViewAction）<br>5.注册响应RL</p>
-<span id="more"></span>
-
-<h3 id="StoreProvider"><a href="#StoreProvider" class="headerlink" title="StoreProvider"></a>StoreProvider</h3><h5 id="what："><a href="#what：" class="headerlink" title="what："></a>what：</h5><p>衔接React组件和AppStore，向React组件提供数据源</p>
-<h5 id="主要任务：-1"><a href="#主要任务：-1" class="headerlink" title="主要任务："></a>主要任务：</h5><p>1.初始化AppStore<br>2.将AppStore的对象绑定到React组件的上下文<br>3.Relay就是通过上下文取的store对象<br>4.监听Store的state变化</p>
-<h3 id="Relax"><a href="#Relax" class="headerlink" title="Relax"></a>Relax</h3><h5 id="what-1"><a href="#what-1" class="headerlink" title="what:"></a>what:</h5><p>类似Spring容器中的依赖注入。会根据子组件的relaxProps中声明的数据。通过只能计算属性的值，作为this.props.relaxProps透传给子组件，以解决React的Props层层透传的冗余的问题</p>
-<h5 id="计算的规则："><a href="#计算的规则：" class="headerlink" title="计算的规则："></a>计算的规则：</h5><p>1.store的state的值，直接给出值得immutable的路径<br>2.store的method，直接和method同名就可以<br>3.如果属性值是viewAction，直接注入store中绑定的ViewAction<br>4.如果属性值是QL，注入QL计算之后的结果，如果PQL会自动绑定store的上下文</p>
-<h3 id="QL-PQL"><a href="#QL-PQL" class="headerlink" title="QL/PQL"></a>QL/PQL</h3><h5 id="why"><a href="#why" class="headerlink" title="why:"></a>why:</h5><p>1.根据实际需要源数据可能需要进行组合<br>2.展示在ui上的数据需要具有reactive的能力，当源数据变化的时候，@Relax会重新计算QL<br>3.响应式会自动处理数据依赖，但是同一个QL可能会被执行多次。造成计算上的浪费，所以QL支持cache，确保path对应的数据没有变化的时候，QL不会重复计算<br>4.QL支持嵌套</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>defaultValue 与 Value 的使用</title>
-    <url>/2022/03/20/note02/</url>
-    <content><![CDATA[<p>问题起因：某天boss在例行检查代码的时候，把所有的value换成了defaultValue，原因是他说value的值是从props过来的，props的值改变会影响value，而defaultValue可以避免这个问题….（黑人问号脸.jpg)，啊这不是吧，源数据改变就算换成defaultValue也会改变的吧，难道是我一直理解错了？于是本着辨证的目的我打算互联网冲浪去寻找原因…</p>
-<span id="more"></span>
-
-<p>在查阅了一些资料文献后我发现了这样一段话可以解答我的疑惑</p>
-<blockquote>
-<p><strong>React 中为何需要defaultValue？</strong></p>
-<p>defaultValue 一般用于表单，给表单元素一个初始化值。注意，只是初始化，如果defaultValue值发生变化，表单里的值不会被改变。</p>
-<p><strong>value也可以做到，为何还要defaultValue呢？</strong></p>
-<p>表单分两种，一种是受控表单，一种是非受控表单。仅用value，使用者会误以为value值改变，表单显示的值也会跟着变，这实际上是受控表单的行为，完全符合期望。但是，非受控表单，props.value变化，其表单显示的值不会跟着变（因为表单内部有自己的state），为了区别这两种场景，所以引入了defaultValue，表示只给默认值。</p>
-</blockquote>
-<p>果然是基础知识不扎实，看到这儿，我大概理解了boss为什么将原来的value onChange搭配改为了defaultValue onBlur；原来的搭配会在键入的时候频繁的执行setState去更改数值，改为非受控组件后，并在失去焦点的时候赋值，避免了大数据列表因为不断更改值应发的性能问题，真真儿nice</p>
-]]></content>
-  </entry>
-  <entry>
     <title>解决Input约束输入值为非负整数中遇到的一揽子问题</title>
     <url>/2021/05/11/date0511/</url>
     <content><![CDATA[<h3 id="问题描述："><a href="#问题描述：" class="headerlink" title="问题描述："></a>问题描述：</h3><p>​        项目中要求实现某模块的人数/天数输入值不能为负值</p>
@@ -270,97 +22,246 @@
 ]]></content>
   </entry>
   <entry>
-    <title>windows10 环境下安装MySQL 8.0.20</title>
-    <url>/2020/12/28/date201218/</url>
-    <content><![CDATA[<h3 id="一-从官网（mysql-com）下载安装包"><a href="#一-从官网（mysql-com）下载安装包" class="headerlink" title="一 . 从官网（mysql.com）下载安装包"></a>一 . 从官网（mysql.com）下载安装包</h3><ol>
-<li> 打开官网点击顶部导航栏中的DOWNLOADS按钮，点击下发下方MySQL Community（GPL) Downloads&gt;&gt;</li>
-</ol>
-   <span id="more"></span>
+    <title>浏览器学习笔记</title>
+    <url>/2020/09/03/date200903/</url>
+    <content><![CDATA[<h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p>*<strong>浏览器*<strong>，是一个用于检索，展示和遍历在万维网的信息资源的软件应用程序。信息资源被定义成</strong>统一资源定位符</strong>（URI/URL)。它可能是网页，图片，视频或者一个内容片段。超链接的出现使用户能轻松的将浏览器导航到相关的资源。虽然主要用于使用万维网，但也可用于获取专用网络中网页服务器之信息或文件系统内之文件。<br>浏览器主要由js引擎和渲染引擎组成</p>
+<span id="more"></span>
 
-<p>   <img src="/images/post20122801.png" alt="示意图一"></p>
-<ol start="2">
-<li><p>点击MySQL Community Server</p>
-<p><img src="/images/post20122802.png" alt="示意图二"></p>
-</li>
-<li><p>在下拉菜单中，选择windows（一般默认就是windows），然后点击下方的Download</p>
-<p><img src="/images/post20122803.png" alt="示意图三"></p>
-</li>
-<li><p>在打开的页面中，选择 <strong>No thanks, just start my download.</strong> ，然后开始下载MySql zip安装包</p>
-<p><img src="/images/post20122804.png" alt="示意图四"></p>
-</li>
-</ol>
-<h3 id="二-配置环境变量"><a href="#二-配置环境变量" class="headerlink" title="二.配置环境变量"></a>二.配置环境变量</h3><ol>
-<li><p>将下载好的zip包解压到指定目录，例如E:\mysql-8.0.22-winx64</p>
-</li>
-<li><p>添加环境变量，“此电脑”图标游击属性，点击环境变量，在系统变量一栏点击Path，选中点击编辑，进入新建，将解压的目录的bin（E:\mysql-8.0.22-winx64\bin) 添加到Path下</p>
-<p><img src="/images/post20122805.png" alt="示意图五"></p>
-</li>
-<li><p>点击确定，完成创建，关闭窗口</p>
-</li>
-<li><p>windows键+R 键入cmd打开命令窗口（以管理员身份打开）</p>
-</li>
-<li><p>在命令行窗口中输入以下命令，进行初始化。初始化后，MySql 安装目录会出现一个 data目录（请勿手动创建）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysqld --initialize --console</span><br></pre></td></tr></table></figure>
-
-<p>随后，控制台返回如下信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-07-04T08:37:16.188232Z 0 [System] [MY-013169] [Server] E:\mysql-8.0.20-winx64\bin\mysqld.exe (mysqld 8.0.20) initializing of server in progress as process 14880</span><br><span class="line">2020-07-04T08:37:16.196858Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.</span><br><span class="line">2020-07-04T08:37:46.330192Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.</span><br><span class="line">[Note] [MY-010454] [Server] A temporary password is generated for root@localhost:************</span><br></pre></td></tr></table></figure>
-
-<p>**<em>*</em>****即为 MySql 数据库 root 用户初始密码，后面初次登陆时需要使用，初始密码一定要记住，不然重置密码很麻烦</p>
-</li>
-<li><p>使用 <strong>mysqld –install</strong> 命令进行数据库安装</p>
-<p>正常情况下返回信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Service successfully installed.</span><br></pre></td></tr></table></figure>
-
-<p>失败的情况</p>
-<ul>
-<li><p>返回 <strong>Install/Remove of the Service Denied</strong> ，意味权限不足</p>
-<p> 解决方案：使用管理员身份运行 cmd</p>
-</li>
-<li><p> 返回 <strong>The service already exists</strong> ，意味已存在MySql 服务</p>
-</li>
+<p><img src="/images/post200903.png" alt="常见浏览器内核"></p>
+<h2 id="主要组件："><a href="#主要组件：" class="headerlink" title="主要组件："></a>主要组件：</h2><ul>
+<li><strong>用户界面</strong> - 包括地址栏、前进/后退按钮、书签菜单等。除了浏览器主窗口显示的您请求的页面外，其他显示的各个部分都属于用户界面。<br>浏览器引擎 - 在用户界面和呈现引擎之间传送指令。<br>呈现引擎 - 负责显示请求的内容。如果请求的内容是 HTML，它就负责解析 HTML 和 CSS 内容，并将解析后的内容显示在屏幕上。<br>网络 - 用于网络调用，比如 HTTP 请求。其接口与平台无关，并为所有平台提供底层实现。</li>
+<li><strong>用户界面后端</strong> - 用于绘制基本的窗口小部件，比如组合框和窗口。其公开了与平台无关的通用接口，而在底层使用操作系统的用户界面方法。<br>JavaScript 解释器。用于解析和执行 JavaScript 代码。<br>数据存储。这是持久层。浏览器需要在硬盘上保存各种数据，例如 Cookie。新的 HTML 规范 (HTML5) 定义了“网络数据库”，这是一个完整（但是轻便）的浏览器内数据库。</li>
 </ul>
-<p>  解决方案：在命令行窗口中，输入 <strong>mysqld -remove</strong>，若提示 **Service successfully removed.**，则成功卸载，重新执行 install 命令</p>
-</li>
-<li><p>在命令行中输入 <strong>net start mysql</strong> 命令，启动 mysql 服务</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
-
-<p>启动成功返回信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MySQL 服务正在启动 .....</span><br><span class="line">MySQL 服务已经启动成功。</span><br></pre></td></tr></table></figure>
-
-<p>若启动失败，则：</p>
-<ol>
-<li><p>检查 MySql 使用的 3306 端口是否被其他进程占用。</p>
-</li>
-<li><p>检查安装目录中是否存在 <strong>my.ini</strong> 文件，若存在则删除该文件</p>
-<p>（网上的其他安装教程让创建这个配置文件，但是在8.0.20版本，<strong>存在这个文件，MySql 服务便无法启动</strong>，删除重新启动MySql服务即可）</p>
-</li>
-</ol>
-</li>
-</ol>
-<h3 id="三-登录并配置MySQL"><a href="#三-登录并配置MySQL" class="headerlink" title="三.登录并配置MySQL"></a>三.登录并配置MySQL</h3><p> 1.在命令行中输入 <strong>mysql -u root -p</strong> ，并使用前文 安装 MySql 前进行初始化，返回的 root 用户初始密码 进行登录（可 能不能直接粘贴输入，如果提示登陆失败，请尝试手动输入）</p>
-<p> 登陆成功后，控制台会输出如下信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 9</span><br><span class="line">Server version: 8.0.20</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &#x27;help;&#x27; or &#x27;\h&#x27; for help. Type &#x27;\c&#x27; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
-
-<p>注意：输出信息中有提示sql命令结尾要加；或\g</p>
-<p> 2.进行其他操作前，必须先将 初始密码 进行重置，否则系统会报错提示我们：“**ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.**”</p>
-<p> 我们使用如下 sql 语句进行初始密码重置，<strong><em>* *</em>*</strong>**** * 处，请填写您希望设定的 root 用户密码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;*********&#x27;;</span><br></pre></td></tr></table></figure>
-
-<p> 设定成功后，控制台会显示：<strong>Query OK, 0 rows affected (0.55 sec)</strong></p>
-<h3 id="四-其他事项"><a href="#四-其他事项" class="headerlink" title="四.其他事项"></a>四.其他事项</h3><ol>
-<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
-</li>
-<li><p>退出MySql命令：<strong>quit;</strong></p>
-</li>
-<li><p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
-</li>
-<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
-<p>退出MySql命令：<strong>quit;</strong></p>
-<p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
-</li>
-</ol>
-<p>[^摘录自]: 作者：冬酒暖阳 链接：<a href="https://juejin.cn/post/6850418115450175495">https://juejin.cn/post/6850418115450175495</a> 来源：掘金</p>
+<h2 id="四大内核："><a href="#四大内核：" class="headerlink" title="四大内核："></a>四大内核：</h2><h3 id="1-Trident"><a href="#1-Trident" class="headerlink" title="1. Trident"></a>1. Trident</h3><p>***IE浏览器内核***，俗称IE内核，代表产品是Internet Explorer，它是微软开发的一种排版引擎。在1997年10月与IE4一起诞生，不断地更新和完善，Trident是一款开放的内核，其引擎被设计成一个软件模块，接口内核设计相当成熟，因此涌现出许多采用IE内核而非IE的浏览器，如：百度浏览器、腾讯TT、遨游、世界之窗等，但是Trident只能用于Windows平台且不开源（这也是为什么mac上不用ie浏览器的原因），而且由于曾经市场份额比较大，脱离W3C标准，同时IE版本比较多，本身存在一些BUG和很多的兼容性问题</p>
+<p><strong>优点：</strong>市场份额较大，接口内核设计成熟</p>
+<p><strong>缺点：</strong>不开源，只能用于Windows平台，曾经与W3C标准脱节，对真正的网页标准支持不是很友好，低版本存在很多的兼容性问题</p>
+<h3 id="2-webkit"><a href="#2-webkit" class="headerlink" title="2. webkit"></a>2. webkit</h3><p><strong>Safari浏览器内核</strong>，主要代表产品有Safari和Chrome 28以下版本（Chrome 28+改用Blink内核），它的特点在于源码结构清晰、渲染速度极快。它在手机上的应用也十分广泛，例如Google的Android平台浏览器、Apple的iPhone浏览器、Nokia S60浏览器等。 WebKit内核也广泛应用于Widget引擎产品，包括中国移动的BAE、Apple的Dashboard以及Nokia WRT等。</p>
+<p><strong>优点：</strong>开源，安全，网页浏览速度较快，不及 Presto 但是也胜于 Gecko 和 Trident，手机上应用广泛</p>
+<p><strong>缺点：</strong>系统资源占用较高，对网页代码的兼容性较低，会使一些编写不标准的网页无法正确显示</p>
+<h3 id="3-Presto"><a href="#3-Presto" class="headerlink" title="3. Presto"></a>3. Presto</h3><p>它是目前公认的网页浏览速度最快的浏览器内核，然而代价是牺牲了网页的兼容性。代表作品是*<strong>Opera*</strong> （Opera12.17及更早版本曾经采用的内核，现已停止开发并废弃），它的特点是渲染速度达到了极致，Presto实际上是一个动态内核，供Opera 7.0+使用。它取代了旧版Opera 4~6版本使用的Elektra排版引擎，网页或其部分可随着DOM及Script语法的事件而重新排版。它与Trident、Gecko等内核的最大区别就在于脚本处理上，Presto有着天生的优势，页面的全部或者部分都能够在回应脚本事件时等情况下被重新解析。此外该内核在执行JavaScript时有着最快的速度，同等条件下，Presto内核执行同等JavaScript所需的时间仅有Trident和Gecko内核的约1/3。Presto是商业引擎，在一定程度上限制了Presto的发展，由于市场选择问题，主要应用在手机平台–Opera mini<br>Opera 15+已改用Google Chrome的Blink内核。在2013年之后，Opera宣布加入谷歌阵营，弃用了Presto</p>
+<p><strong>优点：</strong>速度快，动态内核，脚本处理上有着天生的优势</p>
+<p><strong>缺点：</strong>商业引擎，为了达到很快的速度而丢掉了一部分网页兼容性</p>
+<h3 id="4-Gecko"><a href="#4-Gecko" class="headerlink" title="4.Gecko"></a>4.Gecko</h3><p>***Firefox浏览器内核***，代表是Mozilla Firefox，由于Gecko的特点是开源，因此，其可开发程度很高，因此受到许多人的青睐，采用Gecko内核的浏览器也很多，这也是Gecko内核虽然年轻但市场占有率能够迅速提高的重要原因，Gecko排版引擎提供了一个丰富的程序界面以供与互联网相关的应用程序使用，例如网页浏览器、HTML编辑器、客户端/服务器等。虽然最初的主要对象是Mozilla的衍生产品，如Netscape和Mozilla Firefox，但是现在已有很多其他软件利用这个排版引擎。此外Gecko也是一个跨平台内核，可以在Windows、BSD、Linux和Mac OS X中使用。<br>正在和曾经使用Gecko引擎的浏览器有Firefox、网景6～9、SeaMonkey、Camino、Mozilla、Flock、Galeon、K-Meleon、Minimo、Sleipni、Songbird、XeroBank。GoogleGadget</p>
+<p><strong>优点：</strong>开源，扩展性强，可开发程度很高，功能强大、丰富，跨平台</p>
+<p><strong>缺点：</strong>数据档案保存能力弱，要消耗很多的资源，比如内存</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>常见分辨率归纳总结</title>
+    <url>/2020/09/04/date20090401/</url>
+    <content><![CDATA[<p><strong>常见PC使用分辨率</strong></p>
+<p>1024*600 （常见8.9寸电脑使用）</p>
+<p>1024*768（常用10.4、12.1、14.1、15寸电脑使用）4:3</p>
+<p>1280*1024（常用14.1、15寸电脑使用）5:4</p>
+<p>1600 * 900 16:9 (非主流)</p>
+<p>1440*1050（常用15、16.1寸电脑使用）4:3</p>
+<p>1600*1200（常用15、16.1寸电脑使用）4:3</p>
+<span id="more"></span>
+
+<p>1280*800（常见10.8、12.1、15.4寸电脑使用）16:10</p>
+<p>1366*768（常见15.2寸电脑使用）15:10 （主流）</p>
+<p>1280*854（不常见）16:9</p>
+<p>1440*900（仅苹果17寸电脑使用）16:10</p>
+<p>1600*1024（不常见）14:9</p>
+<p>1680*1050（常见15.4、20寸电脑使用）16:10</p>
+<p>1920*1080 16:9 （主流）</p>
+<p>1920*1200（常见20寸电脑使用）16:10</p>
+<p><strong>常见平板分辨率</strong></p>
+<p>768x1024 — 75.65%</p>
+<p>360x640 — 2.85%</p>
+<p>1024x768 — 1.94%</p>
+<p>800x1280 — 1.58%</p>
+<p>1920x1080 — 1.37%</p>
+<p>1024x1366 — 1.26%</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>ES语法糖</title>
+    <url>/2020/09/04/date20090402/</url>
+    <content><![CDATA[<p><strong>一. ?.（可选链）</strong></p>
+<p><strong>1、长判断时用：在开发中，对接口返回的嵌套对象数据进行属性判断。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  code: 200,</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: [1,2,3], //table list</span><br><span class="line">    page: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  message: &#x27;success&#x27;,</span><br><span class="line">  func: function()&#123;console.log(&#x27;I am func&#x27;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">const tableList = res.data &amp;&amp; res.data.content; //[1,2,3]</span><br><span class="line">// 相当于</span><br><span class="line">const tableList = res.data ? res.data.content : undefined;</span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res.data?.content  //[1,2,3]</span><br><span class="line"></span><br><span class="line">// 甚至更谨慎点，加长判断，多个三目运算</span><br><span class="line">const tableList = res &amp;&amp; res.data &amp;&amp; res.data.content; </span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res?.data?.content  //[1,2,3]</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p><strong>2、调用函数或方法时用：调用前先判断是否是存在</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const tableList = res &amp;&amp; res.func &amp;&amp; res.func();  </span><br><span class="line">// 有了可选链，简写为 </span><br><span class="line">const func = res?.func?.() // I am func 或者 res.func?.() </span><br><span class="line">const func = res?.test?.() // undefined</span><br></pre></td></tr></table></figure>
+
+<p><strong>3、动态属性：属性为变量时用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const name = &#x27;data&#x27;; </span><br><span class="line">res?.[name]?.content  // [1,2,3]</span><br></pre></td></tr></table></figure>
+
+<p><strong>二. ??（双问号）</strong></p>
+<p>使用场景: 取默认值</p>
+<p>实际上接口返回的数据中，content很可能为null 或者 undefined，或压根没返回content，因此我们判断时需要加上默认值，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: null, // or false, or 0,</span><br><span class="line">    content1: false,</span><br><span class="line">    content2: 0</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 加上默认值</span><br><span class="line">const tableList = res?.data?.content || [4,5,6]  //[4,5,6]</span><br><span class="line">// 但我们发现，对于||，返回false或者0，也会取后者</span><br><span class="line">const tableList = res?.data?.content1 || [4,5,6]  //[4,5,6]</span><br><span class="line">const tableList = res?.data?.content2 || [4,5,6]  //[4,5,6]</span><br></pre></td></tr></table></figure>
+
+<p>在想返回null和undefined的时候取双问号后面的值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>常见色彩格式</title>
+    <url>/2020/09/04/date20090403/</url>
+    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
+<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
+<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
+<span id="more"></span>
+
+<p>附录：</p>
+<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>JS中关于截取的若干方法</title>
+    <url>/2020/09/03/date20090404/</url>
+    <content><![CDATA[<h4 id="1-slice"><a href="#1-slice" class="headerlink" title="1.slice"></a>1.slice</h4><p><strong>定义：</strong>用于<strong>数组</strong>的截取，返回一个新的数组对象，这一对象是一个由 begin和 end决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。</p>
+<span id="more"></span>
+
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; arr.slice([begin[,end]]) </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>begin(可选)</th>
+<th>end（可选）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>提取起始处的索引（从 <code>0</code> 开始），从该索引开始提取原数组元素。</td>
+<td>提取终止处的索引（从 <code>0</code> 开始），在该索引处结束提取原数组元素。<code>slice</code> 会提取原数组中索引从 <code>begin</code> 到 <code>end</code> 的所有元素（包含 <code>begin</code>，但不包含 <code>end</code>）。</td>
+</tr>
+</tbody></table>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const arr = [1,2,3,4];</span><br><span class="line">console.log(arr.slice(2)); //3,4</span><br><span class="line">console.log(arr.slice(2,3)); //3</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-split"><a href="#2-split" class="headerlink" title="2.split"></a>2.split</h4><p><strong>定义：</strong>用于<strong>字符串</strong>的截取，使用指定的分隔符字符串将一个String对象分割成子字符串数组，以一个指定的分个字串来决定每个拆分的位置</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; str.split([separator[, limit]])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>separator</th>
+<th>limit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指定表示每个拆分应发生的点的字符串。<code>separator</code> 可以是一个字符串或<strong>正则表达式</strong>。 如果纯文本分隔符包含多个字符，则必须找到整个字符串来表示分割点。如果在str中省略或不出现分隔符，则返回的数组包含一个由整个字符串组成的元素。如果分隔符为空字符串，则将str原字符串中每个字符的数组形式返回。</td>
+<td>一个整数，限定返回的分割片段数量。当提供此参数时，split 方法会在指定分隔符的每次出现时分割该字符串，但在限制条目已放入数组时停止。如果在达到指定限制之前达到字符串的末尾，它可能仍然包含少于限制的条目。新数组中不返回剩下的文本。</td>
+</tr>
+</tbody></table>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const str=&quot;1,2,3,4,5&quot;;</span><br><span class="line">const word=str.split(&quot;,&quot;);</span><br><span class="line">console.log(word);//[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-splice"><a href="#3-splice" class="headerlink" title="3.splice"></a>3.splice</h4><p><strong>定义：</strong>用于<strong>数组</strong>修改或截取</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; array.splice(start[, deleteCount[, item1[, item2[, ...]]]])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>start</th>
+<th>deleteCount可选</th>
+<th>item1,item2,…可选</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于<code>array.length-n</code>）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。</td>
+<td>整数，表示要移除的数组元素的个数。</td>
+<td>要添加进数组的元素,从<code>start</code> 位置开始。如果不指定，则 <code>splice()</code> 将只删除数组元素。</td>
+</tr>
+</tbody></table>
+<p>示例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cons arr = [1,2,3,4];</span><br><span class="line">arr.splice（1,0,5);</span><br><span class="line">//在索引为1的位置插入5</span><br><span class="line">console.log(arr);//[1,5,2,3,4]</span><br><span class="line"></span><br><span class="line">arr.splice(0,1,0);</span><br><span class="line">//从第0个位置开始删除一个元素，插入0  将1替换为0</span><br><span class="line">console.log(arr);//[0,5,2,3,4]</span><br><span class="line"></span><br><span class="line">arr.splice(2,2);</span><br><span class="line">//从第2个位置开始删除2个元素</span><br><span class="line">console.log(arr);//[0,5,4]</span><br><span class="line"></span><br><span class="line">arr.splice(1,1,2,3,4)</span><br><span class="line">//从第1个位置开始删除1个元素，并插入2,3,4</span><br><span class="line">console.log(arr);//[0,2,3,4,4]</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-substring"><a href="#4-substring" class="headerlink" title="4.substring"></a>4.substring</h4><p><strong>定义：</strong>用于<strong>字符串</strong>的截取，</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; str.subtring(indexStart[,indexEnd])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>indexStart</th>
+<th>indexEnd</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。</td>
+<td>可选。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。</td>
+</tr>
+</tbody></table>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var anyString = &quot;1234567&quot;;</span><br><span class="line"></span><br><span class="line">// 输出 &quot;123&quot;</span><br><span class="line">console.log(anyString.substring(0,3));</span><br><span class="line">console.log(anyString.substring(3,0));</span><br><span class="line">console.log(anyString.substring(3,-3));</span><br><span class="line">console.log(anyString.substring(3,NaN));</span><br><span class="line">console.log(anyString.substring(-2,3));</span><br><span class="line">console.log(anyString.substring(NaN,3));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;567&quot;</span><br><span class="line">console.log(anyString.substring(4,7));</span><br><span class="line">console.log(anyString.substring(7,4));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;&quot;</span><br><span class="line">console.log(anyString.substring(4,4));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;123456&quot;</span><br><span class="line">console.log(anyString.substring(0,6));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;1234567&quot;</span><br><span class="line">console.log(anyString.substring(0,7));</span><br><span class="line">console.log(anyString.substring(0,10));</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-substr"><a href="#5-substr" class="headerlink" title="5.substr"></a>5.substr</h4><p>尽管 <code>String.prototype.substr(…)</code> 没有严格被废弃 (as in “removed from the Web standards”), 但它被认作是遗留的函数并且可以的话应该避免使用。它并非JavaScript核心语言的一部分，未来将可能会被移除掉。如果可以的话，使用 <code>substring()</code> 替代它.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>查找数组中是否包含某元素的若干方法</title>
+    <url>/2020/09/04/date20090405/</url>
+    <content><![CDATA[<p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
+<p><strong>1.indexOf</strong></p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.indexOf(b) </span><br><span class="line">//如果b为对象或数组，则需要将a序列化后再操作  let c=JSON.stringtify(a).index   </span><br><span class="line">if(c&lt;0)&#123;</span><br><span class="line">    console.log(&quot;b在a中&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.find（方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.find(item=&gt; return item==b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">    console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;    </span><br><span class="line">    console.log(&quot;b不在a中&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.map遍历</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = false;</span><br><span class="line">const c=a.map(v=&gt;&#123;</span><br><span class="line">	if(v==b)&#123;</span><br><span class="line">	res = true;</span><br><span class="line">	&#125;</span><br><span class="line">	return res;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(c);//b在a中返回true否则返回false</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.some是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const c=a.some(v=&gt;v=b);</span><br><span class="line">console.log(c);//b在a中则输出true否则输出false</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：every和some的区别：</strong></p>
+<ul>
+<li><strong>every()是对数组中每一项运行给定函数，如果该函数对每一项返回true,则返回true。</strong></li>
+<li><strong>some()是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></li>
+</ul>
+<p><strong>5.includes函数用来判断一个数组是否包含一个指定的值，如果包含则返回true，否则返回false。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c=a.includes(b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">	console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;) </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>webpack归纳总结</title>
+    <url>/2020/09/04/date20090406/</url>
+    <content><![CDATA[<h3 id="关于webpack"><a href="#关于webpack" class="headerlink" title="关于webpack"></a>关于webpack</h3><p><strong>webpack是现代JavaScript应用程序的静态模块打包工具</strong></p>
+<ul>
+<li>bundle（包，束）</li>
+<li>入口（entry）</li>
+<li>输出（output）</li>
+<li>loader</li>
+<li>插件（plugin）</li>
+<li>模式（mode）</li>
+<li>浏览器兼容性（browser compatibility）</li>
+</ul>
+<span id="more"></span>
+
+<p><strong>1.入口</strong></p>
+<p>入口文件只是webpack应该使用哪个模块来作为构建内部依赖图的开始。进入入口文件起点后，webpack会找出有哪些模块和库时候入口起点（直接和间接）依赖的</p>
+<p>默认值是 ./src/index.js</p>
+<p>可以通过在webpack configuration中配置entry属性，来指定一个或多个不用入口的起点，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">module.exports = &#123;      entry: &#x27;./path/to/my/entry/file.js&#x27;    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.输出</strong></p>
+<p>输出（output） 告诉webpack在哪里输出它所创建的bundle，以及如何命名这些文件。主要输出文件的默认值是 ./dist/main.js，其他生成文件默认放置在 ./dist 文件夹中</p>
+<p>可以通过配置中指定一个output字段，来配置这些处理过程</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;); </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">	entry: &#x27;./path/to/my/entry/file.js&#x27;,</span><br><span class="line">    output: &#123;</span><br><span class="line">    	path: path.resolve(__dirname, &#x27;dist&#x27;),</span><br><span class="line">        filename: &#x27;my-first-webpack.bundle.js&#x27;  </span><br><span class="line">       &#125; </span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.loader</strong></p>
+<p>webpack只能理解JavaScript和Json文件。loader让webpack能够去处理其他类型的文件并将它们转换为有效模块，以供应用程序使用</p>
+<p>注意：loader能够import导入任何类型的模块（例如.css文件），这是webpack特有的功能，其他打包程序或任务执行器可能并不支持</p>
+<p>在更高层面，webpack的配置中oader有两个属性：</p>
+<p>1.test属性，用于标识出应该被对应的loader进行转换的某个或某些文件</p>
+<p>2.use属性，标识进行转换时，应该使用哪个loader</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;); </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">	output: &#123;</span><br><span class="line">    filename: &#x27;my-first-webpack.bundle.js&#x27;</span><br><span class="line">    &#125;,  </span><br><span class="line">    module: &#123;</span><br><span class="line">    	rules: [    </span><br><span class="line">    	//告诉编译器在遇到后缀为txt文件时，需要使用raw-loader转换    </span><br><span class="line">    	//此处注意test不要添加引号     </span><br><span class="line">        	&#123; test: /\.txt$/, use: &#x27;raw-loader&#x27; &#125;    </span><br><span class="line">        	]  </span><br><span class="line">        &#125; </span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
     <title>background，border的各种妙用---不常用属性补充说明</title>
@@ -485,6 +386,347 @@
 <td>背景绘制在内容方框内（剪切成内容方框）。</td>
 </tr>
 </tbody></table>
+]]></content>
+  </entry>
+  <entry>
+    <title>windows10 环境下安装MySQL 8.0.20</title>
+    <url>/2020/12/28/date201218/</url>
+    <content><![CDATA[<h3 id="一-从官网（mysql-com）下载安装包"><a href="#一-从官网（mysql-com）下载安装包" class="headerlink" title="一 . 从官网（mysql.com）下载安装包"></a>一 . 从官网（mysql.com）下载安装包</h3><ol>
+<li> 打开官网点击顶部导航栏中的DOWNLOADS按钮，点击下发下方MySQL Community（GPL) Downloads&gt;&gt;</li>
+</ol>
+   <span id="more"></span>
+
+<p>   <img src="/images/post20122801.png" alt="示意图一"></p>
+<ol start="2">
+<li><p>点击MySQL Community Server</p>
+<p><img src="/images/post20122802.png" alt="示意图二"></p>
+</li>
+<li><p>在下拉菜单中，选择windows（一般默认就是windows），然后点击下方的Download</p>
+<p><img src="/images/post20122803.png" alt="示意图三"></p>
+</li>
+<li><p>在打开的页面中，选择 <strong>No thanks, just start my download.</strong> ，然后开始下载MySql zip安装包</p>
+<p><img src="/images/post20122804.png" alt="示意图四"></p>
+</li>
+</ol>
+<h3 id="二-配置环境变量"><a href="#二-配置环境变量" class="headerlink" title="二.配置环境变量"></a>二.配置环境变量</h3><ol>
+<li><p>将下载好的zip包解压到指定目录，例如E:\mysql-8.0.22-winx64</p>
+</li>
+<li><p>添加环境变量，“此电脑”图标游击属性，点击环境变量，在系统变量一栏点击Path，选中点击编辑，进入新建，将解压的目录的bin（E:\mysql-8.0.22-winx64\bin) 添加到Path下</p>
+<p><img src="/images/post20122805.png" alt="示意图五"></p>
+</li>
+<li><p>点击确定，完成创建，关闭窗口</p>
+</li>
+<li><p>windows键+R 键入cmd打开命令窗口（以管理员身份打开）</p>
+</li>
+<li><p>在命令行窗口中输入以下命令，进行初始化。初始化后，MySql 安装目录会出现一个 data目录（请勿手动创建）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysqld --initialize --console</span><br></pre></td></tr></table></figure>
+
+<p>随后，控制台返回如下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2020-07-04T08:37:16.188232Z 0 [System] [MY-013169] [Server] E:\mysql-8.0.20-winx64\bin\mysqld.exe (mysqld 8.0.20) initializing of server in progress as process 14880</span><br><span class="line">2020-07-04T08:37:16.196858Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.</span><br><span class="line">2020-07-04T08:37:46.330192Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.</span><br><span class="line">[Note] [MY-010454] [Server] A temporary password is generated for root@localhost:************</span><br></pre></td></tr></table></figure>
+
+<p>**<em>*</em>****即为 MySql 数据库 root 用户初始密码，后面初次登陆时需要使用，初始密码一定要记住，不然重置密码很麻烦</p>
+</li>
+<li><p>使用 <strong>mysqld –install</strong> 命令进行数据库安装</p>
+<p>正常情况下返回信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Service successfully installed.</span><br></pre></td></tr></table></figure>
+
+<p>失败的情况</p>
+<ul>
+<li><p>返回 <strong>Install/Remove of the Service Denied</strong> ，意味权限不足</p>
+<p> 解决方案：使用管理员身份运行 cmd</p>
+</li>
+<li><p> 返回 <strong>The service already exists</strong> ，意味已存在MySql 服务</p>
+</li>
+</ul>
+<p>  解决方案：在命令行窗口中，输入 <strong>mysqld -remove</strong>，若提示 **Service successfully removed.**，则成功卸载，重新执行 install 命令</p>
+</li>
+<li><p>在命令行中输入 <strong>net start mysql</strong> 命令，启动 mysql 服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+
+<p>启动成功返回信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MySQL 服务正在启动 .....</span><br><span class="line">MySQL 服务已经启动成功。</span><br></pre></td></tr></table></figure>
+
+<p>若启动失败，则：</p>
+<ol>
+<li><p>检查 MySql 使用的 3306 端口是否被其他进程占用。</p>
+</li>
+<li><p>检查安装目录中是否存在 <strong>my.ini</strong> 文件，若存在则删除该文件</p>
+<p>（网上的其他安装教程让创建这个配置文件，但是在8.0.20版本，<strong>存在这个文件，MySql 服务便无法启动</strong>，删除重新启动MySql服务即可）</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="三-登录并配置MySQL"><a href="#三-登录并配置MySQL" class="headerlink" title="三.登录并配置MySQL"></a>三.登录并配置MySQL</h3><p> 1.在命令行中输入 <strong>mysql -u root -p</strong> ，并使用前文 安装 MySql 前进行初始化，返回的 root 用户初始密码 进行登录（可 能不能直接粘贴输入，如果提示登陆失败，请尝试手动输入）</p>
+<p> 登陆成功后，控制台会输出如下信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 9</span><br><span class="line">Server version: 8.0.20</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &#x27;help;&#x27; or &#x27;\h&#x27; for help. Type &#x27;\c&#x27; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意：输出信息中有提示sql命令结尾要加；或\g</p>
+<p> 2.进行其他操作前，必须先将 初始密码 进行重置，否则系统会报错提示我们：“**ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.**”</p>
+<p> 我们使用如下 sql 语句进行初始密码重置，<strong><em>* *</em>*</strong>**** * 处，请填写您希望设定的 root 用户密码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;*********&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p> 设定成功后，控制台会显示：<strong>Query OK, 0 rows affected (0.55 sec)</strong></p>
+<h3 id="四-其他事项"><a href="#四-其他事项" class="headerlink" title="四.其他事项"></a>四.其他事项</h3><ol>
+<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
+</li>
+<li><p>退出MySql命令：<strong>quit;</strong></p>
+</li>
+<li><p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
+</li>
+<li><p>创建其他用户：**CREATE USER ‘————‘@’localhost’ IDENTIFIED BY ‘*******<em><strong>‘;</strong> ———— 此处为用户名 <strong><em>*</em>**</strong></em> 此处为用户密码</p>
+<p>退出MySql命令：<strong>quit;</strong></p>
+<p>关闭 MySql 服务命令：<strong>net stop mysql</strong></p>
+</li>
+</ol>
+<p>[^摘录自]: 作者：冬酒暖阳 链接：<a href="https://juejin.cn/post/6850418115450175495">https://juejin.cn/post/6850418115450175495</a> 来源：掘金</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>plume2学习笔记</title>
+    <url>/2022/03/21/date220321/</url>
+    <content><![CDATA[<h3 id="Actor"><a href="#Actor" class="headerlink" title="Actor"></a>Actor</h3><h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>转换状态数据</p>
+<h3 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h3><h5 id="what"><a href="#what" class="headerlink" title="what:"></a>what:</h5><p>数据状态容器中心，管理整个app的数据的生命周期</p>
+<h5 id="主要任务："><a href="#主要任务：" class="headerlink" title="主要任务："></a>主要任务：</h5><p>1.聚合actor<br>2.分派actor（单分派，事务分派）<br>3.通过bigQuery计算查询语言<br>4.响应页面的事件（ViewAction）<br>5.注册响应RL</p>
+<span id="more"></span>
+
+<h3 id="StoreProvider"><a href="#StoreProvider" class="headerlink" title="StoreProvider"></a>StoreProvider</h3><h5 id="what："><a href="#what：" class="headerlink" title="what："></a>what：</h5><p>衔接React组件和AppStore，向React组件提供数据源</p>
+<h5 id="主要任务：-1"><a href="#主要任务：-1" class="headerlink" title="主要任务："></a>主要任务：</h5><p>1.初始化AppStore<br>2.将AppStore的对象绑定到React组件的上下文<br>3.Relay就是通过上下文取的store对象<br>4.监听Store的state变化</p>
+<h3 id="Relax"><a href="#Relax" class="headerlink" title="Relax"></a>Relax</h3><h5 id="what-1"><a href="#what-1" class="headerlink" title="what:"></a>what:</h5><p>类似Spring容器中的依赖注入。会根据子组件的relaxProps中声明的数据。通过只能计算属性的值，作为this.props.relaxProps透传给子组件，以解决React的Props层层透传的冗余的问题</p>
+<h5 id="计算的规则："><a href="#计算的规则：" class="headerlink" title="计算的规则："></a>计算的规则：</h5><p>1.store的state的值，直接给出值得immutable的路径<br>2.store的method，直接和method同名就可以<br>3.如果属性值是viewAction，直接注入store中绑定的ViewAction<br>4.如果属性值是QL，注入QL计算之后的结果，如果PQL会自动绑定store的上下文</p>
+<h3 id="QL-PQL"><a href="#QL-PQL" class="headerlink" title="QL/PQL"></a>QL/PQL</h3><h5 id="why"><a href="#why" class="headerlink" title="why:"></a>why:</h5><p>1.根据实际需要源数据可能需要进行组合<br>2.展示在ui上的数据需要具有reactive的能力，当源数据变化的时候，@Relax会重新计算QL<br>3.响应式会自动处理数据依赖，但是同一个QL可能会被执行多次。造成计算上的浪费，所以QL支持cache，确保path对应的数据没有变化的时候，QL不会重复计算<br>4.QL支持嵌套</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>TypeScript学习笔记</title>
+    <url>/2022/03/23/date220323/</url>
+    <content><![CDATA[<h4 id="存在的意义"><a href="#存在的意义" class="headerlink" title="存在的意义"></a><strong>存在的意义</strong></h4><p>js无类型约束由于隐式转换的存在，使得很多方法的错误使用运行后才发现，造成了很多线上bug</p>
+<p><strong>特点</strong></p>
+<p>类型系统为静态类型，且为弱类型语言，包含跟js相同的隐式类型转换，ts在运行前需要编译为js，编译阶段会进行类型错误的检查，避免js引起的部分线上错误。ts完全兼容js，并支持es语法</p>
+<p><strong>语法</strong></p>
+<p>用冒号指定类型，前后有无空格都可以，与java类型声明不同的是，ts中变量在前，类型在后</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params">person: string</span>) </span>&#123;   </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, &#x27;</span> + person; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> user = <span class="string">&#x27;Tom&#x27;</span>; <span class="built_in">console</span>.log(sayHello(user));</span><br></pre></td></tr></table></figure>
+
+<p>PS：ts在编译成js的过程中，无论报错与否都会生成一个js文件</p>
+<span id="more"></span>
+
+<h4 id="原始数据类型"><a href="#原始数据类型" class="headerlink" title="原始数据类型"></a>原始数据类型</h4><p><strong>包括</strong>：</p>
+<p>布尔值、数值、字符串、null、undefined 以及 ES6 中的新类型 <a href="http://es6.ruanyifeng.com/#docs/symbol">Symbol</a> 和 ES10 中的新类型 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a></p>
+<p><strong>空值：</strong></p>
+<p>ts中有void的概念，可以表示没有返回值的函数，同时如果将一个变量声明为void，那么这个变量只能赋值为undefine或者null</p>
+<p><strong>any：</strong></p>
+<p>未声明类型的变量默认其类型为any，any，顾名思义，表示当前声明的函数或变量可以为任意类型</p>
+<p><strong>类型推论：</strong></p>
+<p>ts中即使不声明类型，也会推断当前被赋值变量的类型，比如将一个字符串赋值给一个变量，那么ts就会推断这个变量是字符串类型，所以后面如果将这个变量又赋值为其他类型或者调用除字符串以外其他类型的方法是不被允许的</p>
+<p><strong>联合类型：</strong></p>
+<p>ts中如果不确定当前函数或方法的类型，允许用或（|）符号来分割每个累哦行，可访问联合类型的属性和方法是所有类型共有属性的集合</p>
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a><strong>接口</strong></h4><p><strong>概念：</strong></p>
+<p>ts中，用接口（interface）来定义对象的类型，他是对行为的抽象，如何实现由class去implement</p>
+<p>注意点：定义接口的首字母大写，通常会在接口名前面加一个大写字母I用于区分，定义的变量（implement）比接口少一些或者多一些都是不被允许的</p>
+<h5 id="可选属性："><a href="#可选属性：" class="headerlink" title="可选属性："></a>可选属性：</h5><p>ts中可以通过？来定义一个可选属性</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">    age?: <span class="built_in">number</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> tom: Person = &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="任意属性："><a href="#任意属性：" class="headerlink" title="任意属性："></a>任意属性：</h5><p>使用[propName:类型]来声明任意属性</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;    </span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">string</span>;   </span><br><span class="line">    age?: <span class="built_in">number</span>;    </span><br><span class="line">    [propName: <span class="built_in">string</span>]: <span class="built_in">any</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> tom: Person = &#123;   </span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span>,   </span><br><span class="line">    <span class="attr">gender</span>: <span class="string">&#x27;male&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数组</strong></p>
+<p>ts中数组的多种定义方式：</p>
+<ul>
+<li><p>类型+方括号</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]; </span><br><span class="line"><span class="comment">//不允许出现其他类型，下面是一种错误表达 </span></span><br><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="string">&#x27;1&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure></li>
+<li><p>数组泛型 Array</p>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fibonacci: <span class="built_in">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用接口表示数组</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//不建议用这种声明数组的方式，比以上两种复杂 </span></span><br><span class="line"><span class="keyword">interface</span> NumberArray &#123;   </span><br><span class="line">    [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">let</span> fibonacci: NumberArray = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="类数组"><a href="#类数组" class="headerlink" title="类数组"></a><strong>类数组</strong></h4><h5 id="如何声明"><a href="#如何声明" class="headerlink" title="如何声明"></a><strong>如何声明</strong></h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">    <span class="keyword">let</span> args: &#123;      </span><br><span class="line">        [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;        </span><br><span class="line">        length: <span class="built_in">number</span>;     </span><br><span class="line">        callee: <span class="built_in">Function</span>;   </span><br><span class="line">    &#125; = <span class="built_in">arguments</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>PS：常用的类数组都有自己的接口，例如IArguments，NodeList，HTMLCollection</p>
+<p>以上声明的arguments实际上就是ts已经定义好的类型，等同于</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> IArguments &#123;   </span><br><span class="line">    [index: <span class="built_in">number</span>]: <span class="built_in">any</span>;  </span><br><span class="line">    length: <span class="built_in">number</span>;  </span><br><span class="line">    callee: <span class="built_in">Function</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="any在数组中的应用"><a href="#any在数组中的应用" class="headerlink" title="any在数组中的应用"></a>any在数组中的应用</h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> list: <span class="built_in">any</span>[] = [<span class="string">&#x27;xcatliu&#x27;</span>, <span class="number">25</span>, &#123; <span class="attr">website</span>: <span class="string">&#x27;http://xcatliu.com&#x27;</span> &#125;];</span><br></pre></td></tr></table></figure>
+
+<p><strong>函数的类型</strong></p>
+<h5 id="包括：函数声明和函数表达式"><a href="#包括：函数声明和函数表达式" class="headerlink" title="包括：函数声明和函数表达式"></a>包括：函数声明和函数表达式</h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数声明（Function Declaration） </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x, y</span>) </span>&#123;    <span class="keyword">return</span> x + y; &#125;</span><br><span class="line"><span class="comment">// 函数表达式（Function Expression） </span></span><br><span class="line"><span class="keyword">let</span> mySum = <span class="function"><span class="keyword">function</span> (<span class="params">x, y</span>) </span>&#123;    <span class="keyword">return</span> x + y; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h5><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>  方法名（参数一：参数一类型，参数二：参数二类型，...）：方法返回类型 </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> 方法返回值; </span><br><span class="line">&#125;</span><br><span class="line">方法名（参数一值，参数二值，...) </span><br><span class="line"><span class="comment">//调用参数一一对应不可缺少或增加</span></span><br></pre></td></tr></table></figure>
+
+<p>未完待续….</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>React Hooks学习笔记</title>
+    <url>/2022/03/29/date220329/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="类组件的缺点："><a href="#类组件的缺点：" class="headerlink" title="类组件的缺点："></a>类组件的缺点：</h4><ul>
+<li>大型组件很难差分和重构</li>
+<li>业务逻辑分散在组件的各个方法中，导致重复逻辑或关联逻辑</li>
+<li>组件类引入了复杂的编程模式，比如render props和高阶组件</li>
+</ul>
+<h3 id="useState-状态钩子"><a href="#useState-状态钩子" class="headerlink" title="useState() 状态钩子"></a>useState() 状态钩子</h3><h4 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h4><p><code>const [状态名，更改状态方法名]=useState(状态初始值)</code></p>
+  <span id="more"></span>
+<h4 id="实例："><a href="#实例：" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line"></span><br><span class="line">export default function  Button()  &#123;</span><br><span class="line">  const  [buttonText, setButtonText] =  useState(&quot;Click me,   please&quot;);</span><br><span class="line"></span><br><span class="line">  function handleClick()  &#123;</span><br><span class="line">    return setButtonText(&quot;Thanks, been clicked!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return  &lt;button  onClick=&#123;handleClick&#125;&gt;&#123;buttonText&#125;&lt;/button&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="useContext-共享状态钩子"><a href="#useContext-共享状态钩子" class="headerlink" title="useContext() 共享状态钩子"></a>useContext() 共享状态钩子</h3><h4 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h4><p>1.组件外部建立一个Context<br><code>const AppContext = React.createContext(&#123;&#125;)</code><br>2.在要共享状态的组件内部声明状态<br><code>const &#123; 状态名称 &#125; = useContext(AppContext)</code><br>3.状态提升-父组件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">  状态名: 初始值</span><br><span class="line">&#125;&#125;&gt;</span><br><span class="line">  &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">    &lt;共享状态子组件一/&gt;</span><br><span class="line">    &lt;共享状态子组件二/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/AppContext.Provider&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例:"></a>实例:</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useContext &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const AppContext = React.createContext(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">//Navbar与Message组件共享状态</span><br><span class="line"></span><br><span class="line">const Navbar = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;navbar&quot;&gt;</span><br><span class="line">      &lt;p&gt;AwesomeSite&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;&#123;username&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const Messages = () =&gt; &#123;</span><br><span class="line">  const &#123; username &#125; = useContext(AppContext)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;messages&quot;&gt;</span><br><span class="line">      &lt;h1&gt;Messages&lt;/h1&gt;</span><br><span class="line">      &lt;p&gt;1 message for &#123;username&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p className=&quot;message&quot;&gt;useContext is awesome!&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;AppContext.Provider value=&#123;&#123;</span><br><span class="line">      username: &#x27;superawesome&#x27;</span><br><span class="line">    &#125;&#125;&gt;</span><br><span class="line">      &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">        &lt;Navbar /&gt;</span><br><span class="line">        &lt;Messages /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/AppContext.Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
+<h3 id="useReducer-action钩子"><a href="#useReducer-action钩子" class="headerlink" title="useReducer() action钩子"></a>useReducer() action钩子</h3><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4><p>引入Reducer功能<br><code>const [state, dispatch] = useReducer(reducer, initialState);</code></p>
+<h4 id="实例：-1"><a href="#实例：-1" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useReducer &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const myReducer = (state, action) =&gt; &#123;</span><br><span class="line">  switch(action.type) &#123;</span><br><span class="line">    case(&#x27;countUp&#x27;):</span><br><span class="line">      return &#123;</span><br><span class="line">        ...state,</span><br><span class="line">        count: state.count + 1</span><br><span class="line">      &#125;</span><br><span class="line">    default:</span><br><span class="line">      return state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [state, dispatch] = useReducer(myReducer, &#123; count: 0 &#125;)</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &#x27;countUp&#x27; &#125;)&#125;&gt;</span><br><span class="line">        +1</span><br><span class="line">      &lt;/button&gt;</span><br><span class="line">      &lt;p&gt;Count: &#123;state.count&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
+<h3 id="useEffect-副作用钩子"><a href="#useEffect-副作用钩子" class="headerlink" title="useEffect() 副作用钩子"></a>useEffect() 副作用钩子</h3><h4 id="语法：-2"><a href="#语法：-2" class="headerlink" title="语法："></a>语法：</h4><p>接受两个参数，第一个参数是一个函数，异步操作的代码放在里面。第二个参数是一个数组。是Effect的依赖项，只要这个数组发生变化，useEffect（）就会执行。若第二个参数省略，则组件每次渲染，就会执行useEffect</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">useEffect(()  =&gt;  &#123;</span><br><span class="line">  // Async Action</span><br><span class="line">&#125;, [dependencies])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="实例：-2"><a href="#实例：-2" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true); </span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId])</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">    &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建自己的hooks"><a href="#创建自己的hooks" class="headerlink" title="创建自己的hooks"></a>创建自己的hooks</h3><h4 id="上述所有hooks可以灵活搭配，变成一个自定义的hook"><a href="#上述所有hooks可以灵活搭配，变成一个自定义的hook" class="headerlink" title="上述所有hooks可以灵活搭配，变成一个自定义的hook"></a>上述所有hooks可以灵活搭配，变成一个自定义的hook</h4><h4 id="实例：-3"><a href="#实例：-3" class="headerlink" title="实例："></a>实例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState, useEffect &#125; from &quot;react&quot;;</span><br><span class="line">import ReactDOM from &quot;react-dom&quot;;</span><br><span class="line">import &quot;./styles.css&quot;;</span><br><span class="line"></span><br><span class="line">const usePerson = personId =&gt; &#123;</span><br><span class="line">  const [loading, setLoading] = useState(true);</span><br><span class="line">  const [person, setPerson] = useState(&#123;&#125;);</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    setLoading(true);</span><br><span class="line">    fetch(`https://swapi.co/api/people/$&#123;personId&#125;/`)</span><br><span class="line">      .then(response =&gt; response.json())</span><br><span class="line">      .then(data =&gt; &#123;</span><br><span class="line">        setPerson(data);</span><br><span class="line">        setLoading(false);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, [personId]);</span><br><span class="line">  return [loading, person];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const Person = (&#123; personId &#125;) =&gt; &#123;</span><br><span class="line">  const [loading, person] = usePerson(personId);</span><br><span class="line"></span><br><span class="line">  if (loading === true) &#123;</span><br><span class="line">    return &lt;p&gt;Loading ...&lt;/p&gt;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You&#x27;re viewing: &#123;person.name&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Height: &#123;person.height&#125;&lt;/p&gt;</span><br><span class="line">      &lt;p&gt;Mass: &#123;person.mass&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [show, setShow] = useState(&quot;1&quot;);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;App&quot;&gt;</span><br><span class="line">      &lt;Person personId=&#123;show&#125; /&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        Show:</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;1&quot;)&#125;&gt;Luke&lt;/button&gt;</span><br><span class="line">        &lt;button onClick=&#123;() =&gt; setShow(&quot;2&quot;)&#125;&gt;C-3PO&lt;/button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const rootElement = document.getElementById(&quot;root&quot;);</span><br><span class="line">ReactDOM.render(&lt;App /&gt;, rootElement);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>事件冒泡，事件捕获</title>
+    <url>/2022/03/31/date220331/</url>
+    <content><![CDATA[<h4 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h4><p>分别由微软和NetScape提出，事件冒泡由下之上，从最小节点往上触发事件。捕获反之。</p>
+<h4 id="关于addEventListener"><a href="#关于addEventListener" class="headerlink" title="关于addEventListener"></a>关于addEventListener</h4><p>W3C中和了事件冒泡和事件捕获，addEventListener方法中提供了三个参数，第一个是需要绑定的事件名称，第二个是触发事件后要执行的函数，第三个则是该事件是冒泡还是捕获，默认false为冒泡</p>
+<h4 id="当冒泡与捕获同时存在"><a href="#当冒泡与捕获同时存在" class="headerlink" title="当冒泡与捕获同时存在"></a>当冒泡与捕获同时存在</h4><ul>
+<li>非目标节点先执行捕获再冒泡</li>
+<li>对于目标节点执行先注册的事件</li>
+</ul>
+<h4 id="冒泡与捕获的实例"><a href="#冒泡与捕获的实例" class="headerlink" title="冒泡与捕获的实例"></a>冒泡与捕获的实例</h4>   <span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">     #box1&#123;</span><br><span class="line">        width: 300px;</span><br><span class="line">        height: 300px;</span><br><span class="line">        background: pink;</span><br><span class="line">    &#125;</span><br><span class="line">    #box2&#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: gainsboro;</span><br><span class="line">    &#125;</span><br><span class="line">    #box3&#123;</span><br><span class="line">        width: 100px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        background: blanchedalmond;</span><br><span class="line">    &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">       &lt;div id=&quot;box1&quot; class=&quot;box1&quot;&gt; </span><br><span class="line">            box1 </span><br><span class="line">            &lt;div id=&quot;box2&quot; class=&quot;box2&quot;&gt;  </span><br><span class="line">            box2</span><br><span class="line">                &lt;div id=&quot;box3&quot;&gt;box3&lt;/div&gt;  </span><br><span class="line">       &lt;/div&gt;  </span><br><span class="line">   &lt;/div&gt; </span><br><span class="line">        &lt;script&gt;</span><br><span class="line">          window.onload = function () &#123;</span><br><span class="line">            document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,);</span><br><span class="line">            document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">            document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>如上，我们为每个box绑定点击事件，当事件类型为冒泡，那么当我们点击最小的元素box3，事件执行的顺序为box3——box2——box1，当事件类型为捕获时，执行顺序反之</p>
+<p>在实际应用中，表格中遇到这种情况比较多，比如tr-&gt;td-&gt;span,假设我们在每个元素上都绑定了点击事件，那么在点击某元素的时候，该元素的父元素点击事件都会执行，此时我们需要在该元素的事件执行函数里加入event.stopPropagation()方法来阻止事件向上冒泡。</p>
+<h5 id="冒泡与捕获同时存在的实例分析"><a href="#冒泡与捕获同时存在的实例分析" class="headerlink" title="冒泡与捕获同时存在的实例分析"></a>冒泡与捕获同时存在的实例分析</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">window.onload = function () &#123;</span><br><span class="line">    document.getElementById(&quot;box1&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box1被点击了&quot;); &#125;,true);</span><br><span class="line">    document.getElementById(&quot;box2&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box2被点击了&quot;);&#125;);</span><br><span class="line">    document.getElementById(&quot;box3&quot;).addEventListener(&quot;click&quot;, function (event) &#123; console.log(&quot;box3被点击了&quot;);&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还是上面的实例，我们将box1，与box2的事件类型设为捕获，box3设置为冒泡，然后点击box3时，发现三个点击事件的执行顺序为box1——box3——box2<br>点击box3，dom往目标节点捕获前进，遇到注册的捕获事件立即触发执行，于是输出box1，前进到box2，但box2的捕获事件并没有被注册所以box2的事件函数不执行，于是前进到目标节点box3，执行冒泡，输出box3，冒泡到box3父节点的注册事件，输出box2</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>阶段性学习笔记（一）</title>
+    <url>/2022/04/27/date220427/</url>
+    <content><![CDATA[<h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>本章重点：</p>
+<blockquote>
+<p>1.React18的优化<br>2.React.memo与React.PureComponent用法及异同<br>3.自己写了一个hook<br>4.一些tips，关于es6空值判断，数组合并，html空格表达<br>5.antd Input使用过程遇到的bug<br>6.一些没什么卵用的废话</p>
+</blockquote>
+<p>这段时间没有接触到什么新的技术栈，一直在优化重构项目，plume2+immutable写了一遍，发现ts+这俩会让状态的管理繁琐到爆炸。于是参阅了大量项目标品的写法，结合之前的项目，百思不得其解为什么标品中所有的数据都用store来储存，模块之间并没有繁重的层层嵌套或高阶组件，完全可以用props实现数据传递。费解….。</p>
+<span id="more"></span>
+<p>在被immutable的繁琐语法折磨到苦不堪言的时候，我又去看了之前项目用的immer.js，是的，我只有这个时候才想起immer的好…于是不禁吐槽，同样是防止数据被篡改，immer果然短小精悍。<br>介于我如此唾弃标品的“代码规范”遂果断抛弃plume2+immutable，改用类组件重构，然后我惊喜的发现…因为用immer.js太久，我已经忘了原生的setState要怎么修改对象中属性值，真行（咬牙切齿.jpg），我又去复习了一遍</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//类组件更新状态-对象属性值</span><br><span class="line">function onChange(name,value)&#123;</span><br><span class="line">    const obj=Object.assign(&#123;&#125;,this.state.obj);</span><br><span class="line">    const obj[name]=value;</span><br><span class="line">    this.setState(&#123;this.state.obj:obj)</span><br><span class="line">&#125;</span><br><span class="line">//函数组件更新状态-对象属性值</span><br><span class="line">const onChange=(name,value)&#123;</span><br><span class="line">    setValue(&#123;...obj,[name]:value&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重写一遍后又想起了函数式组件，hooks不是学了吗，那你倒是用起来啊！！！<br>写的过程中开始逐渐理解为什么react社区推崇函数式组件，对于简单数据的更新，hooks提供的钩子函数要比类组件实现同样的功能代码简洁很多。在一次次的重构过程中学到了很多新的知识点⬇</p>
+<h3 id="React18的优化"><a href="#React18的优化" class="headerlink" title="React18的优化"></a>React18的优化</h3><h4 id="1-transition"><a href="#1-transition" class="headerlink" title="1.transition"></a>1.transition</h4><p><strong>参考文章：</strong><br><a href="https://juejin.cn/post/7027995169211285512">「React18新特性」深入浅出用户体验大师—transition</a><br><a href="https://juejin.cn/post/7038402899860258847">漫谈 React 系列(四): React18 自己的防抖节流 - useTransition</a><br><strong>前言：</strong><br>transition的出现是为了解决多个状态更新的优先级问题，业务场景中有一个很常见的例子，例如在搜索框中键入字值列表需要同步展示包含关键字的item，如果此时把这两个更新任务放在一起，当输入框连续输入值，把列表更新的任务放在输入框后面，就会造成页面异常卡顿。<br>上述问题通常我们的解决思路，一，防抖，在用户输入完成时更新状态再进行列表搜索，二，节流，在一定时间后更新状态，但是两者都会造成一定程度的性能降低<br><strong>startTransition：</strong><br>来划分任务的优先级优化用户体验。不是那么紧急的任务包裹在该函数里，上述实例中，列表的搜索更新就可以放在该函数中。<br><strong>useTransition：</strong><br>useTransition定义了一个函数钩子，包括startTransition和一个等待状态值isPending，如果我们需要获取到startTransition函数中提供的数据源才允许用户操作，就可以用isPending来判断组件是否要处于禁用状态，当然这只是一个很小的应用场景，具体更多的应用场景还需要在项目中不断实践总结</p>
+<h4 id="2-Suspense"><a href="#2-Suspense" class="headerlink" title="2.Suspense"></a>2.Suspense</h4><p>描述：类似骨架屏的概念，将未准备好的组件用Suspense嵌套优先加载已经准备好的组件，是loading状态的“平价替换”<br>实例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Suspense fallback=&#123;&lt;Loading/&gt;&#125;&gt;</span><br><span class="line">    &lt;MyComponent myData=&#123;myData&#125;/&gt;</span><br><span class="line">&lt;/Suspense&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="React-memo与React-PureComponent"><a href="#React-memo与React-PureComponent" class="headerlink" title="React.memo与React.PureComponent"></a>React.memo与React.PureComponent</h3><p><strong>前言：</strong><br>React.memo是在看React18特性时候了解的，PureComponent是项目中遇到的，去查阅资料了解了一下，都是react16推出的，因为实际项目中都是秉承着能用就行，极少去优化性能，所以对此方面的知识并不熟悉。汗颜。。。<br><strong>memo:</strong><br>memo定义了两个传入参数，第一个是需要优化的组件，第二个是与之相比较的组件。其原理是用Object.is进行浅比较。官方的解释是</p>
+<blockquote>
+<p>如果你的组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 React.memo 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。<br>React.memo仅检查props更改。如果你封装的函数组件在其实现中React.memo有一个useState,useReducer或useContextHook ，它仍然会在状态或上下文发生变化时重新渲染。</p>
+</blockquote>
+<p><strong>React.PureComponent：</strong><br>相当于自带shouldComponentUpdate的Component类<br><strong>共同点：</strong><br>都是为减少不必要的组件更新渲染，提高性能<br><strong>不同点：</strong><br>类型，memo是函数，PureComponent是类<br>应用场景，memo用在函数组件中，PureComponent用在类组件中<br><strong>实例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//React.memoy</span><br><span class="line">function Child(&#123;seconds&#125;)&#123;</span><br><span class="line">    console.log(&#x27;I am rendering&#x27;);</span><br><span class="line">    return (</span><br><span class="line">        &lt;div&gt;I am update every &#123;seconds&#125; seconds&lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;;</span><br><span class="line">export default React.memo(Child);</span><br><span class="line"></span><br><span class="line">//React.PureComponent</span><br><span class="line">class Child extends React.PureComponent &#123;</span><br><span class="line">    render()&#123;</span><br><span class="line">        console.log(&#x27;I am rendering&#x27;);</span><br><span class="line">        return (</span><br><span class="line">            &lt;div&gt;I am update every &#123;this.props.seconds&#125; seconds&lt;/div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="自定义一个hook"><a href="#自定义一个hook" class="headerlink" title="自定义一个hook"></a>自定义一个hook</h3><p>写hook也有一段时间，一直在用封装好的hook没有自己写过，写项目过程中发现有很多重复的逻辑所以打算自己尝试写一个hook<br><strong>前言：</strong> 据react hooks约定，自定义hook需要遵守</p>
+<blockquote>
+<p>const […返回]=useXxx(参数一，参数二)</p>
+</blockquote>
+<p>其次我们要知道hooks的出现是为了提高代码的复用率，减少不必要的重复代码，所以抽取公共逻辑/组件就变成了我们在写一个自定义hooks中重要的一环。<br><strong>业务逻辑描述：</strong> 这是我在项目中遇到的一个需求，大致是要写n个内容不同的form，然后实现表单内容修改提交。<br><strong>需求分析：</strong> 根据上述需求，我们先明确什么是公共部分（作为useXxxx函数内部必要的嵌套部分），什么是需要差异化的值（作为参数传入函数内部）,什么是需要外部需要的值（作为返回）</p>
+<p>根据这个思路我们可以将useXxxx写为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &quot;react&quot;;</span><br><span class="line">import &#123; Form, Input, InputNumber, Button &#125; from &quot;antd&quot;;</span><br><span class="line"></span><br><span class="line">const useForm = (dataSource) =&gt; &#123;</span><br><span class="line">  const [node, setNode] = useState(dataSource);</span><br><span class="line">  const elements = node ? Object.entries(node) : [];</span><br><span class="line">  const children = (type) =&gt; &#123;</span><br><span class="line">    let view = null;</span><br><span class="line">    switch (typeof type) &#123;</span><br><span class="line">      case &quot;number&quot;:</span><br><span class="line">        view = &lt;InputNumber /&gt;;</span><br><span class="line">        break;</span><br><span class="line">      default:</span><br><span class="line">        view = &lt;Input /&gt;;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return view;</span><br><span class="line">  &#125;;</span><br><span class="line">  const onFinish = (values) =&gt; &#123;</span><br><span class="line">    setNode(values);</span><br><span class="line">  &#125;;</span><br><span class="line">  const view = (</span><br><span class="line">    &lt;Form onFinish=&#123;onFinish&#125; initialValues=&#123;dataSource&#125;&gt;</span><br><span class="line">      &#123;elements.map((item, key) =&gt; &#123;</span><br><span class="line">        return (</span><br><span class="line">          &lt;Form.Item name=&#123;item[0]&#125; label=&#123;item[0]&#125;&gt;</span><br><span class="line">            &#123;children(item[1])&#125;</span><br><span class="line">          &lt;/Form.Item&gt;</span><br><span class="line">        );</span><br><span class="line">      &#125;)&#125;</span><br><span class="line">      &lt;Button type=&quot;primary&quot; htmlType=&quot;submit&quot;&gt;</span><br><span class="line">        保存</span><br><span class="line">      &lt;/Button&gt;</span><br><span class="line">    &lt;/Form&gt;</span><br><span class="line">  );</span><br><span class="line">  return [view, node];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>引用这个hook</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import &#123; useForm &#125; from &quot;./useForm&quot;;</span><br><span class="line"></span><br><span class="line">export default function App()&#123;</span><br><span class="line">  const data = &#123; name: &quot;123&quot;, age: 0 &#125;;</span><br><span class="line">  const [view, res] = useForm(data);</span><br><span class="line">  console.log(&quot;res&quot;,res);</span><br><span class="line">  return &lt;div className=&quot;App&quot;&gt;&#123;view&#125;&lt;/div&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>通过代码部分我们可以看到该hook实现了以下功能</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    输入-数据源object --&gt; useForm --&gt; 输出-表单组件&amp;保存后的值</span><br></pre></td></tr></table></figure>
+<p>ps：上面的例子只是在理想情况下的一种数据假设，在项目中，表单的子项可能会根据业务需求搭配各种组件，在这种情况下我们通过判断属性类型来定义FormItem中的组件就不太适用了，所以建议将输入的data类型搭配ts重组，以便于通用hook的实现</p>
+<h3 id="其他tips"><a href="#其他tips" class="headerlink" title="其他tips"></a>其他tips</h3><h4 id="ES6空值合并运算符"><a href="#ES6空值合并运算符" class="headerlink" title="ES6空值合并运算符"></a>ES6空值合并运算符</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(value !== null &amp;&amp; value !== undefined &amp;&amp; value !== &#x27;&#x27;)&#123;</span><br><span class="line">    //...</span><br><span class="line">&#125;</span><br><span class="line">//可以写成</span><br><span class="line">if((value??&#x27;&#x27;) !== &#x27;&#x27;)&#123;</span><br><span class="line">  //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="合并数组"><a href="#合并数组" class="headerlink" title="合并数组"></a>合并数组</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const a = [1,2,3];</span><br><span class="line">const b = [1,5,6];</span><br><span class="line">const c = a.concat(b);//[1,2,3,1,5,6]</span><br><span class="line"></span><br><span class="line">const obj1 = &#123;</span><br><span class="line">  a:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj2 = &#123;</span><br><span class="line">  b:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj = Object.assign(&#123;&#125;, obj1, obj2);//&#123;a:1,b:1&#125;</span><br><span class="line">//扩展运算符加去重</span><br><span class="line">const a = [1,2,3];</span><br><span class="line">const b = [1,5,6];</span><br><span class="line">const c = [...new Set([...a,...b])];//[1,2,3,5,6]</span><br><span class="line"></span><br><span class="line">const obj1 = &#123;</span><br><span class="line">  a:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj2 = &#123;</span><br><span class="line">  b:1,</span><br><span class="line">&#125;</span><br><span class="line">const obj = &#123;...obj1,...obj2&#125;;//&#123;a:1,b:1&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="HTML中的空格表达"><a href="#HTML中的空格表达" class="headerlink" title="HTML中的空格表达"></a>HTML中的空格表达</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&amp;nbsp;字符：不断行的空白格，该空格占据的宽度受字体影响(一个字符宽度)。</span><br><span class="line">&amp;ensp;字符：相当全角状态键入半个“空格”键（半个汉字的宽度，一个字符宽度）。</span><br><span class="line">&amp;emsp;字符：相当全角状态键入“空格”键（1个汉字的宽度，两个字符宽度）。</span><br></pre></td></tr></table></figure>
+<h3 id="一个bug"><a href="#一个bug" class="headerlink" title="一个bug"></a>一个bug</h3><h5 id="bug描述：antd-FormItem-Input控件中校验最大值最小值出错"><a href="#bug描述：antd-FormItem-Input控件中校验最大值最小值出错" class="headerlink" title="bug描述：antd FormItem Input控件中校验最大值最小值出错"></a>bug描述：antd FormItem Input控件中校验最大值最小值出错</h5><h5 id="原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息"><a href="#原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息" class="headerlink" title="原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息"></a>原因：Input输出的value类型是字符串，如果在rule里约定校验类型为number，接受到value为字符串就会一直触发错误信息</h5><h5 id="代码如下："><a href="#代码如下：" class="headerlink" title="代码如下："></a>代码如下：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;FormItem</span><br><span class="line">          rules=&#123;[</span><br><span class="line">            &#123;</span><br><span class="line">              required: true,</span><br><span class="line">              message: &#x27;字段必填&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              type: &#x27;number&#x27;,</span><br><span class="line">              min: 0,</span><br><span class="line">              max: 100,</span><br><span class="line">              message: &#x27;只允许输入0~100之间的数字&#x27;,</span><br><span class="line">            &#125;,</span><br><span class="line">          ]&#125;</span><br><span class="line">        &gt;</span><br><span class="line">          &lt;Input/&gt;</span><br><span class="line">        &lt;/FormItem&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="解决方案一-类型转换"><a href="#解决方案一-类型转换" class="headerlink" title="解决方案一:类型转换"></a>解决方案一:类型转换</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;FormItem</span><br><span class="line">    rules=&#123;[</span><br><span class="line">        &#123;</span><br><span class="line">            required: true,</span><br><span class="line">            message: &#x27;字段必填&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            type: &#x27;number&#x27;,</span><br><span class="line">            min: 0,</span><br><span class="line">            max: 100,</span><br><span class="line">            message: &#x27;只允许输入0~100之间的数字&#x27;,</span><br><span class="line">            transform: (value: string) =&gt; Number(value),</span><br><span class="line">        &#125;,</span><br><span class="line">    ]&#125;</span><br><span class="line">&gt;</span><br><span class="line">    &lt;Input/&gt;</span><br><span class="line">&lt;/FormItem&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="解决方案二-改用InputNumber"><a href="#解决方案二-改用InputNumber" class="headerlink" title="解决方案二:改用InputNumber"></a>解决方案二:改用InputNumber</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;FormItem</span><br><span class="line">    rules=&#123;[</span><br><span class="line">        &#123;</span><br><span class="line">            required: true,</span><br><span class="line">            message: &#x27;字段必填&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            type: &#x27;number&#x27;,</span><br><span class="line">            min: 0,</span><br><span class="line">            max: 100,</span><br><span class="line">            message: &#x27;只允许输入0~100之间的数字&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">    ]&#125;</span><br><span class="line">&gt;</span><br><span class="line">    &lt;InputNumber/&gt;</span><br><span class="line">&lt;/FormItem&gt;</span><br></pre></td></tr></table></figure>
+<p>造成困惑的根本原因还是对antd库的使用不熟。。。。</p>
+<h3 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h3><p>刚开始接触typescript的时候并没有觉得ts相比js有什么优势，因为平时工作中即使多人协作开发，也是自己写的方法自己用，所以开发者完全知道输入输出的数据类型，没有非约定类型不可的必要。而且总觉得弱类型里面声明类型是由简到繁的转变，于是typescript在项目中渐渐变成了anyscript…<br>直到最近看了一些react跟antd组件的源码，才发现原来像“天书”一样的源码都是基于ts编写的，以及在看源码的过程中被ts各种语法和工具类秀到头皮发麻，一个功能较为复杂的实现仅仅有2行ts代码，不禁感慨一句ts666。虽然源码还是有很多看不懂，不过在此过程中确实发现了ts的好处，类型的约定避免了框架或库在使用过程中一些不必要的错误</p>
+<h3 id="愿景"><a href="#愿景" class="headerlink" title="愿景"></a>愿景</h3><p> 目前对于很多技术栈框架还是停留在会用但不懂原理的阶段，有时候为了提高开发的效率，只是一味的追求摄取短平快的知识点，但也造成了过目就忘，出了bug无法快速定位原因所在的一些毛病。在以后的开发过程中，会开始尝试侧重提高代码的健壮性，不再是简单的代码输出器或者需求翻译官，会更多的去挖掘数据业务逻辑与视图的耦合度。逐渐做到知其然知其所以然…从学习typescript开始…
+ </p>
+]]></content>
+  </entry>
+  <entry>
+    <title>阶段性学习笔记（二）</title>
+    <url>/2022/05/09/date220506/</url>
+    <content><![CDATA[<h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>以后一些知识点不是很多的内容将逐渐以综合笔记的形式出现，主要还想在cv记录知识点的同时写一些自己的理解，还有就是很多碰到的知识点都是一些细碎的东西，实在没必要为了凑文章水内容orz…<br>本章概览：</p>
+<blockquote>
+<p>1.flat数据结构转为tree结构<br>2.reduce方法小记<br>3.逗号运算符和优雅数组去重<br>4.react的优化操作</p>
+</blockquote>
+<span id="more"></span>
+<h3 id="扁平数组转为树状数组"><a href="#扁平数组转为树状数组" class="headerlink" title="扁平数组转为树状数组"></a>扁平数组转为树状数组</h3><p>来源于刷博客看到的一道题</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let data = [</span><br><span class="line">  &#123; id: 1, name: &quot;部门1&quot;, pid: 0 &#125;,</span><br><span class="line">  &#123; id: 2, name: &quot;部门2&quot;, pid: 1 &#125;,</span><br><span class="line">  &#123; id: 3, name: &quot;部门3&quot;, pid: 1 &#125;,</span><br><span class="line">  &#123; id: 4, name: &quot;部门4&quot;, pid: 3 &#125;,</span><br><span class="line">  &#123; id: 5, name: &quot;部门5&quot;, pid: 4 &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>要求是将上面的数组转为有父子包含关系的树状结构，类似[{id:1,name:””,pid:0,children:[ { id: 2, name: “部门2”, pid: 1 }]。其中pid代表父节点。<br>之前项目做面包屑的时候其实处理过类似的数据，当时用的就是递归，时隔良久再写已经想不起当时的写法了，胡乱一通操作循环套循环，勉强算是得到了想要的结果….是真的菜（其实没有深度思考就去看了答案，不提倡）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">const getChildren = (data, result, pid) =&gt; &#123;</span><br><span class="line">  for (const item of data) &#123;</span><br><span class="line">    if (item.pid === pid) &#123;</span><br><span class="line">      const newItem = &#123;...item, children: []&#125;;</span><br><span class="line">      result.push(newItem);</span><br><span class="line">      getChildren(data, newItem.children, item.id);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const arrayToTree = (data, pid) =&gt; &#123;</span><br><span class="line">  const result = [];</span><br><span class="line">  getChildren(data, result, pid)</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面写法的主要思路就是将children数组里面的通过递归层层push进去<br>当然，递归的时间复杂度自然很高….但确实没想到别的比较好的方法</p>
+<p>然后去看了一下别人的解答思路，object转Map</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function arrayToTree(data,rootId) &#123;</span><br><span class="line">  const result = [];   // 存放结果集</span><br><span class="line">  const itemMap = &#123;&#125;;  // </span><br><span class="line">    </span><br><span class="line">  // 先转成map存储</span><br><span class="line">  for (const item of items) &#123;</span><br><span class="line">    itemMap[item.id] = &#123;...item, children: []&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  //循环结果</span><br><span class="line">  //itemMap=&#123;</span><br><span class="line">  //    1:&#123;id: 1, name: &#x27;部门1&#x27;, pid: 0,children: []&#125;,</span><br><span class="line">  //    2:&#123;id: 2, name: &#x27;部门2&#x27;, pid: 1,children: []&#125;,</span><br><span class="line">  //    3:&#123;id: 3, name: &#x27;部门3&#x27;, pid: 1,children: []&#125;,</span><br><span class="line">  //    4:&#123;id: 4, name: &#x27;部门4&#x27;, pid: 3,children: []&#125;,</span><br><span class="line">  //    5:&#123;id: 5, name: &#x27;部门5&#x27;, pid: 4,children: []&#125;</span><br><span class="line">  //   &#125;</span><br><span class="line"> </span><br><span class="line">  for (const item of data) &#123;</span><br><span class="line">        const id = item.id;</span><br><span class="line">        const pid = item.pid; </span><br><span class="line">        const treeItem =  itemMap[id];</span><br><span class="line">        if (pid === rootId) &#123; </span><br><span class="line">          result.push(treeItem); </span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          if (!itemMap[pid]) &#123;</span><br><span class="line">            itemMap[pid] = &#123;</span><br><span class="line">              children: [],</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          itemMap[pid].children.push(treeItem)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外还看到了两种代码比较简洁的解法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  const items: Array&lt;Base&gt; = [</span><br><span class="line">    &#123; id: 1, name: &quot;部门1&quot;, pid: 0 &#125;,</span><br><span class="line">    &#123; id: 2, name: &quot;部门2&quot;, pid: 1 &#125;,</span><br><span class="line">    &#123; id: 3, name: &quot;部门3&quot;, pid: 1 &#125;,</span><br><span class="line">    &#123; id: 4, name: &quot;部门4&quot;, pid: 3 &#125;,</span><br><span class="line">    &#123; id: 5, name: &quot;部门5&quot;, pid: 4 &#125;</span><br><span class="line">  ];</span><br><span class="line"> </span><br><span class="line">   interface Base &#123;</span><br><span class="line">     id:number;</span><br><span class="line">     name:string;</span><br><span class="line">     pid:number;</span><br><span class="line">     children?:object;</span><br><span class="line">   &#125;</span><br><span class="line">   //第一种</span><br><span class="line">   const toTree = (_arr:Array&lt;Base&gt;): Array&lt;Base&gt;=&gt;&#123;</span><br><span class="line">     return _arr.map(item=&gt;&#123;</span><br><span class="line">       item.children = _arr.filter(v=&gt;v.pid === item.id);</span><br><span class="line">        return item;</span><br><span class="line">     &#125;).filter(item=&gt;!item.pid);</span><br><span class="line">   &#125;</span><br><span class="line">   //第二种</span><br><span class="line">    const arrayToTree=(data, pid)=&gt; &#123;</span><br><span class="line">    return data.reduce((pre, next) =&gt; &#123;</span><br><span class="line">      if (next.pid === pid) &#123;</span><br><span class="line">        next.children = arrayToTree(data, next.id);</span><br><span class="line">        pre.push(next);</span><br><span class="line">      &#125;</span><br><span class="line">      return pre;</span><br><span class="line">    &#125;, []);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看了n种比较优秀的解法，在自己尝试的过程中有一个困惑，上述写法我认为的输出结果应该是一层树状结果，结果在第一次尝试打印结果集的时候就是最终输出的树状结构了隐隐约约觉得可能会是二次循环放入子节点的时候会改变第一次循环已经改变过的数据源（只能这样解释..）。</p>
+<p>后续…翻到了这样一条评论与我的解释我的困惑</p>
+<blockquote>
+<p>@rossroma9466：原来是利用了对象是引用类型这一属性，代码是简洁的，但不能算“阅读性强”。因为它利用的是隐式特性，并没有显示的声明，容易让阅读者遗漏掉这一点。eslint的语法规范中，也有强调不建议在函数中去修改参数。eslint.bootcss.com</p>
+</blockquote>
+<p>去补习了一下js的知识，解释上面的疑惑<br>首先 <strong>js分为基本类型和引用类型</strong></p>
+<blockquote>
+<p>基本类型：Underfined ,Null, Boolean,Number,String<br>引用类型： Object，Array，Date，Function</p>
+</blockquote>
+<p>其次，<strong>直接将引用类型赋值获取到的是原变量的引用</strong>，也就是说即使你把一个引用对象重新赋值给一个新变量，只是相当于声明这个新变量的数据源地址为引用对象，并没有把数据重新复制一份。这也解释了为什么我们在每次从后端返回一个操作节点对象的时候要用Object.assign()方法copy一份后再做修改，因为这样不会对原数据造成污染，引起不必要的错误。<br>如此我们就可以解释上述输出结果为什么能得到题目想要的输出结果，因为在对item赋值的过程中，实际就已经改变了我们入参中的data，这也导致为什么我在第一次循环中打印data就是最终结果，因为对子项的重复值已经污染数据源。</p>
+<h3 id="关于Array-proptotype-reduce"><a href="#关于Array-proptotype-reduce" class="headerlink" title="关于Array.proptotype.reduce()"></a>关于Array.proptotype.reduce()</h3><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>reduce其实早有耳闻，之前只是初步了解了一下。知道reduce是一个累加器，可以做数组中所有数字的sum,但业务逻辑中没有碰到需要使用累加器的，直到遇到上面扁平转树状的一个解法，将children层层放入parent下利用reduce累计最终结果。是时候深入了解一波reduce了…</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Arrow function</span><br><span class="line">reduce((previousValue, currentValue) =&gt; &#123; /* ... */ &#125; )</span><br><span class="line">reduce((previousValue, currentValue, currentIndex) =&gt; &#123; /* ... */ &#125; )</span><br><span class="line">reduce((previousValue, currentValue, currentIndex, array) =&gt; &#123; /* ... */ &#125; )</span><br><span class="line">reduce((previousValue, currentValue, currentIndex, array) =&gt; &#123; /* ... */ &#125;, initialValue)</span><br><span class="line"></span><br><span class="line">// Callback function</span><br><span class="line">reduce(callbackFn)</span><br><span class="line">reduce(callbackFn, initialValue)</span><br><span class="line"></span><br><span class="line">// Inline callback function</span><br><span class="line">reduce(function(previousValue, currentValue) &#123; /* ... */ &#125;)</span><br><span class="line">reduce(function(previousValue, currentValue, currentIndex) &#123; /* ... */ &#125;)</span><br><span class="line">reduce(function(previousValue, currentValue, currentIndex, array) &#123; /* ... */ &#125;)</span><br><span class="line">reduce(function(previousValue, currentValue, currentIndex, array) &#123; /* ... */ &#125;, initialValue)</span><br></pre></td></tr></table></figure>
+<p>计算累加值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//引用语法</span><br><span class="line">//reduce((previousValue, currentValue, currentIndex, array) =&gt; &#123; /* ... */ &#125;, //initialValue)</span><br><span class="line">const initialValue=0</span><br><span class="line">const arr = [1,2,3,4,5]</span><br><span class="line">const sum = arr.reduce((t,v)=&gt;t+v);</span><br><span class="line">//等于</span><br><span class="line">const sum = arr.reduce((t,v)=&gt;t+v,0);</span><br></pre></td></tr></table></figure>
+<p>很多例子还写了用reduce实现flat，filter，some，every等es方法，个人觉得可以作为思维拓展，但是真正使用的时候还是不要为了用reduce而去写reduce。。。</p>
+<h3 id="逗号运算符-amp-amp-优雅数组去重"><a href="#逗号运算符-amp-amp-优雅数组去重" class="headerlink" title="逗号运算符&amp;&amp;优雅数组去重"></a>逗号运算符&amp;&amp;优雅数组去重</h3><p>逗号操作符：对它的每个操作数求值（从左到右），并返回最后一个操作数的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let x = 1;</span><br><span class="line"></span><br><span class="line">x = (x++, x);</span><br><span class="line"></span><br><span class="line">console.log(x);</span><br><span class="line">// expected output: 2</span><br><span class="line"></span><br><span class="line">x = (2, 3);</span><br><span class="line"></span><br><span class="line">console.log(x);</span><br><span class="line">// expected output: 3</span><br></pre></td></tr></table></figure>
+<p>利用Set的特性去重，Set 是唯一值的集合。每个值在 Set 中只能出现一次。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const unique = arr =&gt; [...new Set(arr)] </span><br></pre></td></tr></table></figure>
+<h3 id="react的优化操作"><a href="#react的优化操作" class="headerlink" title="react的优化操作"></a>react的优化操作</h3><h4 id="props-传多个值写法优化"><a href="#props-传多个值写法优化" class="headerlink" title="props 传多个值写法优化"></a>props 传多个值写法优化</h4><p>传统写法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const &#123;dataOne,dataTwo,dataThree&#125; = this.state</span><br><span class="line">&lt;Com dataOne=&#123;dataOne&#125; dataTwo=&#123;dataTwo&#125; dataThree=&#123;dataThree&#125;&gt;</span><br></pre></td></tr></table></figure>
+<p>复制代码升级写法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;Com &#123;...&#123;dataOne,dataTwo,dataThree&#125;&#125;&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="异常边界"><a href="#异常边界" class="headerlink" title="异常边界"></a>异常边界</h4><p>报错组件不会影响到其他组件的显示</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class ErrorBoundary extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      hasError: false,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  static getDerivedStateFromError(error) &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      hasError: true,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidCatch(error, errorInfo) &#123;</span><br><span class="line">    // 可以在这里上报错误日志</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    if (this.state.hasError) &#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;Result</span><br><span class="line">          status=&quot;error&quot;</span><br><span class="line">          title=&quot;哇哦，出现了错误&quot;</span><br><span class="line">          subTitle=&quot;请联系管理员&quot;</span><br><span class="line">        &gt;&lt;/Result&gt;</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    return this.props.children;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export default ErrorBoundary;</span><br><span class="line">// 定义一个组件</span><br><span class="line">const Child = () =&gt; &#123;</span><br><span class="line">  return &lt;div&gt;子组件&lt;/div&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 在父页面使用异常边界组件</span><br><span class="line">const Parent = () =&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return &lt;&gt;</span><br><span class="line">    &lt;ErrorBoundary&gt;&lt;Child/&gt;&lt;/ErrorBoundary&gt;</span><br><span class="line">    &lt;ErrorBoundary&gt;&lt;Child2/&gt;&lt;/ErrorBoundary&gt;</span><br><span class="line">    &lt;ErrorBoundary&gt;&lt;Child3/&gt;&lt;/ErrorBoundary&gt;</span><br><span class="line">  &lt;/&gt;</span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>PS：异常组件不能捕获被包裹组件中调用的异步操作中的错误</p>
+<h4 id="异步操作中状态批量更新"><a href="#异步操作中状态批量更新" class="headerlink" title="异步操作中状态批量更新"></a>异步操作中状态批量更新</h4><p>react中的状态更新往往是批量的，但是在异步操作中不会批量操作，所以需要用到unstable_batchedUpdates将异步操作中的状态更新包裹起来</p>
+<p><strong>示例代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">handerClick=()=&gt;&#123;</span><br><span class="line">    setTimeout(() =&gt; &#123;</span><br><span class="line">        unstable_batchedUpdates(()=&gt;&#123;</span><br><span class="line">            this.setState(&#123; a:a+1 &#125;)</span><br><span class="line">            this.setState(&#123; b:b+1 &#125;)</span><br><span class="line">            this.setState(&#123; c:c+1 &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;, 0)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>defaultValue 与 Value 的使用</title>
+    <url>/2022/03/20/note02/</url>
+    <content><![CDATA[<p>问题起因：某天boss在例行检查代码的时候，把所有的value换成了defaultValue，原因是他说value的值是从props过来的，props的值改变会影响value，而defaultValue可以避免这个问题….（黑人问号脸.jpg)，啊这不是吧，源数据改变就算换成defaultValue也会改变的吧，难道是我一直理解错了？于是本着辨证的目的我打算互联网冲浪去寻找原因…</p>
+<span id="more"></span>
+
+<p>在查阅了一些资料文献后我发现了这样一段话可以解答我的疑惑</p>
+<blockquote>
+<p><strong>React 中为何需要defaultValue？</strong></p>
+<p>defaultValue 一般用于表单，给表单元素一个初始化值。注意，只是初始化，如果defaultValue值发生变化，表单里的值不会被改变。</p>
+<p><strong>value也可以做到，为何还要defaultValue呢？</strong></p>
+<p>表单分两种，一种是受控表单，一种是非受控表单。仅用value，使用者会误以为value值改变，表单显示的值也会跟着变，这实际上是受控表单的行为，完全符合期望。但是，非受控表单，props.value变化，其表单显示的值不会跟着变（因为表单内部有自己的state），为了区别这两种场景，所以引入了defaultValue，表示只给默认值。</p>
+</blockquote>
+<p>果然是基础知识不扎实，看到这儿，我大概理解了boss为什么将原来的value onChange搭配改为了defaultValue onBlur；原来的搭配会在键入的时候频繁的执行setState去更改数值，改为非受控组件后，并在失去焦点的时候赋值，避免了大数据列表因为不断更改值应发的性能问题，真真儿nice</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>welcome to my zone</title>
+    <url>/2019/08/15/note1/</url>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>欢迎来到AreUhungry的个人博客，该博客创建于2019年8月15日一个风和日丽的下午，以后博客会不定期更新一些个人的生活状态和学习笔记，如果机缘巧合翻到这个网站实属荣幸，留下你的足迹一人送博主五个油腻么么哒。</p>
+</blockquote>
+<h3 id="PS"><a href="#PS" class="headerlink" title="PS:"></a>PS:</h3><blockquote>
+<p><em>小女拙见如与阁下观点不胜雷同还望多多包涵，所po内容引起不适请点击右上角x</em>。</p>
+</blockquote>
 ]]></content>
   </entry>
   <entry>
@@ -751,248 +993,6 @@
 <p>这两句语句的作用，就是通过bind方法上当前示例中行的onClickIncrementButton和onClickDecrementButton函数被调用时，this始终是指向当前组件</p>
 </li>
 </ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>查找数组中是否包含某元素的若干方法</title>
-    <url>/2020/09/04/date20090405/</url>
-    <content><![CDATA[<p>假设变量a为某数组，该数组包含若干个元素，b为已知元素，要判断b是否在a中</p>
-<p><strong>1.indexOf</strong></p>
-<span id="more"></span>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.indexOf(b) </span><br><span class="line">//如果b为对象或数组，则需要将a序列化后再操作  let c=JSON.stringtify(a).index   </span><br><span class="line">if(c&lt;0)&#123;</span><br><span class="line">    console.log(&quot;b在a中&quot;);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.find（方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。）</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c = a.find(item=&gt; return item==b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">    console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;    </span><br><span class="line">    console.log(&quot;b不在a中&quot;); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>3.map遍历</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = false;</span><br><span class="line">const c=a.map(v=&gt;&#123;</span><br><span class="line">	if(v==b)&#123;</span><br><span class="line">	res = true;</span><br><span class="line">	&#125;</span><br><span class="line">	return res;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(c);//b在a中返回true否则返回false</span><br></pre></td></tr></table></figure>
-
-<p><strong>4.some是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const c=a.some(v=&gt;v=b);</span><br><span class="line">console.log(c);//b在a中则输出true否则输出false</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：every和some的区别：</strong></p>
-<ul>
-<li><strong>every()是对数组中每一项运行给定函数，如果该函数对每一项返回true,则返回true。</strong></li>
-<li><strong>some()是对数组中每一项运行给定函数，如果该函数对任一项返回true，则返回true。</strong></li>
-</ul>
-<p><strong>5.includes函数用来判断一个数组是否包含一个指定的值，如果包含则返回true，否则返回false。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let c=a.includes(b) </span><br><span class="line">if(c)&#123;    </span><br><span class="line">	console.log(&quot;b在a中&quot;); </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    console.log(&quot;b不在a中&quot;) </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>webpack归纳总结</title>
-    <url>/2020/09/04/date20090406/</url>
-    <content><![CDATA[<h3 id="关于webpack"><a href="#关于webpack" class="headerlink" title="关于webpack"></a>关于webpack</h3><p><strong>webpack是现代JavaScript应用程序的静态模块打包工具</strong></p>
-<ul>
-<li>bundle（包，束）</li>
-<li>入口（entry）</li>
-<li>输出（output）</li>
-<li>loader</li>
-<li>插件（plugin）</li>
-<li>模式（mode）</li>
-<li>浏览器兼容性（browser compatibility）</li>
-</ul>
-<span id="more"></span>
-
-<p><strong>1.入口</strong></p>
-<p>入口文件只是webpack应该使用哪个模块来作为构建内部依赖图的开始。进入入口文件起点后，webpack会找出有哪些模块和库时候入口起点（直接和间接）依赖的</p>
-<p>默认值是 ./src/index.js</p>
-<p>可以通过在webpack configuration中配置entry属性，来指定一个或多个不用入口的起点，例如</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">module.exports = &#123;      entry: &#x27;./path/to/my/entry/file.js&#x27;    &#125;;</span><br></pre></td></tr></table></figure>
-
-<p><strong>2.输出</strong></p>
-<p>输出（output） 告诉webpack在哪里输出它所创建的bundle，以及如何命名这些文件。主要输出文件的默认值是 ./dist/main.js，其他生成文件默认放置在 ./dist 文件夹中</p>
-<p>可以通过配置中指定一个output字段，来配置这些处理过程</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;); </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">	entry: &#x27;./path/to/my/entry/file.js&#x27;,</span><br><span class="line">    output: &#123;</span><br><span class="line">    	path: path.resolve(__dirname, &#x27;dist&#x27;),</span><br><span class="line">        filename: &#x27;my-first-webpack.bundle.js&#x27;  </span><br><span class="line">       &#125; </span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
-
-<p><strong>3.loader</strong></p>
-<p>webpack只能理解JavaScript和Json文件。loader让webpack能够去处理其他类型的文件并将它们转换为有效模块，以供应用程序使用</p>
-<p>注意：loader能够import导入任何类型的模块（例如.css文件），这是webpack特有的功能，其他打包程序或任务执行器可能并不支持</p>
-<p>在更高层面，webpack的配置中oader有两个属性：</p>
-<p>1.test属性，用于标识出应该被对应的loader进行转换的某个或某些文件</p>
-<p>2.use属性，标识进行转换时，应该使用哪个loader</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const path = require(&#x27;path&#x27;); </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">	output: &#123;</span><br><span class="line">    filename: &#x27;my-first-webpack.bundle.js&#x27;</span><br><span class="line">    &#125;,  </span><br><span class="line">    module: &#123;</span><br><span class="line">    	rules: [    </span><br><span class="line">    	//告诉编译器在遇到后缀为txt文件时，需要使用raw-loader转换    </span><br><span class="line">    	//此处注意test不要添加引号     </span><br><span class="line">        	&#123; test: /\.txt$/, use: &#x27;raw-loader&#x27; &#125;    </span><br><span class="line">        	]  </span><br><span class="line">        &#125; </span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>常见色彩格式</title>
-    <url>/2020/09/04/date20090403/</url>
-    <content><![CDATA[<h3 id="常见色彩格式"><a href="#常见色彩格式" class="headerlink" title="常见色彩格式"></a>常见色彩格式</h3><p><strong>RGB （red,green,blue)</strong></p>
-<p><strong>HSV Hue(色相)、Saturation(饱和度)、Value(色调)</strong></p>
-<p><strong>HSL （Hue(色相)、Saturation(饱和度)、Lightness(亮度)）</strong></p>
-<span id="more"></span>
-
-<p>附录：</p>
-<h5 id="JavaScript中rgb转换为hsv"><a href="#JavaScript中rgb转换为hsv" class="headerlink" title="JavaScript中rgb转换为hsv"></a>JavaScript中rgb转换为hsv</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//rbg范围为[0,255]，转换成h的范围为[0,360]</span><br><span class="line">//s,v为百分比形式，范围是[0,100],可根据需求做相应调整</span><br><span class="line">function rgbtohsv(r,g,b)&#123;</span><br><span class="line">    r=r/255;</span><br><span class="line">    g=g/255;</span><br><span class="line">    b=b/255;</span><br><span class="line">    var h,s,v;</span><br><span class="line">    var min=Math.min(r,g,b);</span><br><span class="line">    var max=v=Math.max(r,g,b);</span><br><span class="line">    var l=(min+max)/2;</span><br><span class="line">    var diff = max-min;</span><br><span class="line">    </span><br><span class="line">    if(max==min)&#123;</span><br><span class="line">        h=0</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        switch(max)&#123;</span><br><span class="line">            case r: h=(g-b)/diff+(g&lt;b?6:0);break;</span><br><span class="line">            case g: h=2.0+(b-r)/diff;break;</span><br><span class="line">            case b: h=4.0+(r-g)/diff;break;</span><br><span class="line">        &#125;</span><br><span class="line">        h=Math.round(h*60);</span><br><span class="line">    &#125;</span><br><span class="line">    if(max==0)&#123;</span><br><span class="line">        s=0;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        s=1-min/max;</span><br><span class="line">    &#125;</span><br><span class="line">    s=Math.round(s*100);</span><br><span class="line">    v=Math.round(v*100);</span><br><span class="line">    return [h,s,v];</span><br><span class="line">;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>ES语法糖</title>
-    <url>/2020/09/04/date20090402/</url>
-    <content><![CDATA[<p><strong>一. ?.（可选链）</strong></p>
-<p><strong>1、长判断时用：在开发中，对接口返回的嵌套对象数据进行属性判断。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  code: 200,</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: [1,2,3], //table list</span><br><span class="line">    page: 1</span><br><span class="line">  &#125;,</span><br><span class="line">  message: &#x27;success&#x27;,</span><br><span class="line">  func: function()&#123;console.log(&#x27;I am func&#x27;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">const tableList = res.data &amp;&amp; res.data.content; //[1,2,3]</span><br><span class="line">// 相当于</span><br><span class="line">const tableList = res.data ? res.data.content : undefined;</span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res.data?.content  //[1,2,3]</span><br><span class="line"></span><br><span class="line">// 甚至更谨慎点，加长判断，多个三目运算</span><br><span class="line">const tableList = res &amp;&amp; res.data &amp;&amp; res.data.content; </span><br><span class="line">// 有了可选链, 简写为</span><br><span class="line">const tableList = res?.data?.content  //[1,2,3]</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<p><strong>2、调用函数或方法时用：调用前先判断是否是存在</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const tableList = res &amp;&amp; res.func &amp;&amp; res.func();  </span><br><span class="line">// 有了可选链，简写为 </span><br><span class="line">const func = res?.func?.() // I am func 或者 res.func?.() </span><br><span class="line">const func = res?.test?.() // undefined</span><br></pre></td></tr></table></figure>
-
-<p><strong>3、动态属性：属性为变量时用</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 引用上文例子 </span><br><span class="line">const name = &#x27;data&#x27;; </span><br><span class="line">res?.[name]?.content  // [1,2,3]</span><br></pre></td></tr></table></figure>
-
-<p><strong>二. ??（双问号）</strong></p>
-<p>使用场景: 取默认值</p>
-<p>实际上接口返回的数据中，content很可能为null 或者 undefined，或压根没返回content，因此我们判断时需要加上默认值，如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let res = &#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    content: null, // or false, or 0,</span><br><span class="line">    content1: false,</span><br><span class="line">    content2: 0</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 加上默认值</span><br><span class="line">const tableList = res?.data?.content || [4,5,6]  //[4,5,6]</span><br><span class="line">// 但我们发现，对于||，返回false或者0，也会取后者</span><br><span class="line">const tableList = res?.data?.content1 || [4,5,6]  //[4,5,6]</span><br><span class="line">const tableList = res?.data?.content2 || [4,5,6]  //[4,5,6]</span><br></pre></td></tr></table></figure>
-
-<p>在想返回null和undefined的时候取双问号后面的值</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">注意点： </span><br><span class="line">undefined ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">null ?? &#x27;default&#x27; // &#x27;default&#x27; </span><br><span class="line">false ?? &#x27;default&#x27; // &#x27;false&#x27; </span><br><span class="line">0 ?? &#x27;default&#x27; // 0</span><br></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>常见分辨率归纳总结</title>
-    <url>/2020/09/04/date20090401/</url>
-    <content><![CDATA[<p><strong>常见PC使用分辨率</strong></p>
-<p>1024*600 （常见8.9寸电脑使用）</p>
-<p>1024*768（常用10.4、12.1、14.1、15寸电脑使用）4:3</p>
-<p>1280*1024（常用14.1、15寸电脑使用）5:4</p>
-<p>1600 * 900 16:9 (非主流)</p>
-<p>1440*1050（常用15、16.1寸电脑使用）4:3</p>
-<p>1600*1200（常用15、16.1寸电脑使用）4:3</p>
-<span id="more"></span>
-
-<p>1280*800（常见10.8、12.1、15.4寸电脑使用）16:10</p>
-<p>1366*768（常见15.2寸电脑使用）15:10 （主流）</p>
-<p>1280*854（不常见）16:9</p>
-<p>1440*900（仅苹果17寸电脑使用）16:10</p>
-<p>1600*1024（不常见）14:9</p>
-<p>1680*1050（常见15.4、20寸电脑使用）16:10</p>
-<p>1920*1080 16:9 （主流）</p>
-<p>1920*1200（常见20寸电脑使用）16:10</p>
-<p><strong>常见平板分辨率</strong></p>
-<p>768x1024 — 75.65%</p>
-<p>360x640 — 2.85%</p>
-<p>1024x768 — 1.94%</p>
-<p>800x1280 — 1.58%</p>
-<p>1920x1080 — 1.37%</p>
-<p>1024x1366 — 1.26%</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>JS中关于截取的若干方法</title>
-    <url>/2020/09/03/date20090404/</url>
-    <content><![CDATA[<h4 id="1-slice"><a href="#1-slice" class="headerlink" title="1.slice"></a>1.slice</h4><p><strong>定义：</strong>用于<strong>数组</strong>的截取，返回一个新的数组对象，这一对象是一个由 begin和 end决定的原数组的浅拷贝（包括 begin，不包括end）。原始数组不会被改变。</p>
-<span id="more"></span>
-
-<p><strong>语法：</strong></p>
-<blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; arr.slice([begin[,end]]) </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p><strong>参数：</strong></p>
-<table>
-<thead>
-<tr>
-<th>begin(可选)</th>
-<th>end（可选）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>提取起始处的索引（从 <code>0</code> 开始），从该索引开始提取原数组元素。</td>
-<td>提取终止处的索引（从 <code>0</code> 开始），在该索引处结束提取原数组元素。<code>slice</code> 会提取原数组中索引从 <code>begin</code> 到 <code>end</code> 的所有元素（包含 <code>begin</code>，但不包含 <code>end</code>）。</td>
-</tr>
-</tbody></table>
-<p><strong>示例代码：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const arr = [1,2,3,4];</span><br><span class="line">console.log(arr.slice(2)); //3,4</span><br><span class="line">console.log(arr.slice(2,3)); //3</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-split"><a href="#2-split" class="headerlink" title="2.split"></a>2.split</h4><p><strong>定义：</strong>用于<strong>字符串</strong>的截取，使用指定的分隔符字符串将一个String对象分割成子字符串数组，以一个指定的分个字串来决定每个拆分的位置</p>
-<p><strong>语法：</strong></p>
-<blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; str.split([separator[, limit]])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p><strong>参数：</strong></p>
-<table>
-<thead>
-<tr>
-<th>separator</th>
-<th>limit</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>指定表示每个拆分应发生的点的字符串。<code>separator</code> 可以是一个字符串或<strong>正则表达式</strong>。 如果纯文本分隔符包含多个字符，则必须找到整个字符串来表示分割点。如果在str中省略或不出现分隔符，则返回的数组包含一个由整个字符串组成的元素。如果分隔符为空字符串，则将str原字符串中每个字符的数组形式返回。</td>
-<td>一个整数，限定返回的分割片段数量。当提供此参数时，split 方法会在指定分隔符的每次出现时分割该字符串，但在限制条目已放入数组时停止。如果在达到指定限制之前达到字符串的末尾，它可能仍然包含少于限制的条目。新数组中不返回剩下的文本。</td>
-</tr>
-</tbody></table>
-<p><strong>示例代码：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const str=&quot;1,2,3,4,5&quot;;</span><br><span class="line">const word=str.split(&quot;,&quot;);</span><br><span class="line">console.log(word);//[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-splice"><a href="#3-splice" class="headerlink" title="3.splice"></a>3.splice</h4><p><strong>定义：</strong>用于<strong>数组</strong>修改或截取</p>
-<p><strong>语法：</strong></p>
-<blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; array.splice(start[, deleteCount[, item1[, item2[, ...]]]])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p><strong>参数：</strong></p>
-<table>
-<thead>
-<tr>
-<th>start</th>
-<th>deleteCount可选</th>
-<th>item1,item2,…可选</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于<code>array.length-n</code>）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。</td>
-<td>整数，表示要移除的数组元素的个数。</td>
-<td>要添加进数组的元素,从<code>start</code> 位置开始。如果不指定，则 <code>splice()</code> 将只删除数组元素。</td>
-</tr>
-</tbody></table>
-<p>示例代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cons arr = [1,2,3,4];</span><br><span class="line">arr.splice（1,0,5);</span><br><span class="line">//在索引为1的位置插入5</span><br><span class="line">console.log(arr);//[1,5,2,3,4]</span><br><span class="line"></span><br><span class="line">arr.splice(0,1,0);</span><br><span class="line">//从第0个位置开始删除一个元素，插入0  将1替换为0</span><br><span class="line">console.log(arr);//[0,5,2,3,4]</span><br><span class="line"></span><br><span class="line">arr.splice(2,2);</span><br><span class="line">//从第2个位置开始删除2个元素</span><br><span class="line">console.log(arr);//[0,5,4]</span><br><span class="line"></span><br><span class="line">arr.splice(1,1,2,3,4)</span><br><span class="line">//从第1个位置开始删除1个元素，并插入2,3,4</span><br><span class="line">console.log(arr);//[0,2,3,4,4]</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-substring"><a href="#4-substring" class="headerlink" title="4.substring"></a>4.substring</h4><p><strong>定义：</strong>用于<strong>字符串</strong>的截取，</p>
-<p><strong>语法：</strong></p>
-<blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt; str.subtring(indexStart[,indexEnd])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p><strong>参数：</strong></p>
-<table>
-<thead>
-<tr>
-<th>indexStart</th>
-<th>indexEnd</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。</td>
-<td>可选。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。</td>
-</tr>
-</tbody></table>
-<p><strong>示例代码：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">var anyString = &quot;1234567&quot;;</span><br><span class="line"></span><br><span class="line">// 输出 &quot;123&quot;</span><br><span class="line">console.log(anyString.substring(0,3));</span><br><span class="line">console.log(anyString.substring(3,0));</span><br><span class="line">console.log(anyString.substring(3,-3));</span><br><span class="line">console.log(anyString.substring(3,NaN));</span><br><span class="line">console.log(anyString.substring(-2,3));</span><br><span class="line">console.log(anyString.substring(NaN,3));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;567&quot;</span><br><span class="line">console.log(anyString.substring(4,7));</span><br><span class="line">console.log(anyString.substring(7,4));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;&quot;</span><br><span class="line">console.log(anyString.substring(4,4));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;123456&quot;</span><br><span class="line">console.log(anyString.substring(0,6));</span><br><span class="line"></span><br><span class="line">// 输出 &quot;1234567&quot;</span><br><span class="line">console.log(anyString.substring(0,7));</span><br><span class="line">console.log(anyString.substring(0,10));</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-substr"><a href="#5-substr" class="headerlink" title="5.substr"></a>5.substr</h4><p>尽管 <code>String.prototype.substr(…)</code> 没有严格被废弃 (as in “removed from the Web standards”), 但它被认作是遗留的函数并且可以的话应该避免使用。它并非JavaScript核心语言的一部分，未来将可能会被移除掉。如果可以的话，使用 <code>substring()</code> 替代它.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>浏览器学习笔记</title>
-    <url>/2020/09/03/date200903/</url>
-    <content><![CDATA[<h2 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h2><p>*<strong>浏览器*<strong>，是一个用于检索，展示和遍历在万维网的信息资源的软件应用程序。信息资源被定义成</strong>统一资源定位符</strong>（URI/URL)。它可能是网页，图片，视频或者一个内容片段。超链接的出现使用户能轻松的将浏览器导航到相关的资源。虽然主要用于使用万维网，但也可用于获取专用网络中网页服务器之信息或文件系统内之文件。<br>浏览器主要由js引擎和渲染引擎组成</p>
-<span id="more"></span>
-
-<p><img src="/images/post200903.png" alt="常见浏览器内核"></p>
-<h2 id="主要组件："><a href="#主要组件：" class="headerlink" title="主要组件："></a>主要组件：</h2><ul>
-<li><strong>用户界面</strong> - 包括地址栏、前进/后退按钮、书签菜单等。除了浏览器主窗口显示的您请求的页面外，其他显示的各个部分都属于用户界面。<br>浏览器引擎 - 在用户界面和呈现引擎之间传送指令。<br>呈现引擎 - 负责显示请求的内容。如果请求的内容是 HTML，它就负责解析 HTML 和 CSS 内容，并将解析后的内容显示在屏幕上。<br>网络 - 用于网络调用，比如 HTTP 请求。其接口与平台无关，并为所有平台提供底层实现。</li>
-<li><strong>用户界面后端</strong> - 用于绘制基本的窗口小部件，比如组合框和窗口。其公开了与平台无关的通用接口，而在底层使用操作系统的用户界面方法。<br>JavaScript 解释器。用于解析和执行 JavaScript 代码。<br>数据存储。这是持久层。浏览器需要在硬盘上保存各种数据，例如 Cookie。新的 HTML 规范 (HTML5) 定义了“网络数据库”，这是一个完整（但是轻便）的浏览器内数据库。</li>
-</ul>
-<h2 id="四大内核："><a href="#四大内核：" class="headerlink" title="四大内核："></a>四大内核：</h2><h3 id="1-Trident"><a href="#1-Trident" class="headerlink" title="1. Trident"></a>1. Trident</h3><p>***IE浏览器内核***，俗称IE内核，代表产品是Internet Explorer，它是微软开发的一种排版引擎。在1997年10月与IE4一起诞生，不断地更新和完善，Trident是一款开放的内核，其引擎被设计成一个软件模块，接口内核设计相当成熟，因此涌现出许多采用IE内核而非IE的浏览器，如：百度浏览器、腾讯TT、遨游、世界之窗等，但是Trident只能用于Windows平台且不开源（这也是为什么mac上不用ie浏览器的原因），而且由于曾经市场份额比较大，脱离W3C标准，同时IE版本比较多，本身存在一些BUG和很多的兼容性问题</p>
-<p><strong>优点：</strong>市场份额较大，接口内核设计成熟</p>
-<p><strong>缺点：</strong>不开源，只能用于Windows平台，曾经与W3C标准脱节，对真正的网页标准支持不是很友好，低版本存在很多的兼容性问题</p>
-<h3 id="2-webkit"><a href="#2-webkit" class="headerlink" title="2. webkit"></a>2. webkit</h3><p><strong>Safari浏览器内核</strong>，主要代表产品有Safari和Chrome 28以下版本（Chrome 28+改用Blink内核），它的特点在于源码结构清晰、渲染速度极快。它在手机上的应用也十分广泛，例如Google的Android平台浏览器、Apple的iPhone浏览器、Nokia S60浏览器等。 WebKit内核也广泛应用于Widget引擎产品，包括中国移动的BAE、Apple的Dashboard以及Nokia WRT等。</p>
-<p><strong>优点：</strong>开源，安全，网页浏览速度较快，不及 Presto 但是也胜于 Gecko 和 Trident，手机上应用广泛</p>
-<p><strong>缺点：</strong>系统资源占用较高，对网页代码的兼容性较低，会使一些编写不标准的网页无法正确显示</p>
-<h3 id="3-Presto"><a href="#3-Presto" class="headerlink" title="3. Presto"></a>3. Presto</h3><p>它是目前公认的网页浏览速度最快的浏览器内核，然而代价是牺牲了网页的兼容性。代表作品是*<strong>Opera*</strong> （Opera12.17及更早版本曾经采用的内核，现已停止开发并废弃），它的特点是渲染速度达到了极致，Presto实际上是一个动态内核，供Opera 7.0+使用。它取代了旧版Opera 4~6版本使用的Elektra排版引擎，网页或其部分可随着DOM及Script语法的事件而重新排版。它与Trident、Gecko等内核的最大区别就在于脚本处理上，Presto有着天生的优势，页面的全部或者部分都能够在回应脚本事件时等情况下被重新解析。此外该内核在执行JavaScript时有着最快的速度，同等条件下，Presto内核执行同等JavaScript所需的时间仅有Trident和Gecko内核的约1/3。Presto是商业引擎，在一定程度上限制了Presto的发展，由于市场选择问题，主要应用在手机平台–Opera mini<br>Opera 15+已改用Google Chrome的Blink内核。在2013年之后，Opera宣布加入谷歌阵营，弃用了Presto</p>
-<p><strong>优点：</strong>速度快，动态内核，脚本处理上有着天生的优势</p>
-<p><strong>缺点：</strong>商业引擎，为了达到很快的速度而丢掉了一部分网页兼容性</p>
-<h3 id="4-Gecko"><a href="#4-Gecko" class="headerlink" title="4.Gecko"></a>4.Gecko</h3><p>***Firefox浏览器内核***，代表是Mozilla Firefox，由于Gecko的特点是开源，因此，其可开发程度很高，因此受到许多人的青睐，采用Gecko内核的浏览器也很多，这也是Gecko内核虽然年轻但市场占有率能够迅速提高的重要原因，Gecko排版引擎提供了一个丰富的程序界面以供与互联网相关的应用程序使用，例如网页浏览器、HTML编辑器、客户端/服务器等。虽然最初的主要对象是Mozilla的衍生产品，如Netscape和Mozilla Firefox，但是现在已有很多其他软件利用这个排版引擎。此外Gecko也是一个跨平台内核，可以在Windows、BSD、Linux和Mac OS X中使用。<br>正在和曾经使用Gecko引擎的浏览器有Firefox、网景6～9、SeaMonkey、Camino、Mozilla、Flock、Galeon、K-Meleon、Minimo、Sleipni、Songbird、XeroBank。GoogleGadget</p>
-<p><strong>优点：</strong>开源，扩展性强，可开发程度很高，功能强大、丰富，跨平台</p>
-<p><strong>缺点：</strong>数据档案保存能力弱，要消耗很多的资源，比如内存</p>
 ]]></content>
   </entry>
 </search>
