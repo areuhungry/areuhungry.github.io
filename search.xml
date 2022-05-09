@@ -946,6 +946,7 @@
 <blockquote>
 <p>1.flat数据结构转为tree结构<br>2.reduce方法小记<br>3.逗号运算符和优雅数组去重<br>4.react的优化操作</p>
 </blockquote>
+<span id="more"></span>
 <h4 id="扁平数组转为树状数组"><a href="#扁平数组转为树状数组" class="headerlink" title="扁平数组转为树状数组"></a>扁平数组转为树状数组</h4><p>来源于刷博客看到的一道题</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let data = [</span><br><span class="line">  &#123; id: 1, name: &quot;部门1&quot;, pid: 0 &#125;,</span><br><span class="line">  &#123; id: 2, name: &quot;部门2&quot;, pid: 1 &#125;,</span><br><span class="line">  &#123; id: 3, name: &quot;部门3&quot;, pid: 1 &#125;,</span><br><span class="line">  &#123; id: 4, name: &quot;部门4&quot;, pid: 3 &#125;,</span><br><span class="line">  &#123; id: 5, name: &quot;部门5&quot;, pid: 4 &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
 <p>要求是将上面的数组转为有父子包含关系的树状结构，类似[{id:1,name:””,pid:0,children:[ { id: 2, name: “部门2”, pid: 1 }]。其中pid代表父节点。<br>之前项目做面包屑的时候其实处理过类似的数据，当时用的就是递归，时隔良久再写已经想不起当时的写法了，胡乱一通操作循环套循环，勉强算是得到了想要的结果….是真的菜（其实没有深度思考就去看了答案，不提倡）</p>
