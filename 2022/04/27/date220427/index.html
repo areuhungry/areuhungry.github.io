@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>
-    阶段性学习笔记 |
+    阶段性学习笔记（一） |
     
     AreUhungry</title>
   
@@ -39,7 +39,7 @@
       
 
 <h1 class="article-title" itemprop="name">
-  阶段性学习笔记
+  阶段性学习笔记（一）
 </h1>
 
 
@@ -66,7 +66,11 @@
       
       
       
-      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这段时间没有接触到什么新的技术栈，一直在优化重构项目，plume2+immutable写了一遍，发现ts+这俩会让状态的管理繁琐到爆炸。于是参阅了大量项目标品的写法，结合之前的项目，百思不得其解为什么标品中所有的数据都用store来储存，模块之间并没有繁重的层层嵌套或高阶组件，完全可以用props实现数据传递。费解….。</p>
+      <h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>本章重点：</p>
+<blockquote>
+<p>1.React18的优化<br>2.React.memo与React.PureComponent用法及异同<br>3.自己写了一个hook<br>4.一些tips，关于es6空值判断，数组合并，html空格表达<br>5.antd Input使用过程遇到的bug<br>6.一些没什么卵用的废话</p>
+</blockquote>
+<p>这段时间没有接触到什么新的技术栈，一直在优化重构项目，plume2+immutable写了一遍，发现ts+这俩会让状态的管理繁琐到爆炸。于是参阅了大量项目标品的写法，结合之前的项目，百思不得其解为什么标品中所有的数据都用store来储存，模块之间并没有繁重的层层嵌套或高阶组件，完全可以用props实现数据传递。费解….。</p>
 <span id="more"></span>
 <p>在被immutable的繁琐语法折磨到苦不堪言的时候，我又去看了之前项目用的immer.js，是的，我只有这个时候才想起immer的好…于是不禁吐槽，同样是防止数据被篡改，immer果然短小精悍。<br>介于我如此唾弃标品的“代码规范”遂果断抛弃plume2+immutable，改用类组件重构，然后我惊喜的发现…因为用immer.js太久，我已经忘了原生的setState要怎么修改对象中属性值，真行（咬牙切齿.jpg），我又去复习了一遍</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//类组件更新状态-对象属性值</span><br><span class="line">function onChange(name,value)&#123;</span><br><span class="line">    const obj=Object.assign(&#123;&#125;,this.state.obj);</span><br><span class="line">    const obj[name]=value;</span><br><span class="line">    this.setState(&#123;this.state.obj:obj)</span><br><span class="line">&#125;</span><br><span class="line">//函数组件更新状态-对象属性值</span><br><span class="line">const onChange=(name,value)&#123;</span><br><span class="line">    setValue(&#123;...obj,[name]:value&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
