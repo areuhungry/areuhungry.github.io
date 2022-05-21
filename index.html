@@ -62,7 +62,7 @@
     <h1 class="page-type-title"></h1>
     
     
-    <article id="post-note1" class="article article-type-post" itemscope
+    <article id="post-date220521" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -71,13 +71,9 @@
       
 
 <h2 itemprop="name">
-  <a class="article-title" href="/2019/08/15/note1/">welcome to my zone</a>
+  <a class="article-title" href="/2022/05/21/date220521/">自定义组件StepModal的实现过程</a>
 </h2>
 
-
-<div class="article-topping">
-  <i class="fe fe-umbrella"></i>
-</div>
 
 
     </header>
@@ -85,8 +81,8 @@
 
     
     <div class="article-meta">
-      <a href="/2019/08/15/note1/" class="article-date">
-  <time datetime="2019-08-15T09:28:54.000Z" itemprop="datePublished">2019-08-15</time>
+      <a href="/2022/05/21/date220521/" class="article-date">
+  <time datetime="2022-05-21T10:00:00.000Z" itemprop="datePublished">2022-05-21</time>
 </a>
       
     </div>
@@ -98,17 +94,17 @@
       
       
       
-      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
-<p>欢迎来到AreUhungry的个人博客，该博客创建于2019年8月15日一个风和日丽的下午，以后博客会不定期更新一些个人的生活状态和学习笔记，如果机缘巧合翻到这个网站实属荣幸，留下你的足迹一人送博主五个油腻么么哒。</p>
-</blockquote>
-<h3 id="PS"><a href="#PS" class="headerlink" title="PS:"></a>PS:</h3><blockquote>
-<p><em>小女拙见如与阁下观点不胜雷同还望多多包涵，所po内容引起不适请点击右上角x</em>。</p>
-</blockquote>
-
+      <h5 id="起因："><a href="#起因：" class="headerlink" title="起因："></a>起因：</h5><p>业务逻辑遇到一个需求，需要一个步骤modal，并且在最后一步将所有步骤框内的数据一并提交</p>
+<h5 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h5><p>根据这个需求将modal内部的content用一个数组传入，随着stepNum（记录当前步骤数的变量）的变化render不同的content<br>理论存在，开始实践<br><strong>初尝试</strong><br>（这次尝试属于拍拍脑袋就写，并没有思考组件的特性以及数据怎么传输，所以出现了很多低级错误）</p>
+      
+      <a class="article-more-link" href="/2022/05/21/date220521/">
+        阅读全文...
+      </a>
+      
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/08/15/note1/" data-id="cl2ytqfij000jaouk7ujw19gs" class="article-share-link">
+      <a data-url="http://example.com/2022/05/21/date220521/" data-id="cl3fr5p14000l8kukbouj4vgf" class="article-share-link">
         分享
       </a>
       
@@ -166,7 +162,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/05/09/date220506/" data-id="cl2ytqfih000haouk5m1139az" class="article-share-link">
+      <a data-url="http://example.com/2022/05/09/date220506/" data-id="cl3fr5p0n000g8kuk5li2d4yl" class="article-share-link">
         分享
       </a>
       
@@ -225,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/04/27/date220427/" data-id="cl2ytqfig000gaouk8moka8r7" class="article-share-link">
+      <a data-url="http://example.com/2022/04/27/date220427/" data-id="cl3fr5p0v000h8kuk22uk3xcs" class="article-share-link">
         分享
       </a>
       
@@ -286,7 +282,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/31/date220331/" data-id="cl2ytqfif000faoukcmko502c" class="article-share-link">
+      <a data-url="http://example.com/2022/03/31/date220331/" data-id="cl3fr5p0l000f8kukglxkciw5" class="article-share-link">
         分享
       </a>
       
@@ -346,7 +342,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/29/date220329/" data-id="cl2ytqfie000eaouk7ebj6jt1" class="article-share-link">
+      <a data-url="http://example.com/2022/03/29/date220329/" data-id="cl3fr5p0i000e8kuk78wqgl80" class="article-share-link">
         分享
       </a>
       
@@ -408,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/23/date220323/" data-id="cl2ytqfie000daouk6ojy26b0" class="article-share-link">
+      <a data-url="http://example.com/2022/03/23/date220323/" data-id="cl3fr5p0g000d8kukgqsbdp8u" class="article-share-link">
         分享
       </a>
       
@@ -465,7 +461,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/21/date220321/" data-id="cl2ytqfid000caouk0bii16f1" class="article-share-link">
+      <a data-url="http://example.com/2022/03/21/date220321/" data-id="cl3fr5p0d000c8kuk535x2scr" class="article-share-link">
         分享
       </a>
       
@@ -520,7 +516,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/20/note02/" data-id="cl2ytqfii000iaouk8lib7r95" class="article-share-link">
+      <a data-url="http://example.com/2022/03/20/note02/" data-id="cl3fr5p0x000i8kukd6wb9hf6" class="article-share-link">
         分享
       </a>
       
@@ -577,7 +573,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/05/11/date0511/" data-id="cl2ytqfi10001aoukdyaca9po" class="article-share-link">
+      <a data-url="http://example.com/2021/05/11/date0511/" data-id="cl3fr5oz700018kuk5tk4ddo8" class="article-share-link">
         分享
       </a>
       
@@ -634,7 +630,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/28/date201218/" data-id="cl2ytqfic000baouk2kwfcgn0" class="article-share-link">
+      <a data-url="http://example.com/2020/12/28/date201218/" data-id="cl3fr5p0a000b8kuk8bttdhf3" class="article-share-link">
         分享
       </a>
       
